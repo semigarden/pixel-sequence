@@ -406,6 +406,16 @@
       );
 
       doc.addEventListener(
+        "mousedown",
+        () => {
+          if (inspectMenu.classList.contains("hidden")) return;
+          hideInspectMenu();
+          setTimeout(restoreIframeInteractionFocus, 0);
+        },
+        true
+      );
+
+      doc.addEventListener(
         "click",
         (event) => {
           const el = event.target && event.target.closest ? event.target.closest("a[href]") : null;
