@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<head>
+<script>
+	paceOptions = {
+	ajax: false, // disabled
+	document: false, // disabled
+	eventLag: false, // disabled
+	elements: {
+	selectors: ['#bang']
+	}
+	};
+	</script>
+<script src="pace/pace.js"></script>
+<meta charset="UTF-8" />
+<script src="js/phaser.min.js"></script>
+<script src="ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<style>
+body{
+	margin:0 auto;
+	background-color:black;
+	overflow: hidden;
+}
+/*loading bar*/
+body.pace-running:before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 1500;
+	background-color: rgba(0, 0, 0, 1);
+}
+body:before {
+	background-color: rgba(0, 0, 0, 0);
+	-webkit-transition: background-color 200ms;
+	-moz-transtition: background-color 200ms;
+	-ms-transition: background-color 200ms;
+	-o-transition: background-color: 200ms;
+	transition: background-color 200ms;
+}
+.pace {
+	-webkit-pointer-events: none;
+	pointer-events: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	z-index: 2000;
+	position: fixed;
+	margin: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 5px;
+	width: 200px;
+	background: #fff;
+	overflow: hidden;
+	border-radius:10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-ms-border-radius:10px;
+	-o-border-radius:10px;
+	}
+.pace .pace-progress {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+	max-width: 200px;
+	position: fixed;
+	z-index: 2000;
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 100%;
+	height: 100%;
+	width: 100%;
+	background: magenta;
+	}
+	.pace.pace-inactive {
+	display: none;
+	}
+#gameDivContain{
+	position:relative;
+	margin:0 auto;
+	padding:10px;
+	height:90vh;
+	}
+#gameDiv{
+	position:relative;
+	top: 10px;
+	right:0px;
+	left:0px;
+	bottom:0px;
+	overflow: hidden;
+	width:80%;
+	height:auto;
+	border-radius:5px;
+	max-width:2200px;
+	max-height:2200px;
+	margin:auto;
+	border:2px solid transparent;
+	transition: border 2s;
+	}
+@font-face{
+	font-family: IBMFont;
+	src: url(font/Px437_IBM_ISO9.ttf);
+	}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:999;
+}
+.easy1{
+	background-color: blue;
+	width:25px;
+	z-index:500;
+	right:10px;
+	top:10px;
+	position:absolute;
+	text-align:center;
+	border-radius:2px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: blue;
+}
+.easy1:hover{
+	background-color: pink;
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	text-align:center;
+	border-radius:6px;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;
+}
+</style>
+</head>
+    <body>
+	<div id="gameDivContain">
+	<div id="gameDiv"></div></div>
+	<div class="containerHelp">
+	<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+	<div class="easy2">NOBODY CARES THAT YOU'RE HERE.<br><br>Click on objects to explore. Leave when you're ready by closing the browser page.<br><br><input id="p2Back" type="button" value="> Close"></div>
+	</div>
+	<script>
+	$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+	});
+	$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500)
+	$('.easy2').slideToggle(500);
+	});
+	</script>
+	<audio id="audio1" 
+	src="sounds/soon-bb11-9.mp3"
+	type="audio/mp3">
+	</audio> 
+	<script type="text/javascript">
+	var roomNum = "room" + Math.floor(Math.random()*(83-41)+ 41);
+	var roomNumFP ="rooms_for/rooms/" + roomNum + ".png";
+	var numberofefx = 30;
+	var numberofefxindx = numberofefx - 1;
+	fxlist = []
+	for (i=0;i<numberofefx;i++){
+		fxlist.push('sounds/fx-out/efx-'+String(Math.floor((Math.random()*(144-1))) + 1)+'.mp3');
+	}
+	var game = new Phaser.Game(1280, 720, Phaser.CANVAS, 'gameDiv', { preload: preload, create: create, update: update});
+	function preload(){
+	game.load.image(roomNum,roomNumFP);
+	game.load.spritesheet("topObjects","rooms_for/rooms/top_2.png",136,204);
+	game.load.spritesheet("bottomObjects","rooms_for/rooms/bottom_2.png",117,99);
+	game.load.spritesheet("midObjects","rooms_for/rooms/mid_2.png",152,142);
+	game.load.spritesheet("bottomObjects2","rooms_for/rooms/bottom3_57x13.png",122,104);
+	game.load.image("grayscale","rooms_for/rooms/grayscale.png");
+	game.load.spritesheet("animFloor1","rooms_for/rooms/animFloor1.png", 83,79);
+	game.load.spritesheet("animFloor2","rooms_for/rooms/animFloor2.png", 39,46);
+	game.load.spritesheet("animFloor4","rooms_for/rooms/animFloor4.png", 42,49);
+	game.load.spritesheet("animFloor3","rooms_for/rooms/animFloor3.png", 71,69);
+	game.load.spritesheet("animFloor10","rooms_for/rooms/animFloor10.png", 96,104);
+	game.load.spritesheet("animFloor12","rooms_for/rooms/animFloor12.png", 68,41);
+	game.load.spritesheet("animFloor17","rooms_for/rooms/animFloor17.png", 65,147);
+	game.load.spritesheet("animFloor18","rooms_for/rooms/animFloor18.png", 32,29);
+	game.load.spritesheet("animFloor19","rooms_for/rooms/animFloor19.png", 55,53);
+	game.load.spritesheet("animFloor20","rooms_for/rooms/animFloor20.png", 66,79);
+	game.load.spritesheet("animFloor11","rooms_for/rooms/animFloor11.png", 72.5,103);
+	game.load.spritesheet("animFloor5","rooms_for/rooms/animFloor5.png", 32,55);
+	game.load.spritesheet("animFloor13","rooms_for/rooms/animFloor13.png", 33,41);
+	game.load.spritesheet("animFloor14","rooms_for/rooms/animFloor14.png", 125,125);
+	game.load.spritesheet("animFloor15","rooms_for/rooms/animFloor15.png", 92,178);
+	game.load.spritesheet("animFloor16","rooms_for/rooms/animFloor16.png", 42,45);
+	game.load.spritesheet("animFloor6","rooms_for/rooms/animFloor6.png", 76,63);
+	game.load.spritesheet("animFloor7","rooms_for/rooms/animFloor7.png", 40,40);
+	game.load.spritesheet("animFloor8","rooms_for/rooms/animFloor8.png", 31,53);
+	game.load.spritesheet("animFloor9","rooms_for/rooms/animFloor9.png", 44,72);
+	game.load.spritesheet("animFloor21","rooms_for/rooms/animFloor21.png", 92,81);
+	game.load.spritesheet("animFloor22","rooms_for/rooms/animFloor22.png", 77,67);
+	game.load.spritesheet("animFloor23","rooms_for/rooms/animFloor23.png", 112,71);
+	game.load.spritesheet("animFloor24","rooms_for/rooms/animFloor24.png", 50,107);
+	game.load.spritesheet("animFloor25","rooms_for/rooms/animFloor25.png", 66,78);
+	game.load.spritesheet("animFloor26","rooms_for/rooms/animFloor26.png", 32,64);
+	game.load.spritesheet("animFloor27","rooms_for/rooms/animFloor27.png", 34,61);
+	game.load.spritesheet("animFloor28","rooms_for/rooms/animFloor28.png", 49,48);
+	game.load.spritesheet("animFloor29","rooms_for/rooms/animFloor29.png", 33,62);
+	game.load.spritesheet("animFloor30","rooms_for/rooms/animFloor30.png", 33,40);
+	game.load.spritesheet("animFloor31","rooms_for/rooms/animFloor31.png", 36,34);
+	game.load.spritesheet("animFloor32","rooms_for/rooms/animFloor32.png", 50,14);
+	game.load.spritesheet("animFloor33","rooms_for/rooms/animFloor33.png", 116,117);
+	game.load.spritesheet("animFloor34","rooms_for/rooms/animFloor34.png", 67,114);
+	game.load.spritesheet("animFloorLoop1","rooms_for/rooms/animFloorLoop1.png", 21,27);
+	game.load.spritesheet("animFloorLoop2","rooms_for/rooms/animFloorLoop2.png", 32,63);
+	game.load.spritesheet("animFloorLoop3","rooms_for/rooms/animFloorLoop3.png", 30,37);
+	game.load.spritesheet("animFloorLoop4","rooms_for/rooms/animFloorLoop4.png", 54,53);
+	game.load.spritesheet("animFloorLoop5","rooms_for/rooms/animFloorLoop5.png", 106,100);
+	game.load.spritesheet("animFloorLoop6","rooms_for/rooms/animFloorLoop6.png", 24,46);
+	game.load.spritesheet("animFloorLoop7","rooms_for/rooms/animFloorLoop7.png", 18,48);
+	game.load.spritesheet("animFloorLoop8","rooms_for/rooms/animFloorLoop8.png", 84,120);
+	game.load.spritesheet("animFloorLoop9","rooms_for/rooms/animFloorLoop9.png", 84,120);
+	game.load.spritesheet("animFloorLoop10","rooms_for/rooms/animFloorLoop10.png", 64,104);
+	game.load.spritesheet("animFloorLoop11","rooms_for/rooms/animFloorLoop11.png", 25,30);
+	game.load.spritesheet("animFloorLoop12","rooms_for/rooms/animFloorLoop12.png", 18,32);
+	game.load.spritesheet("animFloorLoop13","rooms_for/rooms/animFloorLoop13.png", 92,93);
+	game.load.spritesheet("animFloorConstant1","rooms_for/rooms/animFloorConstant1.png", 14,28);
+	game.load.spritesheet("animFloorConstant2","rooms_for/rooms/animFloorConstant2.png", 101,121);
+	game.load.spritesheet("animFloorConstant3","rooms_for/rooms/animFloorConstant3.png", 22,43);
+	game.load.spritesheet("animFloorConstant4","rooms_for/rooms/animFloorConstant4.png", 82,45);
+	game.load.spritesheet("animFloorConstant5","rooms_for/rooms/animFloorConstant5.png", 35,95);
+	game.load.spritesheet("animFloorConstant6","rooms_for/rooms/animFloorConstant6.png", 37,64);
+	game.load.spritesheet("animFloorConstant7","rooms_for/rooms/animFloorConstant7.png", 56,71);
+	game.load.spritesheet("animFloorConstant8","rooms_for/rooms/animFloorConstant8.png", 99,96);
+	game.load.spritesheet("animFloorConstant9","rooms_for/rooms/animFloorConstant9.png", 34,85);
+	game.load.spritesheet("animFloorConstant10","rooms_for/rooms/animFloorConstant10.png", 30,13);
+	game.load.spritesheet("animFloorConstant11","rooms_for/rooms/animFloorConstant11.png", 16,20);
+	game.load.spritesheet("animFloorConstant12","rooms_for/rooms/animFloorConstant12.png", 34,57);
+	game.load.spritesheet("animFloorConstant13","rooms_for/rooms/animFloorConstant13.png", 30,16);
+	game.load.spritesheet("animFloorConstant14","rooms_for/rooms/animFloorConstant14.png", 53,17);
+	game.load.spritesheet("animFloorConstant15","rooms_for/rooms/animFloorConstant15.png", 54,124);
+	game.load.spritesheet("animFloorConstant16","rooms_for/rooms/animFloorConstant16.png", 30,29);
+	game.load.spritesheet("animTop1","rooms_for/rooms/animTop1.png", 40,253);
+	game.load.spritesheet("animTop2","rooms_for/rooms/animTop2.png", 32,67);
+	game.load.spritesheet("animTop3","rooms_for/rooms/animTop3.png", 107,386);
+	game.load.spritesheet("animTop4","rooms_for/rooms/animTop4.png", 93,308);
+	game.load.spritesheet("animTop5","rooms_for/rooms/animTop5.png", 22,30);
+	game.load.spritesheet("animTop6","rooms_for/rooms/animTop6.png", 25,32);
+	game.load.spritesheet("animTop7","rooms_for/rooms/animTop7.png", 94,32);
+	game.load.spritesheet("animTop8","rooms_for/rooms/animTop8.png", 97,40);
+	game.load.spritesheet("animTopConstant1","rooms_for/rooms/animTopConstant1.png", 77,70);
+	game.load.spritesheet("animTopConstant2","rooms_for/rooms/animTopConstant2.png", 43.75,49);
+	game.load.spritesheet("animTopConstant3","rooms_for/rooms/animTopConstant3.png", 39,39);
+	game.load.spritesheet("animTopConstant4","rooms_for/rooms/animTopConstant4.png", 46,124);
+	game.load.spritesheet("animTopConstant5","rooms_for/rooms/animTopConstant5.png", 55,60);
+	game.load.spritesheet("animTopConstant6","rooms_for/rooms/animTopConstant6.png", 37,32);
+	game.load.spritesheet("animTopConstant7","rooms_for/rooms/animTopConstant7.png", 37,32);
+	game.load.spritesheet("animTopConstant8","rooms_for/rooms/animTopConstant8.png", 32,75);
+	game.load.image("animTopConstant9","rooms_for/rooms/animTopConstant9.png");
+	game.load.spritesheet("animTopConstant10","rooms_for/rooms/animTopConstant10.png", 32,75);
+	game.load.spritesheet("animTopConstant11","rooms_for/rooms/animTopConstant11.png", 34,97);
+	game.load.spritesheet("animTopConstant12","rooms_for/rooms/animTopConstant12.png", 49,91);
+	game.load.spritesheet("animTopConstant13","rooms_for/rooms/animTopConstant13.png", 27,129);
+	game.load.spritesheet("animTopConstant14","rooms_for/rooms/animTopConstant14.png", 16,18);
+	game.load.spritesheet("animTopConstant15","rooms_for/rooms/animTopConstant15.png", 32,48);
+	game.load.spritesheet("animTopLoop1","rooms_for/rooms/animTopLoop1.png", 70,140);
+	game.load.image("RightBorder", "rooms_for/rooms/RightBorder.png");
+	game.load.image("TopBorder", "rooms_for/rooms/TopBorder.png");
+	game.load.spritesheet("stripper1","rooms_for/rooms/stripper1.png", 50,98);
+	game.load.spritesheet("stripper2","rooms_for/rooms/stripper2.png", 43,128);
+	game.load.spritesheet("stripper3","rooms_for/rooms/stripper3.png", 87,100);
+	game.physics.startSystem(Phaser.Physics.ARCADE);	
+	game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;	
+	game.renderer.renderSession.roundPixels = true;
+	game.world.setBounds(0,0, 1280,720);
+	for (var i=0; i<fxlist.length; i++){
+	game.load.audio('fx'+i,fxlist[i]);
+	}
+	}
+	function create(){
+	$("body").append("<div id='bang'></div>");
+	game.camera.flash('#000000', 1000);
+	setTimeout(function(){
+	$('#gameDiv').css({"border":"2px solid magenta"});
+	}, 1000);
+	var audio = document.getElementById("audio1");
+	audio.volume = .1;
+	audio.play();
+	room = game.add.sprite(0,0,roomNum); 
+    room.height = game.height;
+	room.width = game.width;
+	room.smoothed= false;
+	room.inputEnabled=true;
+	grayscale = game.add.sprite(0,0,"grayscale");
+	grayscale.blendMode = 14;
+	grayscale.inputEnabled = true;
+	grayscale.alpha=1;
+//Borders
+	RightBorder = game.add.sprite(1400,0,"RightBorder");
+	game.physics.arcade.enable(RightBorder);
+	RightBorder.inputEnabled=true;
+	RightBorder.enableBody=true;
+	RightBorder.body.immovable = true;
+	LeftBorder = game.add.sprite(-130,0,"RightBorder");
+	game.physics.arcade.enable(LeftBorder);
+	LeftBorder.inputEnabled=true;
+	LeftBorder.enableBody=true;
+	LeftBorder.body.immovable = true;
+	TopBorder = game.add.sprite(0,-130, "TopBorder"); 
+	game.physics.arcade.enable(TopBorder);
+	TopBorder.inputEnabled=true;
+	TopBorder.enableBody=true;
+	TopBorder.body.immovable = true;
+	BottomBorder = game.add.sprite(0,820,"TopBorder");
+	game.physics.arcade.enable(BottomBorder);
+	BottomBorder.inputEnabled=true;
+	BottomBorder.enableBody=true;
+	BottomBorder.body.immovable = true;
+//Top
+	topPlace = game.add.group();
+	for (var i = 0; i < game.rnd.integerInRange(0, 25); i++){
+	topPlace.create(room.position.x+10 + Math.random() * game.world.width-20 ,room.position.y+10 + Math.random() * 200,"topObjects");
+	topPlace.setAll("smoothed", false);}
+	topPlace.forEach(function(topObjects){
+	topObjects.frame = game.rnd.integerInRange(0, 150);
+	}),this;	
+//Middle
+	midPlace = game.add.group();
+	for (var i = 0; i < game.rnd.integerInRange(0, 25); i++){
+	midPlace.create(room.position.x+10 + Math.random() * game.world.width-20 ,room.position.y+350 + Math.random() * 200,"midObjects");
+	midPlace.setAll("smoothed", false);
+	midPlace.setAll("scale.x", 2);
+	midPlace.setAll("scale.y", 2);}
+	midPlace.forEach(function(midObjects){
+	midObjects.frame = game.rnd.integerInRange(0, 143);
+	}),this;
+//Floor
+	bottomPlace = game.add.group();
+	for (var i = 0; i < game.rnd.integerInRange(0, 25); i++){
+	bottomPlace.create(room.position.x+10 + Math.random() * game.world.width-20 ,room.position.y+500 + Math.random() * 150,"bottomObjects2");
+	bottomPlace.setAll("smoothed", false);
+	bottomPlace.setAll("scale.x", 1.6);
+	bottomPlace.setAll("scale.y", 1.6);}
+	bottomPlace.forEach(function(bottomObjects){
+	bottomObjects.frame = game.rnd.integerInRange(0, 700);
+	}),this;		
+//Floor animated constant, no input 
+	bottomAnimsConstant = game.add.group();
+	for (var i = 0; i < game.rnd.integerInRange(0, 1); i++)
+	{
+	bottomAnimsConstant.create(room.position.x+10 + Math.random() * game.world.width-20 ,room.position.y+350 + Math.random() * 200,"animFloorConstant"+game.rnd.integerInRange(1, 16));
+	bottomAnimsConstant.setAll("smoothed", false);
+	bottomAnimsConstant.setAll("scale.x", 1.6);
+	bottomAnimsConstant.setAll("scale.y", 1.6);
+	bottomAnimsConstant.callAll("animations.add","animations","bottomAnimsConstant",[],10, true);
+	bottomAnimsConstant.callAll("animations.play","animations","bottomAnimsConstant");}
+//Floor animated no loop
+	bottomAnims = game.add.group();
+	for (var i = 0; i < game.rnd.integerInRange(1, 3); i++)
+	{
+	bottomAnims.create(room.position.x+10 + Math.random() * game.world.width-20 ,room.position.y+350 + Math.random() * 200,"animFloor"+game.rnd.integerInRange(11, 34));
+	bottomAnims.setAll("smoothed", false);
+	bottomAnims.setAll("scale.x", 1.4);
+	bottomAnims.setAll("scale.y", 1.4);
+	bottomAnims.setAll("inputEnabled",true);
+	bottomAnims.callAll("animations.add","animations","bottomAnims",[],10, false);
+	bottomAnims.forEach(function(bottomAnims){
+	bottomAnims.events.onInputDown.add(function playBottomAnim(){
+	bottomAnims.animations.play("bottomAnims");
+	bottomAnims.inputEnabled = false;	
+	soundFX1 = game.sound.play("fx"+game.rnd.integerInRange(0,numberofefxindx));
+	soundFX1.volume=.06;
+	})})} //second click triggers links to appear -- why? will need to fix.
+//Floor animated no loop sized larger
+	bottomAnimsLarge = game.add.group();
+	for (var i = 0; i < game.rnd.integerInRange(1, 3); i++){
+	bottomAnimsLarge.create(room.position.x+10 + Math.random() * game.world.width-20 ,room.position.y+350 + Math.random() * 200,"animFloor"+game.rnd.integerInRange(1, 10));
+	bottomAnimsLarge.setAll("smoothed", false);
+	bottomAnimsLarge.setAll("scale.x", 2.6);
+	bottomAnimsLarge.setAll("scale.y", 2.6);
+	bottomAnimsLarge.setAll("inputEnabled",true);
+	bottomAnimsLarge.callAll("animations.add","animations","bottomAnimsLarge",[],10, false);
+	bottomAnimsLarge.forEach(function(bottomAnimsLarge){
+	bottomAnimsLarge.events.onInputDown.add(function playBottomAnim(){
+	bottomAnimsLarge.animations.play("bottomAnimsLarge");
+	bottomAnimsLarge.inputEnabled = false;	
+	soundFX2 = game.sound.play("fx"+game.rnd.integerInRange(0,numberofefxindx));
+	soundFX2.volume=.06;
+	})})} //second click triggers links to appear -- why? will need to fix.
+//Floor animated loop
+	bottomAnimsLoop = game.add.group();
+	for (var i = 0; i < game.rnd.integerInRange(1, 2); i++){
+	bottomAnimsLoop.create(room.position.x+10 + Math.random() * game.world.width-20 ,room.position.y+350 + Math.random() * 200,"animFloorLoop"+game.rnd.integerInRange(1, 13));
+	bottomAnimsLoop.setAll("smoothed", false);
+	bottomAnimsLoop.setAll("scale.x", 1.6);
+	bottomAnimsLoop.setAll("scale.y", 1.6);
+	bottomAnimsLoop.setAll("inputEnabled",true);
+	bottomAnimsLoop.callAll("animations.add","animations","bottomAnimsLoop",[],10, true);
+	bottomAnimsLoop.forEach(function(bottomAnimsLoop){
+	bottomAnimsLoop.events.onInputDown.add(function playBottomAnimLoop(){
+	bottomAnimsLoop.animations.play("bottomAnimsLoop");
+	bottomAnimsLoop.inputEnabled = false;	
+	soundFX6 = game.sound.play("fx"+game.rnd.integerInRange(0,numberofefxindx));
+	soundFX6.volume=.06;
+	})})}
+//Top animated no loop
+	topAnims = game.add.group();
+	for (var i = 0; i < game.rnd.integerInRange(3, 6); i++){
+	topAnims.create(room.position.x+10 + Math.random() * game.world.width-20 ,room.position.y+10 + Math.random() * 200,"animTop"+game.rnd.integerInRange(3, 8));
+	topAnims.setAll("smoothed", false);
+	topAnims.setAll("scale.x", 1.4);
+	topAnims.setAll("scale.y", 1.4);
+	topAnims.setAll("inputEnabled",true);
+	topAnims.callAll("animations.add","animations","topAnims",[],10, false);
+	topAnims.forEach(function(topAnims){
+	topAnims.events.onInputDown.add(function playTopAnim(){
+	topAnims.animations.play("topAnims");
+	topAnims.inputEnabled = false;
+	soundFX3 = game.sound.play("fx"+game.rnd.integerInRange(0,numberofefxindx));
+	soundFX3.volume=.06;
+	})})}
+//Top animated no loop, larger
+	topAnimsLar = game.add.group();
+	for (var i = 0; i < game.rnd.integerInRange(2, 3); i++){
+	topAnimsLar.create(room.position.x+10 + Math.random() * game.world.width-20 ,room.position.y+10 + Math.random() * 200,"animTop"+game.rnd.integerInRange(1, 2));
+	topAnimsLar.setAll("smoothed", false);
+	topAnimsLar.setAll("scale.x", 2.6);
+	topAnimsLar.setAll("scale.y", 2.6);
+	topAnimsLar.setAll("inputEnabled",true);
+	topAnimsLar.callAll("animations.add","animations","topAnimsLar",[],10, false);
+	topAnimsLar.forEach(function(topAnimsLar){
+	topAnimsLar.events.onInputDown.add(function playTopAnim(){
+	topAnimsLar.animations.play("topAnimsLar");
+	topAnimsLar.inputEnabled = false;
+	soundFX4 = game.sound.play("fx"+game.rnd.integerInRange(0,numberofefxindx));
+	soundFX4.volume=.06;
+	})})}
+//Top animatied constant, no input 
+	TopAnimsConstant = game.add.group();
+	for (var i = 0; i < game.rnd.integerInRange(3, 6); i++){
+	TopAnimsConstant.create(room.position.x+10 + Math.random() * game.world.width-20 ,room.position.y+10 + Math.random() * 200,"animTopConstant"+game.rnd.integerInRange(1, 15));
+	TopAnimsConstant.setAll("smoothed", false);
+	TopAnimsConstant.setAll("scale.x", 1.6);
+	TopAnimsConstant.setAll("scale.y", 1.6);
+	TopAnimsConstant.callAll("animations.add","animations","TopAnimsConstant",[],10, true);
+	TopAnimsConstant.callAll("animations.play","animations","TopAnimsConstant");}
+//Top animated, loop after input (break glass)
+	topAnimsGlass = game.add.group();
+	for (var i = 0; i < game.rnd.integerInRange(2, 4); i++){
+	topAnimsGlass.create(room.position.x+10 + Math.random() * game.world.width-20 ,room.position.y+10 + Math.random() * 200,"animTopLoop1");
+	topAnimsGlass.setAll("smoothed", false);
+	topAnimsGlass.setAll("inputEnabled",true);
+	topAnimsGlass.callAll("animations.add","animations","topAnimsGlass2",[8,9,10,11,12,13],10, true);
+	topAnimsGlass.callAll("animations.add","animations","topAnimsGlass1",[0,1,2,3,4,5,6,7],10, true);
+	topAnimsGlass.callAll("animations.play","animations","topAnimsGlass1");
+	topAnimsGlass.forEach(function(topAnimsGlass){
+	topAnimsGlass.events.onInputDown.add(function topAnimsGlass2(){
+	topAnimsGlass.animations.play("topAnimsGlass2");
+	topAnimsGlass.inputEnabled = false;
+	soundFX5 = game.sound.play("fx"+game.rnd.integerInRange(0,numberofefxindx));
+	soundFX5.volume=.06;
+	})})}
+//Numem Women
+	nukemGirls = game.add.group();
+	for (var i = 0; i < 3; i++){
+	nukemGirls.create(LeftBorder.position.x+150 + Math.random() * game.world.width-150 ,TopBorder.position.y+620 + Math.random() * 100,"stripper"+game.rnd.integerInRange(1, 3));
+	nukemGirls.setAll("smoothed", false);
+	nukemGirls.setAll("anchor.x",0.5);
+	nukemGirls.setAll("anchor.y",0.5);
+	nukemGirls.setAll("scale.x", 2.1);
+	nukemGirls.setAll("scale.y", 2.1);
+	nukemGirls.callAll("animations.add","animations","nukemGirls",[],10, true);
+	nukemGirls.callAll("animations.play","animations","nukemGirls");
+	}
+	nukemGirls.sort();
+	nukemGirls.forEach(function(nukemGirls){
+	if (nukemGirls.alpha == 1){
+	nukemGirls.inputEnabled=true;
+	nukemGirls.events.onInputOver.add(function fadeWoman(){
+    game.add.tween(nukemGirls).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None,1000);})
+	}
+	}),this;
+	room.alpha = 1;
+	game.time.events.loop(500, loopTween, this);
+	}
+	function update(){
+	nukemGirls.sort('y', Phaser.Group.SORT_ASCENDING);
+	}
+	function loopTween(){
+	if (grayscale.alpha == 1){
+	tweenAlpha0 = game.add.tween(grayscale).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None,true,200);}
+	else if (grayscale.alpha ==0){
+	tweenAlpha1 = game.add.tween(grayscale).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None,true,200);}
+	}
+</script>
+</body>
+</html>

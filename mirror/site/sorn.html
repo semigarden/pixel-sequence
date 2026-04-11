@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="js/typed.js"></script>
+<meta charset="UTF-8"/>
+<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="ui/1.12.1/jquery-ui.js"></script>
+<style>
+body{
+	overflow:hidden;
+	background-color:black;
+	opacity: 0;
+	}
+#container{
+	display:inline-block;
+	width:100%;
+	height:100%;
+	margin: 0 auto;
+	top: 0;
+	left: 0;
+	position:absolute;
+	z-index:3;
+	background:#00ff00;	
+	overflow:hidden;
+	}
+#canvas{
+	position:absolute;
+	z-index:2;
+	top:0;
+	left:0;
+	overflow:hidden;
+	pointer-events:none;
+	}
+pre{font-family:Courier;
+	font-size:13px;
+	}
+#poolGreen{
+	position: absolute;
+	bottom:0;
+	right:40%;
+	width: 213px;
+	height: 57px;
+	z-index:8;
+    background: url(blackroomelements/poolBlue.png);
+    background-size: 213px 57px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#poolGreen .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	bottom: 150%;
+    left: 50%;
+    margin-left: -60px;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#poolGreen .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: blue transparent transparent transparent;
+}
+#poolGreen:hover .tooltiptext {
+    visibility: visible;
+	opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#mushrooms{
+	position: absolute;
+	width: 162px;
+	height: 194px;
+	z-index:1;
+    background: url(blackroomelements/mushrooms.png);
+    background-size: 162px 194px;
+    background-repeat: no-repeat;
+	bottom:30%;
+	left:30%;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#mushrooms2{
+	position: absolute;
+	width: 162px;
+	height: 194px;
+	z-index:1;
+    background: url(blackroomelements/mushrooms.png);
+    background-size: 162px 194px;
+    background-repeat: no-repeat;
+	bottom:10%;
+	right:30%;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#mushrooms3{
+	position: absolute;
+	width: 162px;
+	height: 194px;
+	z-index:1;
+    background: url(blackroomelements/mushrooms.png);
+    background-size: 162px 194px;
+    background-repeat: no-repeat;
+	right:30%;
+	top:20%;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#mushrooms4{
+	position: absolute;
+	width: 162px;
+	height: 194px;
+	z-index:6;
+    background: url(blackroomelements/mushrooms.png);
+    background-size: 162px 194px;
+    background-repeat: no-repeat;
+	left:20%;
+	bottom:4%;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#mushrooms4 .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	bottom: 60%;
+    left: 50%;
+    margin-left: -60px;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#mushrooms4 .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: blue transparent transparent transparent;
+}
+#mushrooms4:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#sand{
+	position: absolute;
+	top: 50%; left: 50%;
+	transform: translate(-50%,-50%);
+	line-height:1.2;
+	width: 50px;
+	height: 35px;
+	z-index:1;
+    background: url(blackroomelements/sand2.png);
+    background-size: 50px 35px;
+    background-repeat: no-repeat;
+	cursor:default;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+@keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}
+@-moz-keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}
+@-webkit-keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}	
+.inner {
+	position: absolute;
+	line-height:1.2;
+	right:0;
+	top:30%;
+	z-index:1;
+	border-radius:50px;
+	background-color:transparent;
+	width:100px;
+	height:100px;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;	
+}	
+.inner:hover{
+	border-radius:50px;
+	box-shadow: 0 0 28px magenta, inset 0 0 28px magenta;
+	background-color:magenta;
+}	
+	
+#plant{
+	position: absolute;
+	width: 218px;
+	height: 182px;
+	z-index:6;
+    background: url(blackroomelements/plant12.gif);
+    background-size: 218px 182px;
+    background-repeat: no-repeat;
+	right:50%;
+	bottom:20%;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#plant .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+	bottom: 42%;
+    left: 120%;
+    margin-left: -100px;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#plant .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color:  transparent blue transparent transparent;
+}
+#plant:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+.mushroom1{
+	position: absolute;
+	width:79px;
+	height: 119px;
+	z-index:0;
+    background: url(blackroomelements/mushroom2.png);
+    background-size:79px 119px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+.mushroom2{
+	position: absolute;
+	width: 79px;
+	height: 119px;
+	z-index:0;
+    background: url(blackroomelements/mushroom3.png);
+    background-size: 79px 119px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+.puddle{
+	position: absolute;
+	width: 111px;
+	height: 26px;
+	z-index:0;
+    background: url(clean/puddle2.png);
+    background-size: 111px 26px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#puddle2{
+	position: absolute;
+	width: 111px;
+	height: 26px;
+    background: url(clean/puddle2.png);
+    background-size: 111px 26px;
+    background-repeat: no-repeat;
+	right:20%;
+	bottom:22%;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#puddle2 .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+	z-index:12;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	bottom: 150%;
+    left: 60%;
+    margin-left: -60px;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#puddle2 .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: blue transparent transparent transparent;
+}
+#puddle2:hover .tooltiptext {
+    visibility: visible;
+	opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#bird{
+	position: absolute;
+	width: 83px;
+	height: 131px;
+	z-index:6;
+    background: url(blackroomelements/bird2.gif);
+    background-size: 83px 131px;
+    background-repeat: no-repeat;
+	left:5%;
+	top:10%;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#bird .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+	border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 70%;
+    left: 50%;
+    margin-left: -60px;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#bird .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent blue transparent;
+}
+#bird:hover .tooltiptext {
+	 visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}	
+#grave{
+	position: absolute;
+	width: 126px;
+	height: 151px;
+	z-index:2;
+    background: url(blackroomelements/grave.gif);
+    background-size: 126px 151px;
+    background-repeat: no-repeat;
+	left:50%;
+	top:30%;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#grave2{
+	position: absolute;
+	width: 126px;
+	height: 151px;
+    background: url(blackroomelements/grave.gif);
+    background-size: 126px 151px;
+    background-repeat: no-repeat;
+	left:30%;
+	top:40%;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#grave2 .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+	z-index:6;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#grave2 .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: blue transparent transparent transparent;
+}
+#grave2:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#pre1{
+	top:-10px;
+	left:0;
+	position:absolute;
+	color:white;
+	z-index:5;
+	overflow:hidden;
+	font-weight:bold;
+	pointer-events:none;
+	}
+#pre2{
+	top:0;
+	right:5%;
+	position:absolute;
+	color:red;
+	z-index:5;
+	overflow:hidden;
+	pointer-events:none;
+	}
+#myBtn{
+	position: absolute;
+	width: 111px;
+	height: 204px;
+    background: url(blackroomelements/scorn1.png);
+    background-size: 111px 204px;
+    background-repeat: no-repeat;
+	top:50%;
+	z-index:3;
+	border:none;
+	right:30%;	
+	outline:none;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#myBtn:hover{
+	cursor: pointer;
+	}
+@font-face{
+	font-family: IBMFont;
+	src: url(font/Px437_IBM_ISO9.ttf);
+	}
+.modal{
+	display:none;
+	line-height:1.2;
+	background:   linear-gradient(
+      rgba(255, 0, 255, 0.45), 
+      rgba(255, 0, 255, 0.45)
+    ), url("blackroomelements/bggif1.gif");
+	background-size:cover;
+	position: fixed;
+	z-index:99999;
+	padding-top:100px;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	overflow:auto;
+	box-shadow:0 0 56px magenta, inset 0 0 56px magenta;
+	text-shadow: 0 0 20px #FF00FF;
+	background-color: rgb(0,0,100); /* Fallback color */
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	}
+.modal-content {
+	box-shadow:0 0 56px magenta, inset 0 0 56px magenta;
+    background-color: rgba(0,0,0,1);
+    margin: auto;
+    padding: 20px;
+    border: 2px solid magenta;
+	border-radius: 25px;
+    width: 50%;
+	}
+.close {
+	visibility:hidden;
+    color: magenta;
+	background-color:transparent;
+	border-radius:20%;
+	width:22px;
+	height:22px;
+	line-height:24px;
+    float: right;
+	font-family: IBMFont;
+    font-size: 22px;
+	text-align:center;
+	-webkit-transition: all .7s ease-in-out;
+	-moz-transition: all .7s ease-in-out;
+	-ms-transition: all .7s ease-in-out;
+	-o-transition: all .7s ease-in-out;
+	transition: all .7s ease-in-out;
+	}
+.close:hover,
+.close:focus {
+    background-color:white;
+	color:magenta;
+    text-decoration: none;
+    cursor: pointer;
+	}
+.closeDialogue {
+    color: magenta;
+    float: right;
+	font-family: IBMFont;
+    font-size: 22px;
+	text-align: center;
+	visibility:hidden;
+	-webkit-transition: all .7s ease-in-out;
+	-moz-transition: all .7s ease-in-out;
+	-ms-transition: all .7s ease-in-out;
+	-o-transition: all .7s ease-in-out;
+	transition: all .7s ease-in-out;
+	}
+.closeDialogue:hover,
+.closeDialogue:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+	}
+#beginChar{
+	font-size:16px;
+	font-family: IBMFont;
+	color:white;
+	overflow:auto;
+	}
+#openingModal{
+	line-height:1.2;
+	position: fixed;
+	z-index:99999;
+	padding-top:100px;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	overflow:auto;
+    font-family: IBMFont;
+    background: rgba(0, 0, 100, .9);
+}
+.openingContent {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    background: black;
+	border: 2px solid white;
+	border-radius: 25px;
+	padding:20px;
+}
+#begin{
+	padding-top:20px;
+	font-size:16px;
+	font-family: IBMFont;
+	color:white;
+	overflow:auto;
+	}
+#speak{
+	box-shadow:0 0 6px magenta, inset 0 0 6px magenta;
+	position:relative;
+	font-size:16px;
+	font-family: IBMFont;
+    color:white;
+	overflow:auto;
+	border:1px solid magenta;
+	border-radius:5px;
+	padding:10px;
+	top:20px;
+	width:30%;
+	min-width:200px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	}
+#speak:hover{
+	cursor: pointer;
+	background-color:magenta;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;;
+	}
+#line1{
+	padding-top:20px;
+    color:white;
+	padding-right:30px;
+	font-size:16px;
+	display:none;
+	overflow:auto;
+	cursor:default;
+	}
+.typed-cursor{
+    opacity: 1;
+	color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	font-style:italic;
+    -webkit-animation: blink 0.7s infinite;
+    -moz-animation: blink 0.7s infinite;
+    animation: blink 0.7s infinite;
+}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+.typed-fade-out{
+    opacity: 0;
+    animation: 0;
+    transition: opacity .75s;
+}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:500;
+}
+.easy1{
+	background-color: transparent;
+	z-index:500;
+	position:relative;	
+	right:10px;
+	top:10px;
+	text-align:center;
+	border-radius:20%;
+	width:22px;
+	height:22px;
+	line-height:22px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: black;
+}
+.easy1:hover{
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;	
+}
+</style>
+</head>
+<body>
+<!--Audio-->
+<audio id="audio1" 
+src="sounds/fm_minor_2_shorter-bb11-1s.mp3"
+loop="true"  
+type="audio/mp3">
+</audio> 
+<audio id="audio2" 
+src="sounds/R_wicked-bb5-1.mp3"
+loop="true"  
+type="audio/mp3">
+</audio> 
+<!--End Audio-->
+<script>
+setTimeout(function(){
+	$(".inner").css({"-webkit-animation":" pulse 2s linear 1s infinite","-moz-animation":"pulse 2s linear 1s infinite","animation":"pulse 2s linear 1s infinite"});
+	$(".inner").animate({"background-color": "#ff00ff"}, 6000);
+	//$("#thingy").mouseenter(function() 
+	//{ $(this).css("box-shadow","0 0 78px blue");}).mouseleave(function() {
+	//$(this).css("box-shadow", "0 0 28px blue"); });  
+	}, 45000);
+</script>
+<!--Opening Modal dialogue-->
+<div id="openingModal">
+    <div class="openingContent">
+    <div id ="begin">Reddish mushrooms are scattered between strange puddles. In the middle of the glowing green chamber is a single black plant, it’s twisted arms moving like tiny springs.
+	</div>
+        <div id="speak">>>> measure time</div>
+		<span class="closeDialogue">&times;</span>
+		<div id = "line1">You lift up your arm to check the time on your digital watch, put your hand back down and count to 120. Lift your watch back up to see how much time has actually passed...
+		</div></div></div></div>
+<script>
+$("body").delay(500).animate({"opacity": "1"}, 700); // fade in body
+window.onload = function () {
+	
+    document.getElementById('line1').onclick = function () {
+        document.getElementById('openingModal').style.display = "none" //close modal on click
+    };
+};		
+var modal = document.getElementById("openingModal");
+var begin = document.getElementById("begin");
+var speak = document.getElementById("speak");
+var line1 = document.getElementById("line1");
+var span = document.getElementsByClassName("closeDialogue")[0];
+span.onclick = function (){
+	$('#openingModal').fadeOut(1000);
+	var audio = document.getElementById("audio1");
+	audio.volume = 0;
+	$(audio1).animate({volume: .05}, 4000);	
+	audio.play();
+	//modal.style.display = "none";
+}
+speak.onclick = function(){
+	modal.style.display = "block";
+	begin.style.display = "none";
+	speak.style.display = "none";
+	$('#line1').fadeIn(1500);
+	//line1.style.display="block";
+	$('.closeDialogue').css({"visibility":"visible"});
+	}
+</script>
+<!--End of opening Modal dialogue-->
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">The smell of turpentine in this room energizes you.<br><br>Resize the browser to find hidden items. Hover over objects to discover their stories.<br><br><input id="p2Back" type="button" value="> Back"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<!--Canvas drawing-->
+<script>
+$(document).ready(function() {
+   initCanvas();
+draw();
+});
+function initCanvas() {
+$('#canvas').attr("width",$(window).width());
+$('#canvas').attr("height",$(window).height());
+}
+function draw() {
+   var c = document.getElementById("canvas");
+   var ctx = c.getContext("2d");
+   ctx.lineWidth=3;
+   ctx.strokeStyle="#fff";
+   var w = $(window).width()/2;
+   var h = $(window).height()/2;
+   var w2 = $(window).width();
+   var h2 = $(window).height();
+   var w3 = $(window).width()/1.3;
+   var h3 = $(window).height()/1.3;
+//ceiling 	
+	ctx.beginPath();
+	ctx.moveTo(0,0);
+	ctx.lineTo(w2,0);
+	ctx.lineTo(w2,h/2);
+	ctx.lineTo(0,h/2);
+	ctx.lineTo(0,0);
+	ctx.fillStyle = '#0f0';
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();	
+//left wall	
+	ctx.beginPath();
+	ctx.moveTo(0,0);
+	ctx.lineTo(w/2,h/2);
+	ctx.lineTo(w/2,h+100);
+	ctx.lineTo(w/2-100,h+200);
+	ctx.lineTo(w/2-100,h-50);
+	ctx.lineTo(w/2-200,h+50);
+	ctx.lineTo(w/2-200,h+300);
+	ctx.lineTo(0,h2);
+	ctx.fillStyle = '#0f0';
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();	
+// middle wall
+	ctx.beginPath();
+	ctx.moveTo(w/2,h/2);
+	ctx.lineTo(w+w/2,h/2);
+	ctx.lineTo(w+w/2,h+100);
+	ctx.lineTo(w+200,h+100);
+	ctx.lineTo(w+200,h-100);
+	ctx.lineTo(w+100,h-100);
+	ctx.lineTo(w+100,h+100);
+	ctx.lineTo(w+100,h+100);
+	ctx.lineTo(w-50,h+100);
+	ctx.lineTo(w-50,h-100);
+	ctx.lineTo(w-150,h-100);
+	ctx.lineTo(w-150,h+100);
+	ctx.lineTo(w/2,h+100);
+	ctx.globalAlpha = .4;
+	ctx.fillStyle = '#0f0';
+    ctx.fill();
+	ctx.globalAlpha = 1;
+	ctx.stroke();
+	ctx.closePath();
+//right wall	
+	ctx.beginPath();
+	ctx.moveTo(w+w/2,h/2);
+	ctx.lineTo(w2,0);
+	ctx.lineTo(w2,h2);
+	ctx.lineTo(w+w/2,h+100);
+	ctx.globalAlpha = 1;
+	ctx.stroke();
+	ctx.fillStyle = '#0f0';
+	ctx.fill();
+	ctx.closePath();	
+//circle window
+	clearCircle(ctx,/*x=*/w+w/2+250,/*y=*/h-100,/*radius=*/50);
+	function clearCircle(ctx,x,y,radius){
+	ctx.save();
+	ctx.beginPath();
+	ctx.arc(x, y, radius, 0, 2*Math.PI, true);
+	ctx.lineWidth=6;
+	ctx.strokeStyle="red";
+	ctx.globalAlpha = 1;
+	ctx.stroke();
+	ctx.clip();
+	ctx.clearRect(x-radius,y-radius,radius*2,radius*2);
+	ctx.restore();
+	}
+}
+$( window ).resize(function() {
+initCanvas();
+draw();
+});
+</script>
+<!--end canvas drawing-->
+<!--The Room-->
+<div id ="container">
+<a href="may.html"target="_self">
+<div id="poolGreen"><span class="tooltiptext">The stone pool reappears, but this time the liquid is dark blue. It's difficult to tell how deep the pool is</span></div></a>
+<div id="mushrooms"></div>
+<div id="mushrooms2"></div>
+<div id="mushrooms3"></div>
+<a href="/shimmer.html" target="_self"><div id="mushrooms4"><span class="tooltiptext">Large, red-capped fungi emit a dusty smell</span>
+</div></a>
+<div class="inner">
+<a href="naiad.html"><div id="sand"></div></a></div>
+<a href="shermie.html" target="_self">
+<div id="plant"><span class="tooltiptext">You spot this familiar creature. Is it following you?</span></div></a>
+<div id="grave2"><span class="tooltiptext"> This is one of two tombstones in this room. The dirt around them looks fresh</span>
+</div>
+<div id="grave"></div>
+<a href="cherry.html" target="_self"><div id="bird"><span class="tooltiptext">A winged creature that resembles a scorpion or an earwig hangs in the air, suspended staring at its own shadow
+</span>
+</div></a>
+<div id="puddle2"><span class="tooltiptext">There are multiple small pools all over the ground, big enough to fall into or stare at your own reflection
+</span></div>
+<div id="pre1">
+<pre>           
+								..:::::::..                                                 
+                       ,;**!!,```'!!!!'*;,    																				 :::.:::: 000""'   .,00L ccJ `
+                    ,;!!!!!!!!!''- `` `'*;     `::::::: `000hcccc00000 `CC.
+                ,;*!!!' ;;,```,c0hJJ000c `!     .``````:											 `000000000000h ?C>
+             ,;!!',*',;!! ,,c00000000000h `>   										 ::: *ch : ?0000???000`C'
+             !!',*!',*!!!>`00000000000000h !    :													:`: "" :.`00000Cicc,,,,='.
+             `,;!! ;!!!!' z0000?????000000r   		 c `00006???"""', ::
+            *!!!*! `!!!' 00000>=-"-,30P".,J          : " ::.`?				000hcc0??"  ::
+           !'',;!!!;!!! 00000    ,"c30   JF        ,:: b.`:::...""?0									00c0P ::
+            ;!!'!! ,,.` 000000c,,,z000'*0cc     :::::::`Mn.``:::::..`....::
+           ;!! ;!` ?F'h-"0000000000000h,300  ,::::::::::`TMMn.`									`':::::::'` :
+           `! !! *; ?cc000000000000". ""`3F :::::::::::::.`4MMMn,.````` ,d':
+             !!!*'!'. ""30000000000???=?,',.''''::::::::::												::."4MMM												MMP *;   .
+             !!! ;! `hccJ00000000h,.  .,r 00cccccc,.``':::::::: "4MM',!!!>'.
+             `'' !!! `??0??0000000000ccP" `00000000000c `::::::::. " *!!													!> .
+                 ```.?0c0h.`"?000P"".,,ccd0000000000000h.`::::::::::: `!!! .
+                 z000b."?0000c."" ?????????"?0??"""00000h ::::::::::::: `' .
+              ,J0000000000000000c   .ii+'.::...::: 000000c :::::::::::											::: `.
+            ,J0C00000000000000000> .....:::::::::: ?000000 ::::::::																											::::::. .
+          ,J0CS0000000???0000000F ::::::::::::::::.`000000h :::::::																		::::::.`.
+        .c0C3000000000hcccc.""???'::::::::::::::::: 0000000h :::::::::::																								:  .
+       J00C3000000000000000000cc. ::::::::::::::::: 00000000h ::::														:::::::.`.
+      J00700000000000000000000000c.``:::::::::::::: 300000000L`:::																												::::::: `.	
+     z00?000000000000000000000000000c `::::::::::::.*000000000 `::																:::	::.`  .
+   .J00C300000000000000000000000000000c ``:::::::::.*000000000> `:::::																																				:.	` `
+  .0000C00000000000000000000000000000000hc,.```::::.*000000000C> :::																											`.:.`.`.
+  J000C30000000000000000000000000000000000000hc,.`` *000000000CC;`:.`:`. .
+ J0000C0000000000000000000000000000000000000000000. *000000000CCC :::.																:.																			`. .
+,0000C300000000000000000000000000000000000000000000h ?000000000CC ` ` ..`
+J0000000000000000000Lz,.""?00000000000000000000000000.000000000CC'J0cc. `: .
+0000000000000000000000",c0c,`"?00000000000000000000000000000000CC 00000h, `.
+000000000000000000000CJ000000hc,`"?0000000000000000000000000000CC 00000000c.
+000000000000000000003000000000000hc,`"?000000000000000000000000C> 0000000000
+000000000000000000030000000000000000h c `"??0000000000000000000C> 0000000000
+0000000000000000000000000000000000000 '      `'***?CCCCCCCCCCCCC>
+00000000000000000000000000000000000P'        ==- .,,.`'''**CCCC' J0000000000
+0000000000000000000000C???000000??".       ccccccd0000000cc,..  J0000000						0000
+00000000000000000000000hc,.`"""  ;;;     zd0000000000000000CC';000""00000000
+00000000000000000000000000000CC---;;- .c00000000000000000?CC>J00C' ?00000										000
+000000000000000000000000000000CCC>' .z000000000000000000CC>JJ00C>>' `?000000
+000000000000000CC???999999???));;-.c000000000000000000CCCJJ00C?>>'    "?0000
+0000000000000000000GG66666000CC' z0000000000000000000CJJ0000C*C'        "000
+000000000000000000000000000CC''z0000000000000000000CJJ00000C*C'           "?
+000000000000000000000000C0C' c0000000000000000000CCJJ000000CC>      nm, 4b,
+?0000000000000000000000?J?',00000000000000000000CJJ0000000CC>        "MMMMMM
+	 00000000000000000000",=",J00000000000000000000CJ0000000CCC>      ,="".,,`""
+	.?000000000000000??",  c00000000000000000000003000000C>CCC'     =",xnMMMMMP=
+h 000000000000000,c0',J00000000000000000000000000000C>*CC'       nMP"".,,===
+Mx`0000000000000000F.J0000000000000000000000000000C>>*C>'      ,J" =4MMMMndM
+MMr`000000000000000L;000000000000000000000000000C>>*CC>     ,nMMP ,xnMMMMMMM
+MMM ?000000000000000000000000000000000000000000C>>*CC'    ,dMMP",dMMMPPPPPPP
+MMMb 0000000000000000000000000000000000000000C>>*CC>'     ""P",nMMMMLxdMMMMM
+MMMM.?0000000000000000000000000000000000000C>**C>>',xmnmn,`=nMMP""3MMMMMMMMM
+MMMM>`00000000000000000000000000000000000CC>>'',xnMMMMMMMMb 4MP dMMMMMMMMMMM
+")MMM ?0000000000000000000000000000000CC>' ,xPPPP"""" .,.""x M dMMMMMMMMMMMM
+h "MMb."000000000000000000000000000CC>'  ="',x= nMMMMMMMMP M Jx`4MMMMMMMMMMM
+"  4MMM,`"?0000000000000000000000C>'',nmnmPP" xMMMMPP"C"														MMMM;MMbx`""".,,."PP
+ Mb,"MMMMn "0000000000000000???"".,uPPPP",xmM MMM"_,`=""44MMMMMMM,ndMMMP .::
+.`"M,`"4444mnn,,`"""""""""",unmdMMMMMMbmMMMMM,4M>:MMMMMMn,MMPPPPP"""....::::
+:::."MMbmn,`"4MMMMMMMMMPPPPMMMMMP""")MMMMMMMMh`".,,xmnn MP"...::::::::::::::
+					
+</pre></div>
+<div id = "pre2"><pre>
+       |\
+        | \        /|
+        |  \____  / |
+       /|__/AMMA\/  |
+     /AMMMMMMMMMMM\_|
+ ___/AMMMMMMMMMMMMMMA
+ \   |MVKMMM/ .\MMMMM\
+  \__/MMMMMM\  /MMMMMM---
+  |MMMMMMMMMMMMMMMMMM|  /
+  |MMMM/. \MM.--MMMMMM\/
+  /\MMM\  /MM\  |MMMMMM   ___
+ /  |MMMMMMMMM\ |MMMMMM--/   \-.
+/___/MMMMMMMMMM\|M.--M/___/_|   \
+     \VMM/\MMMMMMM\  |      /\ \/
+      \V/  \MMMMMMM\ |     /_  /
+        |  /MMMV'   \|    |/ _/
+        | /              _/  /
+        |/              /| \'
+VK                     /_  /
+    .
+       .
+   . ;.
+    .;
+     ;;.
+   ;.;;
+   ;;;;.
+   ;;;;;
+   ;;;;;
+   ;;;;;
+   ;;;;;
+   ;;;;;
+ ..;;;;;..
+  ':::::'
+    ':`  
+
+	
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,
+8                           8"b,    "Ya
+8                           8  "b,    "Ya
+8                    aaaaaaa8,   "b,    "Ya
+8                    8"b,    "Ya   "8""""""8
+8                    8  "b,    "Ya  8      8
+8             aaaaaaa8,   "b,    "Ya8      8
+8   A         8"b,    "Ya   "8"""""""      8
+8             8  "b,    "Ya  8             8
+8      aaaaaa88,   "b,    "Ya8         B   8
+8      8"b,    "Ya   "8"""""""             8
+8      8  "b,    "Ya  8                    8
+8aaaaaa8,   "b,    "Ya8                    8
+8"b,    "Ya   "8"""""""                    8
+8  "b,    "Ya  8                           8
+8,   "b,    "Ya8                           8
+ "Ya   "8"""""""                           8
+   "Ya  8                                  8
+     "Ya8          Normand Veilleux        8
+       """""""""""""""""""""""""""""""""""""
+
+                  
+</pre></div>                           
+<canvas id="canvas">
+</canvas>
+<script>
+function placer(cn) {
+    var ymax = $(window).height();
+    var xmax = $(window).width();
+    var min = 20;
+    var foo = Math.floor(Math.random() * 100);
+    var bar = Math.floor(Math.random() * 100);
+    return [foo, bar];
+}
+var imglist = ["puddle","mushroom1","mushroom2","puddle"];
+for (i=0;i<imglist.length;i++) {
+    var imgClass = imglist[i];
+    var howmany = Math.floor(Math.random() * 40+10);
+    console.log(i);
+    console.log(howmany);
+    for (j=0;j<howmany;j++) {
+        var loc = placer(imgClass);
+        var foo = $('<div />').appendTo('#container');
+        foo.css('top',loc[0] +'%');
+        foo.css('left',loc[1]+'%');
+        foo.attr('class',imgClass);
+    }
+}
+</script>	
+</div>	
+<!--End of the room-->
+<!--Character dialogue-->
+<button id="myBtn"></button>
+<div id = "myModal" class= "modal">
+	<div class="modal-content">
+		<span class = "close">&times;</span><br>
+			<span id = "beginChar"></span>
+			</div></div></div>
+<script>
+var modalChar = document.getElementById("myModal");
+var btn = document.getElementById("myBtn");
+var span = document.getElementsByClassName("close")[0];
+var beginChar = document.getElementById("beginChar");
+var audio1 = document.getElementById("audio1");
+var audio2 = document.getElementById("audio2");
+btn.onclick = function(){
+	$('#myModal').fadeIn(1000);
+	$(audio1).animate({volume: 0}, 1000);	
+	audio2.volume = 0;
+	$(audio2).animate({volume: .03}, 1000);	
+	audio2.play();
+	beginChar.display = "block";
+      Typed.new('#beginChar', {
+        strings: ["<i>In the old cemeteries I made tracings of tombstones^1000<br>My hair was long^1000<br>my nail polish; light pink and chipped^1000<br>I thought <b>I</b> was romantic and edgy...^1000"],
+        typeSpeed: 2,
+		showCursor: true,
+		startDelay: 1000,
+		callback: function(){
+		$(".close").css({"visibility":"visible"});
+		setTimeout(function(){
+		$(".close").css({"-webkit-animation":"blink 1s infinite","-moz-animation":"blink 1s infinite","animation":"blink 1s infinite"});
+		},1000);}
+      });
+}
+span.onclick = function (){
+	$('#myModal').fadeOut(1000);
+	$(audio2).animate({volume: 0}, 1000);	
+	$(audio1).animate({volume: .05}, 1000);	
+	audio1.play();
+}
+</script>
+<!--End character dialogue-->
+</body>
+</html>

@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="pace/pace.js"></script>
+<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="ui/1.12.1/jquery-ui.js"></script>
+<script src="js/typed.js"></script>
+<meta charset="UTF-8" />
+<style>
+body{
+	overflow:hidden;
+	background-color:black;
+	opacity: 0;
+	}
+#container{
+	display:inline-block;
+	width:100%;
+	height:100%;
+	margin: 0 auto;
+	top: 0;
+	left: 0;
+	position:absolute;
+	z-index:3;
+	background:url("blackroomelements/tiles3.png");	
+	overflow:hidden;
+	}
+pre{font-family:Courier;
+	font-size:13px;
+	}
+#canvas{
+	position:absolute;
+	z-index:2;
+	top:0;
+	left:0;
+	overflow:hidden;
+	pointer-events:none;
+	}
+#woman1{
+	position: absolute;
+	width: 142px;
+	height: 168px;
+	z-index:7;
+	bottom:10%;
+	right:20%;
+    background: url(blackroomelements/woman28.png);
+    background-size: 142px 168px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#woman2{
+	position: absolute;
+	width: 304px;
+	height: 280px;
+	z-index:6;
+	bottom:15%;
+	left:30%;
+    background: url(blackroomelements/woman53.gif);
+    background-size: 304px 280px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#logo{
+	position: absolute;
+	width: 154px;
+	height: 224px;
+	z-index:2;
+	top:5%;
+	left:25%;
+    background: url(blackroomelements/logo1.png);
+    background-size: 154px 224px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#logo2{
+	position: absolute;
+	width: 154px;
+	height: 224px;
+	top:20%;
+	right:35%;
+	z-index:2;
+    background: url(blackroomelements/logo1.png);
+    background-size: 154px 224px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#logo2 .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+	z-index:9999;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	bottom: 50%;
+    left: 105%;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#logo2 .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 45%;
+    right: 100%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent blue transparent  transparent;
+}
+#logo2:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#plant{
+	position: absolute;
+	width: 152px;
+	height: 151px;
+	z-index:6;
+	bottom:5%;
+	left:10%;
+    background: url(blackroomelements/plant8.png);
+    background-size: 152px 151px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#plant .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: -5px;
+    left: 105%;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#plant .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 45%;
+    right: 100%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent blue transparent  transparent;
+}
+#plant:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#plant2{
+	position: absolute;
+	width: 160px;
+	height: 160px;
+	z-index:2;
+	top:5%;
+	right:45%;
+    background: url(blackroomelements/plant13.gif);
+    background-size: 160px 160px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#plant3{
+	position: absolute;
+	width: 160px;
+	height: 160px;
+	z-index:2;
+	top:25%;
+	right:25%;
+    background: url(blackroomelements/plant13.gif);
+    background-size: 160px 160px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#plant4{
+	position: absolute;
+	width: 160px;
+	height: 160px;
+	z-index:2;
+	top:0;
+	right:10%;
+    background: url(blackroomelements/plant13.gif);
+    background-size: 160px 160px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#plant5{
+	position: absolute;
+	width: 160px;
+	height: 160px;
+	z-index:2;
+	bottom:35%;
+	left:10%;
+    background: url(blackroomelements/plant13.gif);
+    background-size: 160px 160px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#slime{
+	position: absolute;
+	width: 53px;
+	height: 135px;
+	z-index:7;
+	top:5%;
+	right:10%;
+    background: url(blackroomelements/slime5.png);
+    background-size: 53px 135px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#slime2{
+	position: absolute;
+	width: 53px;
+	height: 135px;
+	z-index:7;
+	top: 25%;
+	left:20%;
+    background: url(blackroomelements/slime5.png);
+    background-size: 53px 135px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#box{
+	position: absolute;
+	width: 121px;
+	height: 73px;
+	bottom:5%;
+	left:45%;
+	z-index:8;
+    background: url(blackroomelements/box4.png);
+    background-size: 121px 73px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#box .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: -5px;
+    left: 105%;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#box .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 45%;
+    right: 100%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent blue transparent  transparent;
+}
+#box:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#grave2{
+	position: absolute;
+	width: 126px;
+	height: 151px;
+	z-index:2;
+	top:5%;
+	left:35%;
+    background: url(blackroomelements/grave.gif);
+    background-size: 126px 151px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#eyes{
+	position: absolute;
+	top: 50%; left: 50%;
+	transform: translate(-50%,-50%);
+	line-height:1.2;
+	width: 81px;
+	height: 68px;
+	z-index:6;
+	cursor:default;
+    background: url(blackroomelements/eyes2.png);
+    background-size: 81px 68px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+@keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}
+@-moz-keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}
+@-webkit-keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}	
+.inner {
+	position: absolute;
+	line-height:1.2;
+	top:5%;
+	left:15%;
+	z-index:2;
+	border-radius:50px;
+	background-color:transparent;
+	width:100px;
+	height:100px;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;	
+}	
+.inner:hover{
+	border-radius:50px;
+	box-shadow: 0 0 28px magenta, inset 0 0 28px magenta;
+	background-color:magenta;
+}
+.flower{
+	position: absolute;
+	width: 76px;
+	height: 54px;
+	z-index:1;
+    background: url(blackroomelements/plant7.png);
+    background-size: 76px 54px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.flower2{
+	position: absolute;
+	width: 43px;
+	height: 35px;
+	z-index:1;
+    background: url(blackroomelements/lotus5.png);
+    background-size: 43px 35px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.flower3{
+	position: absolute;
+	width: 118px;
+	height: 45px;
+	z-index:1;
+    background: url(blackroomelements/plant2.png);
+    background-size:118px 45px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+
+#preVis{
+	position: absolute;
+	z-index:6;
+	top:-25px;
+	right:-425px;
+	color:white;
+	pointer-events:none;
+}
+#preVis2{
+	position: absolute;
+	z-index:4;
+	top:0;
+	right:25%;
+	color:blue;
+	pointer-events:none;
+}
+#preVis4{
+	position: absolute;
+	z-index:5;
+	top:-10px;
+	left:0;
+	color:magenta;
+	pointer-events:none;
+}
+#myBtn{
+	position: absolute;
+	width: 114px;
+	height: 268px;
+    background: url(blackroomelements/woman13.png);
+	background-size: 114px 268px;
+	bottom:30%;
+	z-index:6;
+	border:none;
+	right:40%;	
+	outline:none;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#myBtn:hover{
+	cursor: pointer;
+	}
+@font-face{
+	font-family: IBMFont;
+	src: url(font/Px437_IBM_ISO9.ttf);
+	}
+.modal{
+	line-height:1.2;
+	display:none;
+	background:   linear-gradient(
+      rgba(255, 0, 255, 0.45), 
+      rgba(255, 0, 255, 0.45)
+    ), url("blackroomelements/bggif1.gif");
+	background-size:cover;
+	position: fixed;
+	z-index:99999;
+	padding-top:100px;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	overflow:auto;
+	box-shadow:0 0 56px magenta, inset 0 0 56px magenta;
+	text-shadow: 0 0 20px #FF00FF;
+	background-color: rgb(0,0,100); /* Fallback color */
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	}
+.modal-content {
+	box-shadow:0 0 56px magenta, inset 0 0 56px magenta;
+    background-color: rgba(0,0,0,1);
+    margin: auto;
+    padding: 20px;
+    border: 2px solid magenta;
+	border-radius: 25px;
+    width: 50%;
+	}
+.close {
+	visibility:hidden;
+    color: magenta;
+	background-color:transparent;
+	border-radius:20%;
+	width:22px;
+	height:22px;
+	line-height:24px;
+    float: right;
+	font-family: IBMFont;
+    font-size: 22px;
+	text-align:center;
+	-webkit-transition: all .7s ease-in-out;
+	-moz-transition: all .7s ease-in-out;
+	-ms-transition: all .7s ease-in-out;
+	-o-transition: all .7s ease-in-out;
+	transition: all .7s ease-in-out;
+	}
+.close:hover,
+.close:focus {
+    background-color:white;
+	color:magenta;
+    text-decoration: none;
+    cursor: pointer;
+	}
+.closeDialogue {
+    color: magenta;
+    float: right;
+	font-family: IBMFont;
+    font-size: 22px;
+	text-align: center;
+	visibility:hidden;
+	-webkit-transition: all .7s ease-in-out;
+	-moz-transition: all .7s ease-in-out;
+	-ms-transition: all .7s ease-in-out;
+	-o-transition: all .7s ease-in-out;
+	transition: all .7s ease-in-out;
+	}
+.closeDialogue:hover,
+.closeDialogue:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+	}
+#beginChar{
+	font-size:16px;
+	font-family: IBMFont;
+	color:white;
+	overflow:auto;
+	}
+#openingModal{
+	line-height:1.2;
+	position: fixed;
+	z-index:99999;
+	padding-top:100px;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	overflow:auto;
+    font-family: IBMFont;
+    background: rgba(0, 0, 100, .9);
+}
+.openingContent {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    background: black;
+	border: 2px solid white;
+	border-radius: 25px;
+	padding:20px;
+}
+#begin{
+	padding-top:20px;
+	font-size:16px;
+	font-family: IBMFont;
+	color:white;
+	overflow:auto;
+	}
+#speak{
+	box-shadow:0 0 6px magenta, inset 0 0 6px magenta;
+	position:relative;
+	font-size:16px;
+	font-family: IBMFont;
+    color:white;
+	overflow:auto;
+	border:1px solid magenta;
+	border-radius:5px;
+	padding:10px;
+	top:20px;
+	width:30%;
+	min-width:200px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	}
+#speak:hover{
+	cursor: pointer;
+	background-color:magenta;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;;
+	}
+#line1{
+	padding-top:20px;
+    color:white;
+	padding-right:30px;
+	font-size:16px;
+	display:none;
+	overflow:auto;
+	cursor:default;
+	}
+.typed-cursor{
+    opacity: 1;
+	color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	font-style:italic;
+    -webkit-animation: blink 0.7s infinite;
+    -moz-animation: blink 0.7s infinite;
+    animation: blink 0.7s infinite;
+}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+.typed-fade-out{
+    opacity: 0;
+    animation: 0;
+    transition: opacity .75s;
+}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:500;
+}
+.easy1{
+	background-color: transparent;
+	z-index:500;
+	position:relative;	
+	right:10px;
+	top:10px;
+	text-align:center;
+	border-radius:20%;
+	width:22px;
+	height:22px;
+	line-height:22px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: black;
+}
+.easy1:hover{
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;	
+}
+</style>
+</head>
+<body>
+<!--Audio-->
+<audio id="audio1" 
+src="sounds/fairy-bb6-1-DelaydReverbd.mp3"
+loop="true"  
+type="audio/mp3">
+</audio> 
+<audio id="audio2" 
+src="sounds/DelaydReverbd_wicked_1.mp3"
+loop="true"  
+type="audio/mp3">
+</audio> 
+<!--End Audio-->
+<script>
+setTimeout(function(){
+	$(".inner").css({"-webkit-animation":" pulse 2s linear 1s infinite","-moz-animation":"pulse 2s linear 1s infinite","animation":"pulse 2s linear 1s infinite"});
+	$(".inner").animate({"background-color": "#ff00ff"}, 6000);
+	//$("#thingy").mouseenter(function() 
+	//{ $(this).css("box-shadow","0 0 78px blue");}).mouseleave(function() {
+	//$(this).css("box-shadow", "0 0 28px blue"); });  
+	}, 45000);
+</script>
+<!--Opening Modal dialogue-->
+<div id="openingModal">
+    <div class="openingContent">
+    <div id ="begin">The room is red. It brings to mind your mother’s favorite nail polish. You would often borrow this polish and paint it onto the trees to help lead you back to your home. Your mother would get upset, but never yell at you for wasting the polish. 
+	</div>
+        <div id="speak">>>> read the label</div>
+		<span class="closeDialogue">&times;</span>
+		<div id = "line1">You read the label on the bottle of polish but can’t make out what the text says... 
+		</div></div></div></div>
+<script>
+$("body").delay(500).animate({"opacity": "1"}, 700); // fade in body
+window.onload = function () {
+    document.getElementById('line1').onclick = function () {
+        document.getElementById('openingModal').style.display = "none" //close modal on click
+    };
+};		
+var modal = document.getElementById("openingModal");
+var begin = document.getElementById("begin");
+var speak = document.getElementById("speak");
+var line1 = document.getElementById("line1");
+var span = document.getElementsByClassName("closeDialogue")[0];
+span.onclick = function (){
+	$('#openingModal').fadeOut(1000);
+	var audio = document.getElementById("audio1");
+	audio.volume = 0;
+	$(audio1).animate({volume: .05}, 4000);	
+	audio.play();
+	//modal.style.display = "none";
+}
+speak.onclick = function(){
+	modal.style.display = "block";
+	begin.style.display = "none";
+	speak.style.display = "none";
+	$('#line1').fadeIn(1500);
+	//line1.style.display="block";
+	$('.closeDialogue').css({"visibility":"visible"});
+	}
+</script>
+<!--End of opening Modal dialogue-->
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">You look down at your fingernails. They've been painted red.<br><br>Resize the browser to find hidden items.<br><br><input id="p2Back" type="button" value="> Back"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<!--Canvas drawing-->
+<script>
+$(document).ready(function() {
+   initCanvas();
+draw();
+});
+function initCanvas() {
+$('#canvas').attr("width",$(window).width());
+$('#canvas').attr("height",$(window).height());
+}
+function draw() {
+   var c = document.getElementById("canvas");
+   var ctx = c.getContext("2d");
+   ctx.lineWidth=1;
+   ctx.strokeStyle="red";
+   var w = $(window).width()/2;
+   var h = $(window).height()/2;
+   var w2 = $(window).width();
+   var h2 = $(window).height();
+   var w3 = $(window).width()/1.3;
+   var h3 = $(window).height()/1.3;
+//ceiling 	
+	ctx.beginPath();
+	ctx.moveTo(0,0);
+	ctx.lineTo(w2,0);
+	ctx.lineTo(w2,h/2);
+	ctx.lineTo(0,h/2);
+	ctx.lineTo(0,0);
+	ctx.globalAlpha = .8;
+	ctx.fillStyle = 'red';
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();	
+//left wall	
+	ctx.beginPath();
+	ctx.moveTo(0,0);
+	ctx.lineTo(w/2,h/2);
+	ctx.lineTo(w/2,h+100);
+	ctx.lineTo(w/2-100,h+200);
+	ctx.lineTo(w/2-100,h-50);
+	ctx.lineTo(w/2-200,h+50)
+	ctx.lineTo(w/2-200,h+300)
+	ctx.lineTo(0,h2)
+	ctx.globalAlpha = 1;
+	ctx.strokeStyle="#0f0";
+	ctx.lineWidth=2;
+	ctx.fillStyle = 'red';
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();
+//circle window
+	clearCircle(ctx,/*x=*/200,/*y=*/h-100,/*radius=*/50);
+	function clearCircle(ctx,x,y,radius){
+	ctx.save();
+	ctx.beginPath();
+	ctx.arc(x, y, radius, 0, 2*Math.PI, true);
+	ctx.lineWidth=6;
+	ctx.strokeStyle="magenta";
+	ctx.globalAlpha = 1;
+	ctx.stroke();
+	ctx.clip();
+	ctx.clearRect(x-radius,y-radius,radius*2,radius*2);
+	ctx.restore();
+	}	
+// middle wall
+	ctx.beginPath();
+	ctx.moveTo(w/2,h/2);
+	ctx.lineTo(w+w/2,h/2);
+	ctx.lineTo(w+w/2,h+100);
+	ctx.lineTo(w+100,h+100);
+	ctx.lineTo(w/2,h+100);
+	ctx.globalAlpha = .6;
+    ctx.fillStyle = 'red';
+	ctx.fill();
+	//ctx.stroke();
+	ctx.closePath();
+// middle wall window
+	ctx.beginPath();
+	ctx.moveTo(w-100,h+20);
+	ctx.lineTo(w-100,h-100);
+	ctx.lineTo(w-200,h-100);
+	ctx.lineTo(w-200,h+20);
+	ctx.lineTo(w-100,h+20);
+	ctx.clearRect(w-200,h-100,100,120);
+	ctx.globalAlpha = 1;
+	ctx.lineWidth=2;
+    ctx.strokeStyle="#0f0";
+	ctx.stroke();
+	ctx.closePath();
+// middle wall window right
+	ctx.beginPath();
+	ctx.moveTo(w+100,h+20);
+	ctx.lineTo(w+100,h-100);
+	ctx.lineTo(w+200,h-100);
+	ctx.lineTo(w+200,h+20);
+	ctx.lineTo(w+100,h+20);
+	ctx.clearRect(w+100,h-100,100,120);
+	ctx.stroke();
+	ctx.closePath();
+//right wall	
+	ctx.beginPath();
+	ctx.moveTo(w+w/2,h/2);
+	ctx.lineTo(w2,0);
+	ctx.lineTo(w2,h2);
+	ctx.lineTo(w+w/2,h+100);
+	ctx.lineTo(w+w/2,h/2);
+	ctx.globalAlpha = 1;
+	ctx.lineWidth=4;
+	ctx.stroke();
+	ctx.fillStyle = 'red';
+	ctx.fill();
+	ctx.closePath();	
+}
+$( window ).resize(function() {
+initCanvas();
+draw();
+});
+</script>
+<!--End of canvas room-->
+<!--The Room-->
+<div id ="container">
+<a href="lola.html"target="_self">
+<div id ="box"><span class="tooltiptext">The white box is familiar to you...</span></div></a>
+
+<a href="rooms_for/sonia.html" target="_self">
+<div id ="logo2"><span class="tooltiptext">Two nude women stroke a beating heart...</span></div></a>
+<a href="vast/jennifer.html" target="_self">
+<div id ="woman2"></div></a>
+<div id ="woman1"></div>
+<a href="dust.html" target="_self">
+<div id ="plant"><span class="tooltiptext">The feathery plant calls to you with its arms</span></div></a>
+<div id ="logo"></div>
+<div id ="slime"></div>
+<div id ="plant2"></div>
+<div id ="plant3"></div>
+<div id ="plant4"></div>
+<div id ="slime2"></div>
+<div class="inner">
+<a href="harpy.html"><div id ="eyes"></div></a></div>
+<div id ="grave2"></div>
+<div id ="plant5"></div>
+<div id="preVis"><pre>     																
+    .'.::I:.      . .. ..:.... . ..... .. . ..::. .. .I:. ..' .
+  .'':.: I.       . .. ..:.. .  . .. ..... .:. .:.. .:I.'.''..
+  . .:::I:.       . . .. .:. .    .. ..  . ... .:.'.'I'  .  ...
+  . ::.:I:..     . . . ....:. . .   .... ..   .:...:.:.:. ''.''
+  '.'::'I:.       . .. ....:. .     .. . ..  ..'  .'.:..:..    '
+        :. .     . .. .. .:.... .  .  .... ...   .  .:.:.:..    '.
+        :.      .  . . .. .:.... . . ........       .:.:.::. .    .
+        :. .     . . . . .. .::..:  . ..:.. .        ::.:.:.. .    .
+        :.. .    . . .  . .. ..:.:  .. .. .:. ..     ':::.::.:. .   .
+        ':.. .  . . . .. .. ...::' .. ..  . .:. .     V:I:::::.. .   :.
+         ::. .  . .. .. ... .:.::  .. .  . .. .. .     VI:I:::::..   ''B
+          :.. .   . .. ..:.. ..I:... . .  . .. ... .    VII:I:I:::. .'::
+          ':.. . . . .. ..:..:.:I:.:. .  . .. . .:. .    VHIII:I::.:..':
+           ::..   . . .. ..:..:.HI:. .      . . .... .   :HHIHIII:I::..:
+           ':. .  . .. .. ..:.:.:HI:.    . . .. ..... .   HHHHIHII:I::.'
+            :.. .  . . .. .:.:.:.HI:.      . . .. ... .   IHHHHIHHIHI:'
+             :..  .  . . .. ..:..IH:.     . . .. .. ,,, . 'HHHHHHHHI:'
+             ':..   . . .. ..:.:.:HI..   .  . .. . :::::.  MIH:"""'
+              :. . .  . .. ..::.:.VI:.     . . .. .:::'::. HIH
+               :..  .  . .. .:.:.:.V:.    . . . ...::I"A:. HHV
+                :. .  .  . .. ..:.:.V:.     . . ....::I::'.HV:
+                 :. .  . . . .. .:..II:.  . . . ....':::' AV.'
+                  :.. . . .. ... .:..VI:. . . .. .:. ..:.AV'.
+                  ':.. . .  .. ..:.:.:HAI:.:...:.:.:.:.AII:.
+                   I:. .  .. ... .:.:.VHHII:..:.:..:A:'.:..
+                   IA..  . . .. ..:.:.:VHHHHIHIHHIHI:'.::.
+                   'HA:.  . . .. ..:.:.:HHHIHIHHHIHI:..:.
+                    HIA: .  . . .. ...:.VHHHIHIIHI::.:...
+                    HIHI:. .  .. ... .::.HHHIIHIIHI:::..
+                    HII:.:.  .  .. ... .::VHHIHI:I::.:..
+                    AI:..:..  .  . .. ..:.VHIII:I::.:. .
+                   AI:. ..:..  .  . .. ..' VHIII:I;... .
+                  AI:. .  .:.. .  .  . ...  VHIII::... .
+                .A:. .      :.. .  . .. .:.. VHII::..  .
+               A:. . .       ::. .. .. . .:.. "VHI::.. .
+             .:.. .  .        :.. .:..... .::.. VHI:..
+            ... . .  .     . . :.:. ..:. . .::.. VI:..  .
+           .. .. .  .    . . ...:... . .. . .:::. V:..  .
+          '.. ..  .   .  .. ..:::.... .:. . ..::.. V..  .
+        . . .. . .   . . .. ..:::A. ..:. . . .::.. :..
+       . .. .. .. . .  . ... ..::IA.. .. . .  ..::. :..  .
+      .. .. ... . .  .. .... .:.::IA. . .. . ..:.::. :.  .
+     . . . .. .   . . .. ..:..:.::IIA. . .  .. .:.::. :. .
+    .. . .  .   . . .. ... ..:.::I:IHA. .  . . ..:.::. . .
+   .: ..  .  .   . . ... .:.. .:I:IIHHA. .  . .. .::I:. .
+  .::.  .     . . .. ..:. .::.:IIHIIHHHA.  .  .. ..:I:. . .
+  A::..      .  .  ...:..:.::I:IHIHIHHHHA.  .  . ..::I:. .
+ :HI:.. .       . .. .:.:.::I:IHIHIIHIHHHA. .   .. .::I:. ..
+ AI:.. .. .    . .. .:.:.::II:IHIIIHIHIHHHA.  .  . ..::I:. ..
+:HI:.. . .   .  . .. .::.:I:IHIHIIIHIHIIHHHA..  . .. .::I:. ..
+AI:.:.. .  .  .  ... .::.::I:IHIIHIHIHIHIHIHHA. .  . ..::I:. .
+HI:. .. . .  .  . .. .:..::IIHIHIHIIIIWHIIHHMWA.  . . .:::I:. . .
+HI:.. . .  .   . .. ..:.::I:IIHHIIHIHIHIHHMMW"  '.. . ..:::II: . .
+HI::.. .  .   .  .. .:..:::IIHIHIIWIWIIWMWW" .    .. . ..::III: .  .
+HI::... . . .  . ... ..:.:::IIHIWIWIWMWMWW. .  .   . .. .:.:III. .   .
+II::.:.. . .  .  .. ......:..IHWHIWWMWMW".. . . . . '... .:.:IHI:..    .
+II:I::.. .  .   .  . .....::.:IHWMWWWMW:.. .  .  . .  .:..:::IIHII..
+:II:.:.:.. .  .   . ......:.:.:IWWMWWW:.:.. .  .  .  . :...:.:IHHI:..
+ HI::.:. . . .  .  . ...:.::.::.VWMWW::.:.:.. .  . .. . :.. ..:IHHI::.'-
+ HII::.:.. .  .  . .. .:..:.'.  'WWWI::.::.:.. . .  . .. ':...:II:IIII::
+ III::.:... .  .  . ...:.:... .   WII:I::.:.. .  .  .. . . :.:::...::.::
+  VII::.:.. . . . .. ...:....      VHI:I::.:.. .  . ... .. .::.:..:.:..:
+   VII::.:.. . .  . ..:.::.. .     :HHII:I::.:.. . . .. ..  .'::':......
+   III:I::.. .. . . .. .:.:.. .    :VHIHI:I::.:... . . .. .. .':. .. .AH
+  AA:II:I::.. . . .  .. ..:.. . .  ::HHIHII:I::.:... .. .. ... .:.::AHHH
+ AHH:I:I::.:.. .  . .. ..:.:.. .   ::VHHHVHI:I::.:.:.. ..:. .::.A:.AHHHM
+ HHHAII:I::.:.. . . . .. ..:.. . . :::HIHIHIHII:I::.:.. .. .:. ..AHHMMM:
+AHHHH:II:I::.:.. . . .. ..:.:.. . .:I:MMIHHHIHII:I:::.:. ..:.:.AHHHMMM:M
+HHHHHA:II:I::.. .. . . .. .:... . .:IIVMMMHIHHHIHII:I::. . .. AHHMMMM:MH
+HHHHHHA:I:I:::.. . . . ... ..:.. ..:IHIVMMHHHHIHHHIHI:I::. . AHMMMMM:HHH
+HHHHHMM:I::.:.. . . . .. ...:.:...:IIHHIMMHHHII:.:IHII::.  AHMMMMMM:HHHH
+HHHHHMMA:I:.:.:.. . . . .. ..:.:..:IIHHIMMMHHII:...:::.:.AHMMMMMMM:HHHHH
+HHHHHMMMA:I::... . . . . .. ..:.::.:IHHHIMMMHI:.:.. .::AHMMMMMMM:HHHHHHH
+VHHHHMMMMA:I::.. . .  . . .. .:.::I:IHHHIMMMMHI:.. . AHMMMMMMMM:HHHHHHHH
+ HHHMMMMMM:I:.:.. . .  . . ...:.:IIHIHHHIMMMMMHI:.AHMMMMMMMMM:HHHHHHHHHH
+ HHHHMMMMMA:I:.:.. .  .  . .. .:IIHIHHHHIMMMMMH:AMMMMMMMMMMM:HHHHHHHHHHH
+ VHHHMMMMMMA:I:::.:. . . . .. .:IHIHHHHHIMMMV"AMMMMMMMMMMMM:HHHHHHHHHHHH
+  HHHHHMMMMMA:I::.. .. .  . ...:.:IHHHHHHIM"AMMMMMMMMMMMM:HHHHHHHHHHHHHH
+  VHHHHHMMMMMA:I:.:.. . . .  .. .:IHIHHHHI:AMMMMMMMMMMMIHHHHHHHHHHHHHHHH
+   VHHHHHMMMMMA:I::.:. . .  .. .:.:IHHHV:MMMMMIMMMMMMMMMMMMMHHHHHHHHV::.
+    VHHHHMMMMMMA:::.:..:.. . .. .:::AMMMMMMMM:IIIIIHHHHHHHHHHHHHHHV:::..
+     HHHHHMMMIIIA:I::.:.:..:... AMMMMMMMMMM:IIIIIIHHHHHHHHHHHHHHHV::::::
+     VHHHHMMIIIIMA:I::::.::..AMMMMMMMMMMM:IIIIIIIHHHHHHHHHHHHHHV::::::::
+      HHHHMIIIIMMMA:II:I::AIIIMMMMMMMMMM:IIIIIIIHHHHHHHHHHHHHHV:::::::::
+      VHHHHIIIMMMMMMA:I:AIIIIIIMMMMMM:IIIIIIIIHHHHHHHHHHHHHHV::::::::"'
+       HHHHHIIMMMMMMIMAAIIIIIIIIMMM:IIIIIIIIHHHHHHHHHHHHHHHV:::::""'
+       VHHHIIIIMMMMIIIIIIIIIIIIII:IIIIIIIIHHHHHHHHHHHHHHHV::""'
+        VHHIIIMMMMMIIIIIIIIIIIIIIIIIIIIIHHHHHHHHHHHHHHHV
+         VHHIMMMMMMMIIIIIIIIIIIIIIIIIHHHHHHHHHHHHHV
+          VHHHMMMMMMMMIIIIIIIIIIIHHHHHHHHHHHV
+           VHHHMMMMMMMMMMMMMHHHHHHHHHHHHHV
+		   [Vargas nosig]
+</pre></div>
+<div id = "preVis2"><pre>
+        _.-.
+       ,'/ //\
+      /// // /)
+     /// // //|
+    /// // ///
+   /// // ///
+  (`: // ///
+   `;`: ///
+   / /:`:/
+  / /  `'
+ / /
+(_/  hh
+
+
+</pre></div>
+<div id="preVis4"><pre>
+            ,NN++MM#+.I            MC+...   +ITTTT.          .+N.....+.M+J      
+              C++MMM+.I            MC+...    ...             +PN....++.MPCA     
+              VC+PP,-.            .MC++...   .              .+V....++. MP C.    
+              +CC+++,             .MC++...                  ++N..++CC. MN  T    
+               V+. .             ..NCC++...                ++NP.+CCC.  MMP  L   
+                C+. .           ...NCC++...              ..+AN.+CC+.   ,MP. I.  
+                 C-..  .       .....NCC+++...           ...+AF+++++     WN+  A. 
+                  +C+... . ........NNCC+++...        .... +NA.++...      MP+ .N<                                       
+                   ,VI+............NNCCIIII..        ...   AM....        .MP  +N                                       
+                      ,VI++.......+NNCCIIII..       ...   +MP..           WP+ +CM                                      
+                          ,,=+...++VNCCCIII..       ..   +PM              .M+  +CA .                                   
+                            MMMMMMM.NCCCCII..           +APM              .MC+  ++FA..                                 
+                            ,MMMMMMM+NCCCTI+           .APMM              .WNP+   +TMMMN$$.                            
+                             MMMMMMM+CWCII+.           .APMM            . ..MPCQ    +NMNNPPCCA.                        
+                             .MMMMMMM+CCLI.           .PPNP              ...MNP+      WNNPPPCCC$.                      
+                              CCMMMMMACII..           ..+CM.           . ...WMPQ.      ,NNPCCII+++$.                   
+                               CCMMMMMII..            ..+MV          .  .....MM+.          ---+++++PP$                 
+                                CCMMMMI .            ...CM..       .. . ...+.WM++.             ---++PNN.               
+                                 CCMMMJ+.           /..CMV.. . . . . . ...++. WM+..                  --+N$             
+                                  VMMM+.           CNCCCM...  . . . . ....++.  NM+.. .                   -N$.          
+                                   ,M/           $MI    $$+... . . .....+++.    NM++.. .                    +N.        
+                                    .           /M     .+J++..........++++.     .WM+++.. . .     .            N.       
+           .+MMMMC$..               /           MM       C+++.......+++++.      .+WMMC++...  .   ..            N.      
+         .MPPCCTTIIIPFPPP$$..      .            .V    ,+ICA++++...+++++.       .++.CPPC++++.   . ..+            N.     
+        #MCCIII+... .+IIIICCFMM$=..I              C. ..+ICC++++++++..        ..++..CCCCC+++...    .++            M.    
+       #PCII+.. .      ....++IIPMMMI              CC.     M++++....         . ...  IICCC+.....    .C++            A    
+     .MPPII. .           ...++IIPMM                C...   .++..            . . .  .+ +++.......    CCC.           +.   
+    .MIIII. .              ...++IPM.                ....   $.                .    +++ .......       CC.            A   
+    #MIII                    ....+P..                ...   A                    .+    ......        +C.            +.  
+    MNP.QQ. .                 .....I.                  .  +N                   . .       ..        .+..             .  
+    WNPPI++.  .                  ..I..                   .+N                  .....               .....             N. 
+    .NPPPI++. .                  ..V..                   .CN                 ........            ......             N$ 
+     VPPPPII.. .                   V+.                   +CN                ...  +M+...        .......             .++ 
+      NNPPPII+.. ..                IV+                   +LN                      MH+.....   .........             .+N 
+       MNPII++...  .                VP.                 .ICN                       +++..............+.             .+W 
+       ,NNPPPII+++..  .             VN.                 .IPN                          ...........+++.             .+NV 
+         NNPPPII++... . .           VN+                 +IPN                              ....++++++              .INV 
+         VMMPPPPII++..   . ..       .N+                 .+ICN                                  ..+Q+..           ..NN/ 
+          WNNPPPPPII++...  .  .      IN+               .+ICP                                       NP..         ..NNN  
+           HHNPPPPPII+++... ..  .    ,NN.              +IICP                                        .P..       ..INNV  
+            NNNPPPPPIII++....  .  . . VN.             .+IICP                                         .P+.    ...INNV   
+             WNNPPPPPIII+++......  . .VN+             .+ICCP.                                         ,P+.......INN,   
+              WMNPPPPPPIII+++........ .NN.            .+CCP..                                          VP++..+IINN,    
+               WMNPPPPPPPIII+++........VN.           ..+ICCP...                                         MPII+++NN.     
+                ,NNNNPPPPPPIII++++.....IN+           ..+CCCC.....                                       WMPIIPNP,      
+                  ,NHNNPPPPPPIII+++++...N+.          ..+CCCC....                                        .MMPPFF        
+                    VNNNNPPPPPPPIII+++++N+.          ..ICCCI..                                         ..MMMF          
+                     ,NNNNPPPPPPPPII++++VN+          ..ICCCI.                                          ..MP.           
+                       ,NNNNNPPPPPPIII+++N+          ..ICCC..                                         ...              
+                         ,NHHHNNPPPPPPIIIN+.         .+ICCC...                                       ...               
+                            .MMNNNNPPPPPINN.         .+ICCC+....                                    ..+I               
+                              .MHHNNNNPPPVN.        ..+ICCC++.......                               ..+P                
+                                ,,WMMMMMMIN..       ..ICCCPPP+........                            ..+C.                
+                                   .WMMMMW+.        ..+ICCCPPCC++.........                    .....+C.                 
+                                       .MMN+.       ..+ICCVNPPCC+++.............          ......++CP,                  
+                                          VN.       ..+ICCIMNPPPCCC++++......................+++ICP,                   
+                                          IN..      ..IICCIMMMMPPPCC+++++..................+++ICCP                     
+                                           N..      ..IICC.MMMMMMPPPCCIII++++++++.......++++ICCP.                      
+                                           N..      ..IICC.MMMMMMMMMPPPPPPPCCCCCCIII++++ICCCCP.                        
+                                           N+.      ..IICCPPPMMMMMMMMMMMMMMPPPCCCCCCCCCCCC''                           
+                                           V+..     .+IICCI  ..MMMMMMMMMMMMNNNNNCCCCCC..                               
+                                           IN..    ..+IICCA       ..WNMMMMMMMNNNP.                                     
+                                            N...   ..+IICCN               ''''  
+                                            N+..   ..+IICCN                     
+                                            MMM.. ..+ICCCC.        	[Vargas nosig]             
+                                            NNPI+++==PPPPPIA                    
+                                           /MP++.        ,,+I.                  
+                                          .#PI+.             +.                 
+                                         #PPI+...             +.                
+                                        #PCI+++...             +.               
+                                       IMP++++++...                .            
+                                       IMI+.+++++...                 .          
+                                       ,MI+...+++...                            
+                                        M+P ...+++....                    .     
+                                        VP  . +V++....       .                  
+                                        IP.   + V++.....      ..         +.    .                                       
+                                         W.   +  VC++.....     ++.    .-   +.   
+                                          M.  +.   .CC+.....    ++..    -.   +..  ,                                    
+                                          ,M.  ,.     ,C+.....   VN+.     ...  ..   .                                  
+                                            VM,VN       ,,C....   ,NN+..    ..   .   .                                 
+                                             .  M          ,,CC    ,  ,VA.   +.   . ...                                
+                                              ..I             ,V.   .    N.   +.   - ...                               
+                                                                V.   .    V.   ..   -                                  
+                                                                 ,.   .    +.  . +...-.                                
+                                                                  ,.   .    +..-.  +.  .                               
+                                                                   V. .-.     .  ,    -                                
+                                                                    .N   <     -                                       
+                                                                      .-        
+ 																						nmnmPP" xMMMMPP"C"MMMM;MMbx`""".,,."PP
+</pre></div>
+<canvas id="canvas">
+</canvas>								
+<script>
+function placer(cn) {
+    var ymax = $(window).height();
+    var xmax = $(window).width();
+    var min = 100;
+    var foo = Math.floor(Math.random() * 100);
+    var bar = Math.floor(Math.random() * 100);
+    return [foo, bar];
+}
+var imglist = ["flower","flower2","flower3","flower4"];
+for (i=0;i<imglist.length;i++) {
+    var imgClass = imglist[i];
+    var howmany = Math.floor(Math.random() * 80);
+    console.log(i);
+    console.log(howmany);
+    for (j=0;j<howmany;j++) {
+        var loc = placer(imgClass);
+        var foo = $('<div />').appendTo('#container');
+        foo.css('top',loc[0] +'%');
+        foo.css('left',loc[1]+'%');
+        foo.attr('class',imgClass);
+    }
+}
+</script>
+</div></div>
+<!--End of the room-->
+<!--Character dialogue-->
+<button id="myBtn"></button>
+<div id = "myModal" class= "modal">
+	<div class="modal-content">
+		<span class = "close">&times;</span><br>
+			<span id = "beginChar"></span>
+			</div></div></div>
+<script>
+var modalChar = document.getElementById("myModal");
+var btn = document.getElementById("myBtn");
+var span = document.getElementsByClassName("close")[0];
+var beginChar = document.getElementById("beginChar");
+var audio1 = document.getElementById("audio1");
+var audio2 = document.getElementById("audio2");
+btn.onclick = function(){
+	$('#myModal').fadeIn(1000);
+	$(audio1).animate({volume: 0}, 1000);	
+	audio2.volume = 0;
+	$(audio2).animate({volume: .03}, 1000);	
+	audio2.play();
+	beginChar.display = "block";
+      Typed.new('#beginChar', {
+        strings: ["<i>I would mark many trees^1000<br>With my initials and the initials of a lover^1000<br>That only existed in my dreams^1000<br>A different lover for every tree...^1000"],
+        typeSpeed: 2,
+		showCursor: true,
+		startDelay: 1000,
+		callback: function(){
+		$(".close").css({"visibility":"visible"});
+		setTimeout(function(){
+		$(".close").css({"-webkit-animation":"blink 1s infinite","-moz-animation":"blink 1s infinite","animation":"blink 1s infinite"});
+		},1000);}
+      });
+}
+span.onclick = function (){
+	$('#myModal').fadeOut(1000);
+	$(audio2).animate({volume: 0}, 1000);	
+	$(audio1).animate({volume: .05}, 1000);	
+	audio1.play();
+}
+</script>
+</body>
+</html>

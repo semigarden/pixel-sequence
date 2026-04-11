@@ -1,0 +1,725 @@
+<html>
+    <head>
+	<script>
+	paceOptions = {
+	ajax: false, // disabled
+	document: false, // disabled
+	eventLag: false, // disabled
+	elements: {
+	selectors: ['#bang']
+	}
+	};
+	</script>
+	<script src="pace/pace.js"></script>
+    <meta charset="UTF-8" />
+    <script src="js/phaser.min.js"></script>
+	<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="ui/1.12.1/jquery-ui.js"></script>
+	<style>
+body{
+	margin:0 auto;
+	background-color:black;
+}
+/*loading bar*/
+	body.pace-running:before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 1500;
+	background-color: rgba(0, 0, 0, 1);
+}
+body:before {
+	background-color: rgba(0, 0, 0, 0);
+	-webkit-transition: background-color 200ms;
+	-moz-transtition: background-color 200ms;
+	-ms-transition: background-color 200ms;
+	-o-transition: background-color: 200ms;
+	transition: background-color 200ms;
+}
+.pace {
+	-webkit-pointer-events: none;
+	pointer-events: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	z-index: 2000;
+	position: fixed;
+	margin: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 5px;
+	width: 200px;
+	background: #fff;
+	overflow: hidden;
+	border-radius:10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-ms-border-radius:10px;
+	-o-border-radius:10px;
+	}
+.pace .pace-progress {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+	max-width: 200px;
+	position: fixed;
+	z-index: 2000;
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 100%;
+	height: 100%;
+	width: 100%;
+	background: magenta;
+	}
+	.pace.pace-inactive {
+	display: none;
+	}
+#wholepage{
+	width:100%;
+	height:100%
+	width:100vw;
+	height:100vh;
+	overflow:hidden;
+	margin:0 auto;
+}
+#centercontain{
+	top:40px;
+	height:90vh;
+	width:90vw;
+	position:relative;
+	margin: 0 auto;
+	/*min-width:400px;*/
+	max-width:2500px;
+	max-height:2500px;
+}
+#red{
+	overflow:hidden;
+	position:absolute;
+	width:100px;
+	height:100%;
+	margin: 0 auto;
+}
+#blue{
+	position:absolute;
+	height:100%;
+	right:0;
+	width: calc(100% - 100px); /* IE9+ and future browsers */
+	width: -moz-calc(100% - 100px); /* Firefox */
+	width: -webkit-calc(100% - 100px); /* Chrome, Safari */
+	/*min-width:80vw-100px;*/
+	margin: 0 auto;
+	border-radius:10px;
+	border:2px solid transparent;
+	transition: border 2s;
+	overflow:hidden;
+}
+.leftimgcontain{
+  margin:0 auto;
+  text-align:center;
+  position:relative;
+  z-index:20;
+  background-size:contain;
+  background-repeat:no-repeat;
+}
+@font-face{
+	font-family: IBMFont;
+	src: url(font/Px437_IBM_ISO9.ttf);
+	}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:999;
+}
+.easy1{
+	background-color: blue;
+	width:25px;
+	z-index:500;
+	right:10px;
+	top:10px;
+	position:absolute;
+	text-align:center;
+	border-radius:2px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: blue;
+}
+.easy1:hover{
+	background-color: pink;
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	text-align:center;
+	border-radius:6px;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;
+}
+</style>
+</head>
+<body>
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">The drumming sound of tanks and the hissing sound of helicopters makes it hard to concentrate.<br><br>Use arrow keys to explore the area. Leave through a door when you're ready, or close the browser page.<br><br><input id="p2Back" type="button" value="> Close"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<!--
+<audio id="audio1" 
+src="sounds/arps/fm_minor_2_shorter-bb11-1s.mp3"
+type="audio/mp3"
+loop="true">
+</audio> 
+-->
+<div id="wholepage">
+<div id="centercontain">
+<div id="blue">
+</div>
+<div id="red">
+</div>
+</div>
+</div> 
+	<script>
+	//ENTER DOOR STUFF
+	var dooronegif = new Image();
+	dooronegif.src = 'door1.gif';
+	var doortwogif = new Image();
+	doortwogif.src = 'door2.gif';
+	var doortregif = new Image();
+	doortregif.src = 'door3.gif';
+	var imglist = ["door1","door2","door3"];
+	numImgs= Math.floor(Math.random() * imglist.length) +1;
+	toplist=[];
+	for (i=0;i<numImgs;i++){
+	  var prev=i-1;
+	  if (toplist[prev] == null){
+		toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+		while ($('#red').height()<toplist[i] + 100){
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+		}
+	  } else{
+		toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+		count = 0;
+		while (($('#red').height()<=toplist[i] + ((i+1) * 100)) && (count <= 100)){
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+			count = count + 1;
+		}	
+	  };
+	  imgindex = Math.floor(Math.random() * imglist.length);
+	  var startingimage = new Image();
+	  startingimage.src = imglist[imgindex] + "_start.png";
+	  var div = document.createElement("div");
+	  div.className = "leftimgcontain";
+	  div.id = imglist[i];
+	  div.style.top = toplist[i] + 'px';
+	  div.style.visibility="hidden";
+	  $('#red').append(div);
+	  $('#' + imglist[i]).append(startingimage);
+	};
+	function setdoorgif(objid){
+		var img = $(objid).find('img');
+		var src = img.attr('src');
+		var door = src.replace("_start.png", ".gif")
+		if (door == 'door1.gif'){
+			img.attr('src','door1.gif'); 
+		} else if (door == 'door2.gif'){
+			img.attr('src','door2.gif');
+		} else if (door == 'door3.gif'){
+			img.attr('src','door3.gif');
+		}	
+	}
+	function setlinkfaderedirect(){
+		/*
+		var audio = document.getElementById("audio1");
+		$(audio1).animate({volume: 0}, 1500);
+	*/
+		cursors.right.enabled=false;
+		cursors.left.enabled=false;
+		cursors.up.enabled=false;
+		cursors.down.enabled=false;
+		player.alpha=0;
+		poof = game.add.sprite(player.position.x,player.position.y,"poof");
+		poof.smoothed=false;
+		poof.anchor.x=0.5;
+		poof.anchor.y=0.5;
+		poof.animations.add("poof",[],25,false,true);
+		poof.animations.play("poof",[],25,false,true);
+	  	$('body').css('pointer-events','none');
+		$("body").delay(500).animate({"opacity": "0"}, 2500); // fade out body
+	  	var linklist = ["/xiangfei.html"];
+		linkindex = Math.floor(Math.random() * linklist.length);
+		link = linklist[linkindex];
+		setTimeout(function(){
+			window.location.assign(link);
+		},3000);
+	}
+	$('#door1').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	});	
+	$('#door2').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	});	
+	$('#door3').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	}); 
+	var doorContain = $('#door');
+//DONE WITH DOOR STUFF
+	</script>
+	<script type="text/javascript">	
+	var game = new Phaser.Game(1000, 1000, Phaser.CANVAS, 'blue', { preload: preload, create: create, update: update });
+	function preload() {
+	game.load.spritesheet("bluemary1","bluemary/bluemary1.png",53,104);
+	game.load.spritesheet("bluemary2","bluemary/bluemary2.png",70,123);
+	game.load.spritesheet("bluemary3","bluemary/bluemary3.png",76,124);
+	game.load.spritesheet("bluemary4","bluemary/bluemary4.png",74,106);
+	game.load.spritesheet("bluemary5","bluemary/bluemary5.png",95,75);
+	game.load.spritesheet("bluemary6","bluemary/bluemary6.png",99,160);
+	game.load.spritesheet("shrub13","bluemary/shrub13.png",100,100);
+	game.load.spritesheet("cowSkull","bluemary/cowSkull.png",41,42);
+	game.load.image("brokenfence", "bluemary/brokenfence.png");
+	game.load.spritesheet("eyeball","bluemary/eyeball.png",16,20);
+	game.load.image("apple", "bluemary/apple.png");
+	game.load.spritesheet("chopper18","bluemary/copter1.png",308,232);
+	game.load.image("horn1", "bluemary/horn1.png");
+	game.load.image("horn2", "bluemary/horn2.png");
+	game.load.image("fogGrey", "bluemary/fogGrey.png");
+	game.load.image("ground2", "zoo/ground2.png");
+	game.load.spritesheet("vision1","bluemary/vision1.png",151,192);
+	game.load.image("ninjaStar", "bluemary/ninjaStar.png");
+	game.load.image("plant13", "bluemary/plant13.png");
+	game.load.image("plant12", "bluemary/plant12.png");
+	game.load.image("building", "bluemary/building.png");
+	game.load.spritesheet("crow","bluemary/crow.png",31,44);
+	game.load.image("bg3", "bluemary/bg3.png");
+	game.load.image("rock", "bluemary/rock.png");
+	game.load.spritesheet("tank1","bluemary/tank1.png",262,128);
+	game.load.image("grass1", "bluemary/grass11.png");
+	game.load.spritesheet("butterfly2","bluemary/butterfly2.png",31,39);
+	game.load.spritesheet("butterfly","bluemary/butterfly.png",31,39);
+	game.load.spritesheet("flower3","bluemary/flower3.png",29,30);
+	game.load.spritesheet("flower4","bluemary/flower4.png",29,30);
+	game.load.image("soda4", "bluemary/soda4.png");
+	game.load.image("grass11", "bluemary/grass1.png");
+	game.load.image("doom7", "bluemary/doom7.png");
+	game.load.spritesheet("moth","bluemary/moth.png",16,18);
+	game.load.spritesheet("bird1","bluemary/bird1.png",37,22);
+	game.load.image("box8", "bluemary/box8.png");
+	game.load.spritesheet("alienegg","bluemary/alienegg.png",48,67);
+	game.load.spritesheet("aliengore6","bluemary/aliengore6.png");
+	game.load.spritesheet("plantopen2","bluemary/plantopen2.png",36,32);
+	game.load.spritesheet("plantopen3","bluemary/plantopen3.png",42,43);
+	game.load.spritesheet("bat6","bluemary/bat6.png",48,94);
+	game.load.spritesheet("eyeCursor","cursors/eyeCursor.png", 85,55);
+	game.load.spritesheet("poof","guiElements/geniepuff.png", 84,86);
+	game.load.bitmapFont('font', 'guiElements/font.png', 'guiElements/font.fnt');
+	game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+	game.renderer.renderSession.roundPixels = true;
+	game.world.setBounds(0,0, 2500,2500);
+	game.physics.startSystem(Phaser.Physics.ARCADE);
+	}
+	function create(){
+	$('.leftimgcontain').css({"visibility":"visible"});
+	$("body").append("<div id='bang'></div>");
+	setTimeout(function(){
+	$('#blue').css({"border":"2px solid magenta"});
+	}, 2000);
+	ground= game.add.tileSprite(0, 0,  game.world.width,game.world.height, 'grass1');
+	game.stage.backgroundColor="#535F6B";
+	BG= game.add.tileSprite(0, 0,  game.world.width, 224,'bg3');
+	BG.smoothed=false;
+	tankG = game.add.group();
+    tankG.enableBody = true;
+	tankG.sort();
+	tankGGen = game.time.events.loop(2500, genT, this);
+    tankGGen.timer.start();
+	building = game.add.group();
+	for (var i = 0; i < 5; i++)
+    {
+	building.create(game.world.randomX, game.rnd.integerInRange(0,20), 'building');
+	building.setAll('smoothed', false);
+	}
+	grounds = game.add.group();
+	for (var i = 0; i < 40; i++)
+    {
+	grounds.create(game.world.randomX, game.world.randomY+240, 'ground2');
+	grounds.setAll('smoothed', false);
+	}
+	rock= game.add.tileSprite(0, 180,  game.world.width, 106,'rock');
+	rock.smoothed=false;
+	fenceTop= game.add.tileSprite(0, 140,  game.world.width, 171,'brokenfence');
+	fenceTop.smoothed=false;
+	flowerTop= game.add.tileSprite(0, 280,  game.world.width, 36,'plant13');
+	flowerTop.smoothed=false;
+	platform = game.add.group();
+	for (var i = 0; i < 10; i++)
+    {
+	platform.create(game.world.randomX, game.world.randomY+240, 'aliengore6');
+	platform.setAll('smoothed', false);
+	}
+	cowSkull = game.add.group();
+	for (var i = 0; i < 20; i++)
+    {
+	cowSkull.create(game.world.randomX, game.world.randomY+290, 'cowSkull');
+	cowSkull.setAll('smoothed', false);
+	}
+	cowSkull.forEach (function (cowSkull){
+	cowSkull.frame = game.rnd.integerInRange(0, 9);
+	}),this
+	eyeball = game.add.group();
+	for (var i = 0; i < 15; i++)
+    {
+	eyeball.create(game.world.randomX, game.world.randomY+290, 'eyeball');
+	eyeball.callAll("animations.add","animations","r2d2",[],10, true);
+	eyeball.callAll("animations.play","animations","r2d2");
+	eyeball.setAll('smoothed', false);
+	}
+	flowers = game.add.group();
+	for (var i = 0; i < 15; i++)
+    {
+	flowers.create(game.world.randomX, game.world.randomY+290, 'grass11');
+	flowers.create(game.world.randomX, game.world.randomY+290, 'flower3');
+	flowers.create(game.world.randomX, game.world.randomY+290, 'flower4');
+	flowers.callAll("animations.add","animations","flowers",[],5, true);
+	flowers.callAll("animations.play","animations","flowers");
+	flowers.setAll('smoothed', false);
+	}
+	layersSmall = game.add.group();
+	for (var i = 0; i < 5; i++)
+    {
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'bird1');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'bird1');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'bird1');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'apple');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'apple');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'soda4');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'soda4');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'soda4');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'ninjaStar');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'ninjaStar');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant13');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'plant12');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'horn1');
+	layersSmall.create(game.world.randomX, game.world.randomY+290, 'horn2');
+	layersSmall.setAll('smoothed', false);
+	layersSmall.callAll("animations.add","animations","layersSmall",[],10, true);
+	layersSmall.callAll("animations.play","animations","layersSmall");
+	layersSmall.setAll("anchor.x", .5);
+	layersSmall.setAll("anchor.y", .5);
+	}
+	cursors = game.input.keyboard.createCursorKeys();
+	player= game.add.sprite(100,0,"eyeCursor");	
+	game.physics.arcade.enable(player);
+	game.camera.follow(player);
+	player.body.collideWorldBounds = true;
+	player.anchor.set(0.5);
+	player.smoothed=false;
+	player.animations.add('blink', [], 2, true);
+	player.animations.play('blink', [],2,true);
+	arrows = game.add.bitmapText(player.position.x,player.position.y+60, 'font','  ← ↑ ↓ →\n arrow keys',28);
+	arrows.anchor.x=0.5;
+	arrows.smoothed=false;
+	arrows.alpha=1;
+	arrowTween = game.add.tween(arrows).to( { alpha: 0},1000,Phaser.Easing.Linear.None,true,0,-1);
+	layersSmall.sort();
+	layers = game.add.group();
+	for (var i = 0; i < 2; i++)
+    {
+	layers.create(game.world.randomX, game.world.randomY+290, 'box8');
+	layers.create(game.world.randomX, game.world.randomY+290, 'box8');
+	layers.create(game.world.randomX, game.world.randomY+290, 'box8');
+	layers.create(game.world.randomX, game.world.randomY+290, 'box8');
+	layers.create(game.world.randomX, game.world.randomY+290, 'alienegg');
+	layers.create(game.world.randomX, game.world.randomY+290, 'alienegg');
+	layers.create(game.world.randomX, game.world.randomY+290, 'alienegg');
+	layers.create(game.world.randomX, game.world.randomY+290, 'alienegg');;
+	layers.create(game.world.randomX, game.world.randomY+290, 'plantopen2');
+	layers.create(game.world.randomX, game.world.randomY+290, 'plantopen3');
+	layers.create(game.world.randomX, game.world.randomY+290, 'plantopen2');
+	layers.create(game.world.randomX, game.world.randomY+290, 'plantopen3');
+	layers.create(game.world.randomX, game.world.randomY+290, 'plantopen2');
+	layers.create(game.world.randomX, game.world.randomY+290, 'plantopen3');
+	layers.create(game.world.randomX, game.world.randomY+290, 'doom7');
+	layers.create(game.world.randomX, game.world.randomY+290, 'doom7');
+	layers.create(game.world.randomX, game.world.randomY+290, 'doom7');
+	layers.create(game.world.randomX, game.world.randomY+290, 'doom7');
+	layers.create(game.world.randomX, game.world.randomY+290, 'doom7');
+	layers.create(game.world.randomX, game.world.randomY+290, 'doom7');
+	layers.create(game.world.randomX, game.world.randomY+290, 'vision1');
+	layers.create(game.world.randomX, game.world.randomY+290, 'shrub13');
+	layers.create(game.world.randomX, game.world.randomY+290, 'shrub13');
+	layers.create(game.world.randomX, game.world.randomY+290, 'shrub13');
+	layers.create(game.world.randomX, game.world.randomY+290, 'shrub13');
+	layers.create(game.world.randomX, game.world.randomY+290, 'bluemary1');
+	layers.create(game.world.randomX, game.world.randomY+290, 'bluemary2');
+	layers.create(game.world.randomX, game.world.randomY+290, 'bluemary3');
+	layers.create(game.world.randomX, game.world.randomY+290, 'bluemary4');
+	layers.create(game.world.randomX, game.world.randomY+290, 'bluemary5');
+	layers.create(game.world.randomX, game.world.randomY+290, 'bluemary6');
+	layers.create(game.world.randomX, game.world.randomY+290, 'brokenfence');
+	layers.create(game.world.randomX, game.world.randomY+290, 'brokenfence');
+	layers.callAll("animations.add","animations","layers",[],10, true);
+	layers.callAll("animations.play","animations","layers");
+	layers.setAll('smoothed', false);
+	layers.setAll("anchor.x", .5);
+	layers.setAll("anchor.y", .5);
+	}
+	layers.sort();
+	butterflyer = game.add.group();
+	for (var i = 0; i < 4; i++)
+    {
+	butterflyer.create(game.world.randomX, game.world.randomY, 'moth');
+	butterflyer.create(game.world.randomX, game.world.randomY, 'moth');
+	butterflyer.create(game.world.randomX, game.world.randomY, 'butterfly');
+	butterflyer.create(game.world.randomX, game.world.randomY, 'butterfly2');
+	butterflyer.callAll("animations.add","animations","butterflyer",[],10, true);
+	butterflyer.callAll("animations.play","animations","butterflyer");
+	butterflyer.setAll('smoothed', false);
+	}
+	chopperGroup = game.add.group();
+    chopperGroup.enableBody = true;
+	chopperGroupGen = game.time.events.loop(2000, genChopper, this);
+    chopperGroupGen.timer.start();
+	fogGroup = game.add.group();
+    fogGroup.enableBody = true;
+	fogGroupGen = game.time.events.loop(1000, genFog, this);
+    fogGroupGen.timer.start();
+	flyerG = game.add.group();
+    flyerG.enableBody = true;
+	flyerGGen = game.time.events.loop(1500, genF, this);
+    flyerGGen.timer.start();
+	birdGroup = game.add.group();
+    birdGroup.enableBody = true;
+	birdGroupGen = game.time.events.loop(1000, genBird, this);
+    birdGroupGen.timer.start();
+	}
+	function update(){
+	layersSmall.sort('y', Phaser.Group.SORT_ASCENDING);
+	layers.sort('y', Phaser.Group.SORT_ASCENDING);
+	tankG.sort('y', Phaser.Group.SORT_ASCENDING);
+	player.body.velocity.x = 0;
+	player.body.velocity.y = 0;
+	if (cursors.down.isDown){ 
+    player.body.velocity.y = 150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	else if (cursors.up.isDown){
+    player.body.velocity.y = -150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}	
+	else if (cursors.right.isDown){
+    player.body.velocity.x = 150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	else if (cursors.left.isDown){  
+    player.body.velocity.x = -150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	}
+	function genT(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(50, 150);         
+	var tank;
+	tank = tankG.getFirstExists(false);
+	if (!tank) {               
+	tank = game.add.sprite(-10, 0, 'tank1');
+	tank.animations.add("tank", [],40,true);
+	tank.animations.play("tank");	
+	tank.smoothed=false;
+	tank.scale.x=.4;
+	tank.scale.y=.4;
+	tankG.add(tank);  
+	tank.anchor.setTo(0.5, 0.5);    			
+	game.physics.arcade.enableBody(tank);
+	tank.enableBody = true;
+	}        
+	tank.anchor.setTo(0.5, 0.5);
+	tank.reset(0,game.rnd.integerInRange(140,180)); 
+	tank.body.velocity.x = velocityX;
+	tank.checkWorldBounds = true;
+	tank.outOfBoundsKill = true;	
+	}		
+	}
+	function genF(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(250, 350);         
+	var flyer;
+	flyer = flyerG.getFirstExists(false);
+	if (!flyer) {               
+	flyer = game.add.sprite(-10, 0, 'bat6');
+	flyer.animations.add("flyer", [],10,true);
+	flyer.animations.play("flyer");	
+	flyer.smoothed=false;
+	flyerG.add(flyer);  
+	flyer.anchor.setTo(0.5, 0.5);    			
+	game.physics.arcade.enableBody(flyer);
+	flyer.enableBody = true;
+	}        
+	flyer.anchor.setTo(0.5, 0.5);
+	flyer.reset(0,game.world.randomY); 
+	flyer.body.velocity.x = velocityX;
+	flyer.checkWorldBounds = true;
+	flyer.outOfBoundsKill = true;	
+	}		
+	}
+	function genChopper(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(-150, -250);         
+	var chopper;
+	chopper = chopperGroup.getFirstExists(false);
+	if (!chopper) {               
+	chopper = game.add.sprite(-10, 0, 'chopper18');
+	chopper.animations.add("chopper", [],40,true);
+	chopper.animations.play("chopper");	
+	chopper.smoothed=false;
+	chopperGroup.add(chopper);  
+	chopper.anchor.setTo(0.5, 0.5);    			
+	game.physics.arcade.enableBody(chopper);
+	chopper.enableBody = true;
+	}        
+	chopper.anchor.setTo(0.5, 0.5);
+	chopper.reset(game.world.width,game.world.randomY); 
+	chopper.body.velocity.x = velocityX;
+	chopper.checkWorldBounds = true;
+	chopper.outOfBoundsKill = true;	
+	}		
+	}
+	function genFog(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(50, 100);         
+	var fog;
+	fog = fogGroup.getFirstExists(false);
+	if (!fog) {               
+	fog = game.add.sprite(-10, 0, 'fogGrey');
+	fog.smoothed=false;
+	fogGroup.add(fog);  
+	fog.anchor.setTo(0.5, 0.5);    			
+	game.physics.arcade.enableBody(fog);
+	fog.enableBody = true;
+	}        
+	fog.anchor.setTo(0.5, 0.5);
+	fog.reset(-10,game.world.randomY); 
+	fog.body.velocity.x = velocityX;
+	fog.checkWorldBounds = true;
+	fog.outOfBoundsKill = true;	
+	}		
+	}
+	function genBird(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(280, 350);         
+	var bird;
+	bird = birdGroup.getFirstExists(false);
+	if (!bird) {               
+	bird = game.add.sprite(-10, 0, 'crow');
+	bird.animations.add("bird", [],10,true);
+	bird.animations.play("bird");	
+	bird.smoothed=false;
+	birdGroup.add(bird);  
+	bird.anchor.setTo(0.5, 0.5);    			
+	game.physics.arcade.enableBody(bird);
+	bird.enableBody = true;
+	}        
+	bird.anchor.setTo(0.5, 0.5);
+	bird.reset(-10,game.world.randomY); 
+	bird.body.velocity.x = velocityX;
+	bird.checkWorldBounds = true;
+	bird.outOfBoundsKill = true;	
+	}		
+	}
+	</script>
+	</body>
+	</html>

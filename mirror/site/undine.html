@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="js/typed.js"></script>
+<meta charset="UTF-8" />
+<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="ui/1.12.1/jquery-ui.js"></script>
+<style>
+body{
+	overflow:hidden;
+	background-color:black;
+	opacity: 0;
+	margin:0;
+	}
+#container{
+	display:inline-block;
+	width:100%;
+	height:100%;
+	margin: 0 auto;
+	top: 0;
+	left: 0;
+	position:absolute;
+	z-index:3;
+	background:blue;	
+	overflow:hidden;
+	}
+pre{font-family:Courier;
+	font-size:13px;
+	}
+#canvas{
+	position:absolute;
+	z-index:2;
+	top:0;
+	left:0;
+	overflow:hidden;
+	pointer-events:none;
+	}
+#woman1{
+	position: absolute;
+	width: 356px;
+	height: 342px;
+	z-index:4;
+	bottom:10%;
+	right:20%;
+    background: url(blackroomelements/woman52.gif);
+    background-size: 356px 342px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	pointer-events:none;
+}
+#woman2{
+	position: absolute;
+	width: 356px;
+	height: 342px;
+	z-index:4;
+	bottom:20%;
+	left:20%;
+    background: url(blackroomelements/woman51.gif);
+    background-size: 356px 342px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	pointer-events:none;
+}
+#slime1{
+	position: absolute;
+	width: 53px;
+	height: 135px;
+	z-index:4;
+	bottom:40%;
+	left:25%;
+    background: url(blackroomelements/slime5.png);
+    background-size: 53px 135px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#slime2{
+	position: absolute;
+	width: 53px;
+	height: 135px;
+	z-index:4;
+	bottom:30%;
+	left:35%;
+    background: url(blackroomelements/slime5.png);
+    background-size: 53px 135px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#slime3{
+	position: absolute;
+	width: 53px;
+	height: 135px;
+	z-index:5;
+	top:5%%;
+	right:15%;
+    background: url(blackroomelements/slime5.png);
+    background-size: 53px 135px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#slime3 .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: magenta;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: 30%;
+    left: 100%;
+}
+#slime3 .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 10%;
+    right: 100%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent magenta transparent  transparent;
+}
+#slime3:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+}
+#slime4{
+	position: absolute;
+	width: 119px;
+	height: 81px;
+	z-index:2;
+	top:40%;
+	right:35%;
+    background: url(blackroomelements/slime9.png);
+    background-size: 119px 81px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#slime5{
+	position: absolute;
+	width: 119px;
+	height: 81px;
+	z-index:2;
+	bottom:30%;
+	left:10%;
+    background: url(blackroomelements/slime9.png);
+    background-size: 119px 81px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#slime6{
+	position: absolute;
+	width: 119px;
+	height: 81px;
+	z-index:5;
+	bottom:10%;
+	left:12%;
+    background: url(blackroomelements/slime9.png);
+    background-size: 119px 81px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#slime6 .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: magenta;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: -5px;
+    left: 105%;
+}
+#slime6 .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 45%;
+    right: 100%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent magenta transparent  transparent;
+}
+#slime6:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+}
+#dragonfly1{
+	position: absolute;
+	width: 176px;
+	height: 112px;
+	z-index:5;
+	top:10%;
+	left:12%;
+    background: url(blackroomelements/dragonfly1.gif);
+    background-size: 176px 112px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#dragonfly2{
+	position: absolute;
+	width: 176px;
+	height: 112px;
+	z-index:6;
+	top:30%;
+	right:32%;
+    background: url(blackroomelements/dragonfly1.gif);
+    background-size: 176px 112px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#dragonfly2 .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: magenta;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: -5px;
+    left: 105%;
+}
+#dragonfly2 .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 45%;
+    right: 100%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent magenta transparent  transparent;
+}
+#dragonfly2:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+}
+#dragonfly3{
+	position: absolute;
+	width: 176px;
+	height: 112px;
+	z-index:2;
+	bottom:30%;
+	left:6%;
+    background: url(blackroomelements/dragonfly1.gif);
+    background-size: 176px 112px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#ladyNeptune2{
+	position: absolute;
+	width: 82px;
+	height: 128px;
+	z-index:2;
+	top:12%;
+	left:32%;
+    background: url(blackroomelements/ladyNeptune.png);
+    background-size: 82px 128px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#ladyNeptune{
+	position: absolute;
+	width: 82px;
+	height: 128px;
+	bottom:2%;
+	right:2%;
+	z-index:8;
+    background: url(blackroomelements/ladyNeptune.png);
+    background-size: 82px 128px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#ladyNeptune .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: magenta;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	bottom: 5%;
+    right: 90%;
+}
+#ladyNeptune .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 45%;
+    left: 105%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent magenta ;
+}
+#ladyNeptune:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+}
+#plant{
+	position: absolute;
+	top: 20%; left: 50%;
+	transform: translate(-50%,-50%);
+	line-height:1.2;
+	width: 160px;
+	height: 160px;
+	z-index:2;
+	cursor: default;
+    background: url(blackroomelements/plant13.gif);
+    background-size: 160px 160px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+@keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}
+@-moz-keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}
+@-webkit-keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}	
+.inner {
+	position: absolute;
+	line-height:1.2;
+	bottom:22%;
+	right:2%;
+	z-index:2;
+	border-radius:50px;
+	background-color:transparent;
+	width:100px;
+	height:100px;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;	
+}	
+.inner:hover{
+	border-radius:50px;
+	box-shadow: 0 0 28px magenta, inset 0 0 28px magenta;
+	background-color:magenta;
+}
+.lily1{
+	position: absolute;
+	width: 34px;
+	height: 34px;
+	z-index:1;
+    background: url(blackroomelements/lily2.png);
+    background-size:34px 34px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.lily2{
+	position: absolute;
+	width: 260px;
+	height: 260px;
+	z-index:1;
+    background: url(blackroomelements/lily5.png);
+    background-size: 260px 260px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.lily3{
+	position: absolute;
+	width: 260px;
+	height: 260px;
+	z-index:1;
+    background: url(blackroomelements/lily4.png);
+    background-size: 260px 260px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.lily4{
+	position: absolute;
+	width: 260px;
+	height: 260px;
+	z-index:1;
+    background: url(blackroomelements/lily3.png);
+    background-size: 260px 260px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.lily5{
+	position: absolute;
+	width: 260px;
+	height: 260px;
+	z-index:1;
+    background: url(blackroomelements/lily2.png);
+    background-size: 260px 260px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.lily6{
+	position: absolute;
+	width: 260px;
+	height: 260px;
+	z-index:1;
+    background: url(blackroomelements/lily1.png);
+    background-size: 260px 160px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+
+#preVis{
+	position: absolute;
+	z-index:3;
+	top:0;
+	left:0;
+	color:white;
+	pointer-events:none;
+}
+#preVis2{
+	position: absolute;
+	z-index:4;
+	top:10%;
+	left:20%;
+	color:red;
+	pointer-events:none;
+}
+#preVis3{
+	position: absolute;
+	z-index:4;
+	top:-30px;
+	right:0px;
+	color:red;
+	pointer-events:none;
+}
+#preVis4{
+	position: absolute;
+	z-index:4;
+	top:0px;
+	right:15%;
+	color:black;
+	pointer-events:none;
+}
+#preVis5{
+	position: absolute;
+	z-index:4;
+	top:5%;
+	right:10%;
+	color:white;
+	pointer-events:none;
+}
+#myBtn{
+	position: absolute;
+	width: 116px;
+	height: 202px;
+	z-index:4;
+    background: url(blackroomelements/woman50.png);
+	background-size: 116px 202px;
+	bottom:30%;
+	z-index:6;
+	border:none;
+	right:40%;	
+	outline:none;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+
+#myBtn:hover{
+	cursor: pointer;
+	}
+@font-face{
+	font-family: IBMFont;
+	src: url(font/Px437_IBM_ISO9.ttf);
+	}
+.modal{
+	line-height:1.2;
+	display:none;
+	background:   linear-gradient(
+      rgba(255, 0, 255, 0.45), 
+      rgba(255, 0, 255, 0.45)
+    ), url("blackroomelements/bggif1.gif");
+	background-size:cover;
+	position: fixed;
+	z-index:99999;
+	padding-top:100px;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	overflow:auto;
+	box-shadow:0 0 56px magenta, inset 0 0 56px magenta;
+	text-shadow: 0 0 20px #FF00FF;
+	background-color: rgb(0,0,100); /* Fallback color */
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	}
+.modal-content {
+	box-shadow:0 0 56px magenta, inset 0 0 56px magenta;
+    background-color: rgba(0,0,0,1);
+    margin: auto;
+    padding: 20px;
+    border: 2px solid magenta;
+	border-radius: 25px;
+    width: 50%;
+	}
+.close {
+	visibility:hidden;
+    color: magenta;
+	background-color:transparent;
+	border-radius:20%;
+	width:22px;
+	height:22px;
+	line-height:24px;
+    float: right;
+	font-family: IBMFont;
+    font-size: 22px;
+	text-align:center;
+	-webkit-transition: all .7s ease-in-out;
+	-moz-transition: all .7s ease-in-out;
+	-ms-transition: all .7s ease-in-out;
+	-o-transition: all .7s ease-in-out;
+	transition: all .7s ease-in-out;
+	}
+.close:hover,
+.close:focus {
+    background-color:white;
+	color:magenta;
+    text-decoration: none;
+    cursor: pointer;
+	}
+.closeDialogue {
+    color: magenta;
+    float: right;
+	font-family: IBMFont;
+    font-size: 22px;
+	text-align: center;
+	visibility:hidden;
+	-webkit-transition: all .7s ease-in-out;
+	-moz-transition: all .7s ease-in-out;
+	-ms-transition: all .7s ease-in-out;
+	-o-transition: all .7s ease-in-out;
+	transition: all .7s ease-in-out;
+	}
+.closeDialogue:hover,
+.closeDialogue:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+	}
+#beginChar{
+	font-size:16px;
+	font-family: IBMFont;
+	color:white;
+	overflow:auto;
+	}
+#openingModal{
+	line-height:1.2;
+	position: fixed;
+	z-index:99999;
+	padding-top:100px;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	overflow:auto;
+    font-family: IBMFont;
+    background: rgba(0, 0, 100, .9);
+}
+.openingContent {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    background: black;
+	border: 2px solid white;
+	border-radius: 25px;
+	padding:20px;
+}
+#begin{
+	padding-top:20px;
+	font-size:16px;
+	font-family: IBMFont;
+	color:white;
+	overflow:auto;
+	}
+#speak{
+	box-shadow:0 0 6px magenta, inset 0 0 6px magenta;
+	position:relative;
+	font-size:16px;
+	font-family: IBMFont;
+    color:white;
+	overflow:auto;
+	border:1px solid magenta;
+	border-radius:5px;
+	padding:10px;
+	top:20px;
+	width:30%;
+	min-width:200px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	}
+#speak:hover{
+		cursor: pointer;
+	background-color:magenta;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;;
+	}
+#line1{
+	padding-top:20px;
+    color:white;
+	padding-right:30px;
+	font-size:16px;
+	display:none;
+	overflow:auto;
+	cursor:default;
+	}
+.typed-cursor{
+    opacity: 1;
+	color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	font-style:italic;
+    -webkit-animation: blink 0.7s infinite;
+    -moz-animation: blink 0.7s infinite;
+    animation: blink 0.7s infinite;
+}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+.typed-fade-out{
+    opacity: 0;
+    animation: 0;
+    transition: opacity .75s;
+}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:500;
+}
+.easy1{
+	background-color: transparent;
+	z-index:500;
+	position:relative;	
+	right:10px;
+	top:10px;
+	text-align:center;
+	border-radius:20%;
+	width:22px;
+	height:22px;
+	line-height:22px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: black;
+}
+.easy1:hover{
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;	
+}
+</style>
+</head>
+<body>
+<!--Audio-->
+<audio id="audio1" 
+src="sounds/fm_minor_2_shorter-bb11-1s.mp3"
+loop="true"  
+type="audio/mp3">
+</audio> 
+<audio id="audio2" 
+src="sounds/R_wicked-bb5-1.mp3"
+loop="true"  
+type="audio/mp3">
+</audio> 
+<!--End Audio-->
+<script>
+setTimeout(function(){
+	$(".inner").css({"-webkit-animation":" pulse 2s linear 1s infinite","-moz-animation":"pulse 2s linear 1s infinite","animation":"pulse 2s linear 1s infinite"});
+	$(".inner").animate({"background-color": "#ff00ff"}, 6000);
+	//$("#thingy").mouseenter(function() 
+	//{ $(this).css("box-shadow","0 0 78px blue");}).mouseleave(function() {
+	//$(this).css("box-shadow", "0 0 28px blue"); });  
+	}, 45000);
+</script>
+<!--Opening Modal dialogue-->
+<div id="openingModal">
+    <div class="openingContent">
+    <div id ="begin">Standing in front of the swamp, you imagine the sound of one thousand frogs. Beautiful red mucus drips from the walls.
+	</div>
+        <div id="speak">>>> listen closely</div>
+		<span class="closeDialogue">&times;</span>
+		<div id = "line1">You brush your hair behind your ears and try to listen to the sound of your own breath as it grows in intensity...
+		</div></div></div></div>
+<script>
+$("body").delay(500).animate({"opacity": "1"}, 700); // fade in body
+window.onload = function () {
+    document.getElementById('line1').onclick = function () {
+        document.getElementById('openingModal').style.display = "none" //close modal on click
+    };
+};		
+var modal = document.getElementById("openingModal");
+var begin = document.getElementById("begin");
+var speak = document.getElementById("speak");
+var line1 = document.getElementById("line1");
+var span = document.getElementsByClassName("closeDialogue")[0];
+span.onclick = function (){
+	$('#openingModal').fadeOut(1000);
+	//modal.style.display = "none";
+	var audio = document.getElementById("audio1");
+	audio.volume = 0;
+	$(audio1).animate({volume: .05}, 4000);	
+	audio.play();
+}
+speak.onclick = function(){
+	modal.style.display = "block";
+	begin.style.display = "none";
+	speak.style.display = "none";
+	$('#line1').fadeIn(1500);
+	//line1.style.display="block";
+	$('.closeDialogue').css({"visibility":"visible"});
+	}
+</script>
+<!--End of opening Modal dialogue-->
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">Knee deep in the swamp, algae sticks to your legs.<br><br>Resize the browser to find hidden items. Hover over objects to discover their stories.<br><br><input id="p2Back" type="button" value="> Back"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<!--Canvas drawing-->
+<script>
+$(document).ready(function() {
+   initCanvas();
+draw();
+});
+function initCanvas() {
+$('#canvas').attr("width",$(window).width());
+$('#canvas').attr("height",$(window).height());
+}
+function draw() {
+   var c = document.getElementById("canvas");
+   var ctx = c.getContext("2d");
+   ctx.lineWidth=3;
+   ctx.strokeStyle="blue";
+   var w = $(window).width()/2;
+   var h = $(window).height()/2;
+   var w2 = $(window).width();
+   var h2 = $(window).height();
+   var w3 = $(window).width()/1.3;
+   var h3 = $(window).height()/1.3;
+//ceiling 	
+ctx.beginPath();
+	ctx.moveTo(0,0);
+	ctx.lineTo(w2,0);
+	ctx.lineTo(w2,h/2);
+	ctx.lineTo(0,h/2);
+	ctx.lineTo(0,0);
+	ctx.fillStyle = 'blue';
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();	
+//left wall	
+	ctx.beginPath();
+	ctx.moveTo(0,0);
+	ctx.lineTo(w/2,h/2);
+	ctx.lineTo(w/2,h+100);
+	ctx.lineTo(w/2-100,h+200);
+	ctx.lineTo(w/2-100,h-50);
+	ctx.lineTo(w/2-200,h+50)
+	ctx.lineTo(w/2-200,h+300)
+	ctx.lineTo(0,h2)
+	ctx.fillStyle = 'blue';
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();	
+// middle wall
+	ctx.beginPath();
+	ctx.moveTo(w/2,h/2);
+	ctx.lineTo(w+w/2,h/2);
+	ctx.lineTo(w+w/2,h+100);
+	ctx.lineTo(w+100,h+100);
+	ctx.lineTo(w/2,h+100);
+    ctx.fillStyle = 'blue';
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();
+// middle wall window
+	ctx.beginPath();
+	ctx.moveTo(w-100,h+20);
+	ctx.lineTo(w-100,h-100);
+	ctx.lineTo(w-200,h-100);
+	ctx.lineTo(w-200,h+20);
+	ctx.lineTo(w-100,h+20);
+	ctx.clearRect(w-200,h-100,100,120);
+	ctx.stroke();
+	ctx.closePath();
+// middle wall window right
+	ctx.beginPath();
+	ctx.moveTo(w+100,h+20);
+	ctx.lineTo(w+100,h-100);
+	ctx.lineTo(w+200,h-100);
+	ctx.lineTo(w+200,h+20);
+	ctx.lineTo(w+100,h+20);
+	ctx.clearRect(w+100,h-100,100,120);
+	ctx.stroke();
+	ctx.closePath();
+//right wall	
+	ctx.beginPath();
+	ctx.moveTo(w+w/2,h/2);
+	ctx.lineTo(w2,0);
+	ctx.lineTo(w2,h2);
+	ctx.lineTo(w+w/2,h+100);
+	ctx.lineTo(w+w/2,h/2);
+	ctx.stroke();
+	ctx.fillStyle = 'blue';
+	ctx.fill();
+	ctx.closePath();	
+}
+$( window ).resize(function() {
+initCanvas();
+draw();
+});
+</script>
+<!--End of canvas room-->
+<!--The Room-->
+<div id ="container">
+<div id ="woman2"></div>
+<div id ="woman1"></div>
+<div id ="slime1"></div>
+<div id ="slime2"></div>
+<a href="book.html" target="_self">
+<div id ="slime3"><span class="tooltiptext">Fascinated, you watch the gooey substance suspended in the air. It casts a tiny shadow on an unseen floor</span></div></a>
+<div id ="slime4"></div>
+<div id ="slime5"></div>
+<a href="stripfighter.html" target="_self">
+<div id ="slime6"><span class="tooltiptext">A bubbling purple jelly-like oraganism rises from the water</span></div><a/>
+<div id ="dragonfly1"></div>
+<a href="bluemary.html"target="_self">
+<div id ="dragonfly2"><span class="tooltiptext">Unearthly and aggressive giant dragonflies buzz loudly, close to your ears</span></div></a>
+<div id ="dragonfly3"></div>
+<div id ="ladyNeptune2"></div>
+<a href="nimue.html" target="_self">
+<div id ="ladyNeptune"><span class="tooltiptext">The statue of Lady Neptune you recognize from your childhood journals, where you kept detailed notes on the spot patterns of the many frogs you collected with your sister</span></div>
+</a>
+<div class="inner">
+<a href="lilitu.html"><div id ="plant"></div></a></div>
+<div id="preVis"><pre>     
+
+          ,--.!,
+       __/   -*-
+     ,d08b.  '|`
+     0088MM     
+     `9MMP'     
+  hjm        
+
+
+                        . . .                         
+                         \|/                          
+                       `--+--'                        
+                         /|\                          
+                        ' | '                         
+                          |                           
+                          |                           
+                      ,--'#`--.                       
+                      |#######|                       
+                   _.-'#######`-._                    
+                ,-'###############`-.                 
+              ,'#####################`,               
+             /#########################\              
+            |###########################|             
+           |#############################|            
+           |#############################|            
+           |#############################|            
+           |#############################|            
+            |###########################|             
+             \#########################/              
+              `.#####################,'               
+                `._###############_,'                 
+                   `--..#####..--'      
+
+
+</pre></div>
+
+<div id = "preVis2"><pre>
+                (( _______
+     _______     /\O    O\
+    /O     /\   /  \      \
+   /   O  /O \ / O  \O____O\ ))      ------------------------------------------------------>
+((/_____O/    \\    /O     /
+  \O    O\    / \  /   O  /
+   \O    O\ O/   \/_____O/
+    \O____O\/ )) mrf      ))
+  ((
+  
+													------------------------------------------->
+																											|			
+  ____
+ /\' .\    _____																							|
+																											|
+																											
+/: \___\  / .  /\
+\' / . / /____/..\
+ \/___/  \'  '\  /
+          \'__'\/
+		  
+ /=/   \=\
+|=|   |=|
+\=\   /=/
+ `.\ /,'
+   `\.
+ ,'/ \`.
+/=/   \=\
+|=|   |=|
+\=\   /=/
+ `.\ /,'
+   ,/'
+ ,'/ \`.
+/=/   \=\
+|=|   |=|
+\=\   /=/
+ `.\ /,'
+   ,/'
+ ,'/ \`.
+/=/   \=\
+|=|   |=|
+\=\   /=/
+
+
+
+   (`/\
+    `=\/\
+     `=\/\
+      `=\/
+ejm      \
+
+
+
++====+
+|(::)|
+| )( |
+|(..)|
++====+
+                          
+				
+
+</pre></div>
+<div id="preVis3"><pre>
+          ;:[;::  :  :  ::  :
+          ;:[;::   :   :   :     ;
+         ;;:;[::;:    :    :
+         ;;:;[::;::   :   :     ;
+         ;;:;[;;;::         ::''
+        ;;::[;;;[:: : :    ''  ;
+       :;;::[;;[[:: :     ''
+       ;;:::[[;[[::       '   ;
+      :;:;: [[[;;: :      :  ;
+      ;::;: [[[;::           ;
+     ;::;: [[;::: :   :      ;
+    :;;:::[[[;;: ::         ;
+    ;;::;:[[;;; :   : :    ;
+    ;;:::;[[;;;  :
+    ;;:;:[[;;;:     :     ;
+    ;::;:[[;;;: :
+    ;:;:;[;;;: : :   :    ;
+    ;;::[[;;;:: :
+    ';;:[[;;;: :     :    ;
+     ;;:[[;;:::   :
+     ;;:[[;;::            ;
+     ';;[;;:: :
+      ;;[;;: :     ::     ;
+      ;;[;;;:: :  : :
+      ';;[;;::: :  ::     ;
+       ;;[;;;: :    :
+       ';[;;;::  : ::    ;
+        ;[[;;:: :  :
+        ;;[;;;:    :     ;
+        ;:[[;;::   :
+        ;:;[[;: :        ;
+        ;::[[;::   :
+        ;::[[;: :  :     ;
+        ;: ;[;;::
+        ;:  [;;:;: :     ;
+       :;:  [;;::  :
+       ;;: :[;;::        ;
+      :;;:: [;::  :
+     :;;::::[;: :        ;
+     ;;:::  [;: ::
+     ';:::::;[;:;: :     ;
+       ':::::[: ;::
+         ':::[ :[:       ;
+            ';: [:  :
+            :[: [::       ;
+           :;: :;;: :      '-:
+           [::; :[;:       :-'
+          ;::;: :;;:  :     :
+         ';::::;::"[:  :    '
+          ':: :  : :' :  :   ;
+           ':: : : ::
+              ':  : : : :     ;
+                ': ::     :    ;
+                  ': : :     :  ;
+                    -::   :      ':
+                      : ::     :   ''--::
+                      ': : :         -:  ':
+                        -:: :: :    ': '-'
+                          '-::  ': ': ':'
+</pre></div>
+<div id="preVis4"><pre>
+	       ------------..
+        ''........$$$$.
+         /'.' $;$   '$$.
+        !./'..$;$..  '$$
+        !'.$;;;;;;;$. $$
+        ' $;;;;;;;;;$ $$
+          $;; ;;;;;;$ $$
+          $;; ;;;;;;$ $$
+          $;; ;;;;;;$ $$
+          $;; ;;;;;;$ $$
+          $;; ;;;;;;$ $$
+          $;; ;;;;;;$ $$
+          $;; ;;;;;;$ $$
+          $;; ;;;;;;$ $$.
+          $;; ;;;;;;$ '$$
+          $;; ;;;;;;$
+          $;; ;;;;;;$
+          $;;;;;;;;;$
+          dp;;;;;;;;$
+           '$$$$$$$'
+ ..................................
+ !    Pull pin, Press lever,      !
+ ! Direct spray at base of flames !
+ !................................!
+
+
+ __|HM\
+/HH\.M|
+HMHH\.|
+\HMHH\|
+\\HMHH\
+HH\HMHH\
+HHH\HMHH\
+    \HMHH\-HHH\
+     \HMHH\.HHM\
+      \HMHH\.HMH\
+      |\HMHH\\HMH\
+      |H\HHH| \HMH\
+      |MH\H/   \HMH\
+      |MH\      \HMH\
+      \HMH\      \HMH\
+       \HMH\    __|HM|
+        \HMH\  /HH\.M|
+         \HMH\ |MHH\.|
+          \HMH\\HMHH\|
+           \HMH\\HMHH\
+            \HMHH\HMHH\
+             \HHHH\HMHH\
+                   \HMHH\-HHH\
+                    \HMHH\.HHM\
+                     \HMHH\.HMH\
+                     |\HMHH|\HMH
+                     |H\HMH/ \HM
+                     |MH\H/   \H
+                     |MH\      \
+                     \HMH\
+ VK                   \HMH\
+                       \HMH\
+</pre></div>
+<div id = "preVis5"><pre>
+                       "                                          .
+                        '                          '
+                        '                          .
+                        .                          .             '
+                                                   '            -
+                        .                          .
+                        .                          .            .
+
+                        '                          .            '
+                         .
+                                                   '           '
+                         '                        .
+
+                          '                       .           '
+                           .
+                                                 .           '
+                            '
+                             .                   '
+                              .                             '
+                                                 '
+                              '        .          .        '
+                               .                          .
+                               .        .         '
+                                                .         '
+                                '                 '       .
+                                .      .        . .
+                                 .                .       .
+                                                  .        .
+                                  '
+                                  .                .       '
+                                                            .
+                                  .                 .
+                                                            .
+                                   .                 .
+                                                            '
+                                   .                  .    .
+
+                                    '                  .  .
+
+                                    '                  '  .
+                                     .                 .
+                                      .                  '
+                                                        '
+                                       .               .
+
+                                        .               .
+                                         .
+
+                                       '  .             '
+                                      .
+                                           .            .
+                                      .
+                                     .      .            .
+                                           '      .
+                                    .     '  .            .
+                                  .      '  '      .
+                                  ooooOOOo,   .            .
+                                 d"      "Oo. -    ' '       .
+                                d .        'O'.     .         .
+                                O _.,oooo. .o             ooOOOOo.
+                               -O \OOOOOOOO.'  '    .   oOO"'   .O
+                              ' OoO\OOOOOOO/          .O'       .o
+                             '   "O;oOOOOo/   '      .O       .'o'
+                            o.   o;;;oOOo/           oO     -  ooOOOo
+                            OO'.oO;;;;OO.;    '     oOO .oooOOOOOOOo
+                            OOOOOO;;;;OO;;,   .     oOOOOOOOOOOOOOP
+                            OOOOOO;;;;OO;;;   '    .'"OO:;;;OOOOOO
+                             "OO:;;;;;OO;;; o'    . oO:;;;;' OOOO
+                                     'OO ,ooO     .OO;;;;;.   OO
+                                      ==oO "OOo  .OO;;;;;;;   OO
+                        :F_P:           OO- OoOOOOOO;;;;;;;   OO
+                                        OOOOOOOOOOOO;;;;;;;   OO
+                                         "OOOOOOOOOo;;;;;;;   OO
+                                             '"OOO";;;;"'     ==
+</pre></div>
+<canvas id="canvas">
+</canvas>		
+<script>
+function placer(cn) {
+    var ymax = $(window).height();
+    var xmax = $(window).width();
+    var min = 100;
+    var foo = Math.floor(Math.random() * 100);
+    var bar = Math.floor(Math.random() * 100);
+    return [foo, bar];
+}
+var imglist = ["lily2","lily3","lily4","lily5","lily6","lily1"];
+for (i=0;i<imglist.length;i++) {
+    var imgClass = imglist[i];
+    var howmany = Math.floor(Math.random() * 50+10);
+    console.log(i);
+    console.log(howmany);
+    for (j=0;j<howmany;j++) {
+        var loc = placer(imgClass);
+        var foo = $('<div />').appendTo('#container');
+        foo.css('top',loc[0] +'%');
+        foo.css('left',loc[1]+'%');
+        foo.attr('class',imgClass);
+    }
+}
+</script>
+</div>
+<!--End of the room-->
+<!--Character dialogue-->
+<button id="myBtn"></button>
+<div id = "myModal" class= "modal">
+	<div class="modal-content">
+		<span class = "close">&times;</span><br>
+			<span id = "beginChar"></span>
+			</div></div></div>
+<script>
+var modalChar = document.getElementById("myModal");
+var btn = document.getElementById("myBtn");
+var span = document.getElementsByClassName("close")[0];
+var beginChar = document.getElementById("beginChar");
+var audio1 = document.getElementById("audio1");
+var audio2 = document.getElementById("audio2");
+btn.onclick = function(){
+	$('#myModal').fadeIn(1000);
+	$(audio1).animate({volume: 0}, 1000);	
+	audio2.volume = 0;
+	$(audio2).animate({volume: .03}, 1000);	
+	audio2.play();
+	beginChar.display = "block";
+      Typed.new('#beginChar', {
+        strings: ["<i>I carved a path for myself^1000<br>While walking I'd recite Emily Dickinson’s poem that begins^1000<br><b>“We dream - Is it good we are dreaming...”^1000"],
+        typeSpeed: 2,
+		showCursor: true,
+		startDelay: 1000,
+		callback: function(){
+		$(".close").css({"visibility":"visible"});
+		setTimeout(function(){
+		$(".close").css({"-webkit-animation":"blink 1s infinite","-moz-animation":"blink 1s infinite","animation":"blink 1s infinite"});
+		},1000);}
+      });
+}
+span.onclick = function (){
+	$('#myModal').fadeOut(1000);
+	$(audio2).animate({volume: 0}, 1000);	
+	$(audio1).animate({volume: .05}, 1000);	
+	audio1.play();
+}
+</script>
+</body>
+</html>

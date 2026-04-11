@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="js/typed.js"></script>
+<meta charset="UTF-8" />
+<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="ui/1.12.1/jquery-ui.js"></script>
+<style>
+body{
+	overflow:hidden;
+	background-color:black;
+	opacity: 0;
+	}
+#container{
+	display:inline-block;
+	width:100%;
+	height:100%;
+	margin: 0 auto;
+	top: 0;
+	left: 0;
+	position:absolute;
+	z-index:3;
+	background:yellow;	
+	overflow:hidden;
+	}
+pre{font-family:Courier;
+	font-size:13px;
+	}
+#canvas{
+	position:absolute;
+	z-index:2;
+	top:0;
+	left:0;
+	overflow:hidden;
+	pointer-events:none;
+	}
+#safe{
+	position: absolute;
+	width: 148px;
+	height: 154px;
+	z-index:4;
+	bottom:10%;
+	right:10%;
+    background: url(blackroomelements/safe2.png);
+    background-size: 148px 154px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#safe .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	bottom: 110%;
+    left: 40%;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#safe .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color:blue transparent  transparent  transparent;
+}
+#safe:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+.eye1{
+	position: absolute;
+	width: 83px;
+	height: 73px;
+	z-index:1;
+    background: url(blackroomelements/eyes1.png);
+    background-size: 83px 73px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.eye2{
+	position: absolute;
+	width: 83px;
+	height: 73px;
+	z-index:1;
+    background: url(blackroomelements/eyes2.png);
+    background-size: 83px 73px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.grass{
+	position: absolute;
+	width: 52px;
+	height: 33px;
+	z-index:1;
+    background: url(blackroomelements/grass11.png);
+    background-size: 52px 33px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.grass2{
+	position: absolute;
+	width: 52px;
+	height: 33px;
+	z-index:1;
+    background: url(blackroomelements/grass11.png);
+    background-size: 52px 33px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.grass3{
+	position: absolute;
+	width: 103px;
+	height: 103px;
+	z-index:1;
+    background: url(blackroomelements/grassclump1.png);
+    background-size: 103px 103px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#eye3{
+	position: absolute;
+	width: 83px;
+	height: 73px;
+	z-index:4;
+	bottom:12%;
+	left: 36%;
+    background: url(blackroomelements/eyes2.png);
+    background-size: 83px 73px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#eye3 .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: -5px;
+    right: 105%;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#eye3 .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 45%;
+    left: 100%;
+    margin-right: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent  transparent  transparent blue;
+}
+#eye3:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#jumper{
+	position: absolute;
+	width: 160px;
+	height: 160px;
+	z-index:4;
+	right:40%;
+	bottom:20%;
+    background: url(blackroomelements/jumper.gif);
+    background-size: 160px 160px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#jumper .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: 10%;
+    left: 90%;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#jumper .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 40%;
+    right: 100%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent blue transparent  transparent ;
+}
+#jumper:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#spider{
+	position: absolute;
+	width: 112px;
+	height: 128px;
+	z-index:2;
+	right:30%;
+	top:16%;
+    background: url(blackroomelements/spider.png);
+    background-size: 112px 128px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#spider .tooltiptext {
+    visibility: hidden;
+    width: 65px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: 100%;
+    right: 50%;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#spider .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    right: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color:  transparent  transparent blue transparent ;
+}
+#spider:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#salamander{
+	position: absolute;
+	width: 96px;
+	height: 80px;
+	z-index:4;
+	right:10%;
+	top:8%;
+    background: url(blackroomelements/salamander.png);
+    background-size: 96px 80px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#salamander .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: -5px;
+    right: 105%;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#salamander .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 45%;
+    left: 100%;
+    margin-right: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent  transparent  transparent blue;
+}
+#salamander:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#flower{
+	position: absolute;
+	top: 50%; left: 50%;
+	transform: translate(-50%,-50%);
+	line-height:1.2;
+	width: 35px;
+	height: 26px;
+	z-index:2;
+	cursor:default;
+    background: url(blackroomelements/flower12.png);
+    background-size: 35px 26px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+@keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}
+@-moz-keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}
+@-webkit-keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}	
+.inner {
+	position: absolute;
+	line-height:1.2;
+	bottom:30%;
+	left:11%;
+	z-index:2;
+	border-radius:50px;
+	background-color:transparent;
+	width:100px;
+	height:100px;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;	
+}	
+.inner:hover{
+	border-radius:50px;
+	box-shadow: 0 0 28px magenta, inset 0 0 28px magenta;
+	background-color:magenta;
+}
+#preVis{
+	position: absolute;
+	z-index:3;
+	top:0;
+	left:0;
+	color:black;
+	pointer-events:none;
+}
+#preVis2{
+	position: absolute;
+	z-index:4;
+	top:10%;
+	left:20%;
+	color:red;
+	pointer-events:none;
+}
+#preVis3{
+	position: absolute;
+	z-index:3;
+	top:-10px;
+	right:-50px;
+	color:white;
+	pointer-events:none;
+}
+#myBtn{
+	position: absolute;
+	width: 94px;
+	height: 202px;
+	z-index:4;
+    background: url(blackroomelements/woman5.png);
+	background-size: 94px 202px;
+	bottom:30%;
+	z-index:6;
+	border:none;
+	left:30%;	
+	outline:none;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+
+#myBtn:hover{
+	cursor: pointer;
+	}
+@font-face{
+	font-family: IBMFont;
+	src: url(font/Px437_IBM_ISO9.ttf);
+	}
+.modal{
+	line-height:1.2;
+	display:none;
+	background:   linear-gradient(
+      rgba(255, 0, 255, 0.45), 
+      rgba(255, 0, 255, 0.45)
+    ), url("blackroomelements/bggif1.gif");
+	background-size:cover;
+	position: fixed;
+	z-index:99999;
+	padding-top:100px;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	overflow:auto;
+	box-shadow:0 0 56px magenta, inset 0 0 56px magenta;
+	text-shadow: 0 0 20px #FF00FF;
+	background-color: rgb(0,0,100); /* Fallback color */
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	}
+.modal-content {
+	box-shadow:0 0 56px magenta, inset 0 0 56px magenta;
+    background-color: rgba(0,0,0,1);
+    margin: auto;
+    padding: 20px;
+    border: 2px solid magenta;
+	border-radius: 25px;
+    width: 50%;
+	}
+.close {
+	visibility:hidden;
+    color: magenta;
+	background-color:transparent;
+	border-radius:20%;
+	width:22px;
+	height:22px;
+	line-height:24px;
+    float: right;
+	font-family: IBMFont;
+    font-size: 22px;
+	text-align:center;
+	-webkit-transition: all .7s ease-in-out;
+	-moz-transition: all .7s ease-in-out;
+	-ms-transition: all .7s ease-in-out;
+	-o-transition: all .7s ease-in-out;
+	transition: all .7s ease-in-out;
+	}
+.close:hover,
+.close:focus {
+    background-color:white;
+	color:magenta;
+    text-decoration: none;
+    cursor: pointer;
+	}
+.closeDialogue {
+    color: magenta;
+    float: right;
+	font-family: IBMFont;
+    font-size: 22px;
+	text-align: center;
+	visibility:hidden;
+	-webkit-transition: all .7s ease-in-out;
+	-moz-transition: all .7s ease-in-out;
+	-ms-transition: all .7s ease-in-out;
+	-o-transition: all .7s ease-in-out;
+	transition: all .7s ease-in-out;
+	}
+.closeDialogue:hover,
+.closeDialogue:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+	}
+#beginChar{
+	font-size:16px;
+	font-family: IBMFont;
+	color:white;
+	overflow:auto;
+	}
+#openingModal{
+	line-height:1.2;
+	position: fixed;
+	z-index:99999;
+	padding-top:100px;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	overflow:auto;
+    font-family: IBMFont;
+    background: rgba(0, 0, 100, .9);
+}
+.openingContent {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    background: black;
+	border: 2px solid white;
+	border-radius: 25px;
+	padding:20px;
+}
+#begin{
+	padding-top:20px;
+	font-size:16px;
+	font-family: IBMFont;
+	color:white;
+	overflow:auto;
+	}
+#speak{
+	box-shadow:0 0 6px magenta, inset 0 0 6px magenta;
+	position:relative;
+	font-size:16px;
+	font-family: IBMFont;
+    color:white;
+	overflow:auto;
+	border:1px solid magenta;
+	border-radius:5px;
+	padding:10px;
+	top:20px;
+	width:30%;
+	min-width:200px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	}
+#speak:hover{
+		cursor: pointer;
+	background-color:magenta;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;;
+	}
+#line1{
+	padding-top:20px;
+    color:white;
+	padding-right:30px;
+	font-size:16px;
+	display:none;
+	overflow:auto;
+	cursor:default;
+	}
+.typed-cursor{
+    opacity: 1;
+	color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	font-style:italic;
+    -webkit-animation: blink 0.7s infinite;
+    -moz-animation: blink 0.7s infinite;
+    animation: blink 0.7s infinite;
+}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+.typed-fade-out{
+    opacity: 0;
+    animation: 0;
+    transition: opacity .75s;
+}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:500;
+}
+.easy1{
+	background-color: transparent;
+	z-index:500;
+	position:relative;	
+	right:10px;
+	top:10px;
+	text-align:center;
+	border-radius:20%;
+	width:22px;
+	height:22px;
+	line-height:22px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: black;
+}
+.easy1:hover{
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;	
+}
+</style>
+</head>
+<body>
+<!--Audio-->
+<audio id="audio1" 
+src="sounds/fm_minor_2_shorter-bb11-1s.mp3"
+loop="true"  
+type="audio/mp3">
+</audio> 
+<audio id="audio2" 
+src="sounds/R_wicked-bb6-2.mp3"
+loop="true"  
+type="audio/mp3">
+</audio> 
+<!--End Audio-->
+<script>
+setTimeout(function(){
+	$(".inner").css({"-webkit-animation":" pulse 2s linear 1s infinite","-moz-animation":"pulse 2s linear 1s infinite","animation":"pulse 2s linear 1s infinite"});
+	$(".inner").animate({"background-color": "#ff00ff"}, 6000);
+	//$("#thingy").mouseenter(function() 
+	//{ $(this).css("box-shadow","0 0 78px blue");}).mouseleave(function() {
+	//$(this).css("box-shadow", "0 0 28px blue"); });  
+	}, 45000);
+</script>
+<!--Opening Modal dialogue-->
+<div id="openingModal">
+    <div class="openingContent">
+    <div id ="begin">Yellow. A furnace of gold in the corner. Humid air.  You notice streaks of red nail polish on the wall.
+	</div>
+        <div id="speak">>>> lift your arms</div>
+		<span class="closeDialogue">&times;</span>
+		<div id = "line1">You stand between the doorway and press the back of your hands against the sides of the frame, holding that pose for 30 seconds before you move out, and your arms appear to float up...
+
+		</div></div></div></div>
+<script>
+$("body").delay(500).animate({"opacity": "1"}, 700); // fade in body
+window.onload = function () {
+    document.getElementById('line1').onclick = function () {
+        document.getElementById('openingModal').style.display = "none" //close modal on click
+    };
+};		
+var modal = document.getElementById("openingModal");
+var begin = document.getElementById("begin");
+var speak = document.getElementById("speak");
+var line1 = document.getElementById("line1");
+var span = document.getElementsByClassName("closeDialogue")[0];
+span.onclick = function (){
+	$('#openingModal').fadeOut(1000);
+	var audio = document.getElementById("audio1");
+	audio.volume = 0;
+	$(audio1).animate({volume: .05}, 4000);	
+	audio.play();
+	//modal.style.display = "none";
+}
+speak.onclick = function(){
+	modal.style.display = "block";
+	begin.style.display = "none";
+	speak.style.display = "none";
+	$('#line1').fadeIn(1500);
+	//line1.style.display="block";
+	$('.closeDialogue').css({"visibility":"visible"});
+	}
+</script>
+<!--End of opening Modal dialogue-->
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">You burn so bright you no longer are made of flesh, only heat.<br><br>Resize the browser to find hidden items.<br><br><input id="p2Back" type="button" value="> Back"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<!--Canvas drawing-->
+<script>
+$(document).ready(function() {
+   initCanvas();
+draw();
+});
+function initCanvas() {
+$('#canvas').attr("width",$(window).width());
+$('#canvas').attr("height",$(window).height());
+}
+function draw() {
+   var c = document.getElementById("canvas");
+   var ctx = c.getContext("2d");
+   ctx.lineWidth=3;
+   ctx.strokeStyle="white";
+   var w = $(window).width()/2;
+   var h = $(window).height()/2;
+   var w2 = $(window).width();
+   var h2 = $(window).height();
+   var w3 = $(window).width()/1.3;
+   var h3 = $(window).height()/1.3;
+//ceiling 	
+ctx.beginPath();
+	ctx.moveTo(0,0);
+	ctx.lineTo(w2,0);
+	ctx.lineTo(w2,h/2);
+	ctx.lineTo(0,h/2);
+	ctx.lineTo(0,0);
+	ctx.fillStyle = 'yellow';
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();	
+//left wall	
+	ctx.beginPath();
+	ctx.moveTo(0,0);
+	ctx.lineTo(w/2,h/2);
+	ctx.lineTo(w/2,h+100);
+	ctx.lineTo(w/2-100,h+200);
+	ctx.lineTo(w/2-100,h-50);
+	ctx.lineTo(w/2-200,h+50)
+	ctx.lineTo(w/2-200,h+300)
+	ctx.lineTo(0,h2)
+	ctx.fillStyle = 'yellow';
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();	
+// middle wall
+	ctx.beginPath();
+	ctx.moveTo(w/2,h/2);
+	ctx.lineTo(w+w/2,h/2);
+	ctx.lineTo(w+w/2,h+100);
+	ctx.lineTo(w+100,h+100);
+	ctx.lineTo(w/2,h+100);
+    ctx.fillStyle = 'yellow';
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();
+// middle wall window
+	ctx.beginPath();
+	ctx.moveTo(w-100,h+20);
+	ctx.lineTo(w-100,h-100);
+	ctx.lineTo(w-200,h-100);
+	ctx.lineTo(w-200,h+20);
+	ctx.lineTo(w-100,h+20);
+	ctx.clearRect(w-200,h-100,100,120);
+	ctx.stroke();
+	ctx.closePath();
+// middle wall window right
+	ctx.beginPath();
+	ctx.moveTo(w+100,h+20);
+	ctx.lineTo(w+100,h-100);
+	ctx.lineTo(w+200,h-100);
+	ctx.lineTo(w+200,h+20);
+	ctx.lineTo(w+100,h+20);
+	ctx.clearRect(w+100,h-100,100,120);
+	ctx.stroke();
+	ctx.closePath();
+//right wall	
+	ctx.beginPath();
+	ctx.moveTo(w+w/2,h/2);
+	ctx.lineTo(w2,0);
+	ctx.lineTo(w2,h2);
+	ctx.lineTo(w+w/2,h+100);
+	ctx.lineTo(w+w/2,h/2);
+	ctx.stroke();
+	ctx.fillStyle = 'yellow';
+	ctx.fill();
+	ctx.closePath();	
+}
+$( window ).resize(function() {
+initCanvas();
+draw();
+});
+</script>
+<!--End of canvas room-->
+<!--The Room-->
+<div id ="container">
+<a href="catherine.html" target="_self">
+<div id ="safe"><span class="tooltiptext">A golden safe with several knobs quietly whispers something valuable</span></div></a>
+<a href="nukeem.html"target="_self">
+<div id ="jumper"><span class="tooltiptext">A dark creature agitatedly hops, its armless body propelled by bird-like legs. Is it trying to tell you something?</span></div>
+</a>
+<div id ="spider"><span class="tooltiptext">The giant spider quietly twists its legs together</span></div>
+<a href="search.html" target="_self">
+<div id ="eye3"><span class="tooltiptext">Piles of mud with dozens of eyes consider the gift of sight</span></div></a>
+<a href="chunli.html" target="_self">
+<div id ="salamander"><span class="tooltiptext">Above, a winged salamander basks in the pure yellow light</span></div></a>
+<div class="inner">
+<a href="scylla.html"><div id ="flower"></div></a></div>
+<div id="preVis"><pre>     
+        ..--'_|
+                   /  \.' :              ;--- .
+                   | \/ - |      .\      |`./  `,     ..---'|
+          ;--- .   \_/.-./     .'| \     ; _\..-. _  /  \.'`:
+          |`./  `,,' `.  | _  / \'/ |   _.\_ |  .' `,| \/ - |
+          ; _\.| _|_.,-._.' \ |  |/ '.-'\./ `._.-,._|_ /-  / .-''.
+           \   ,' /  \-.| \  |\ \| // | /|  / |.-/  \ `,--' |_ / /`-.,
+            `'-|  \_.,`-'_/_.' `._'.-.'  `._\_`-',._/  |    \ \''-'`/
+          .-.._\   / \_.';   | ,' `.  | _|   ;`._/ \												   /    _'.__.-'
+       _ |  .' `'-.|    /   ; _|_.,-._.' \;   \    |.-.-.,/` `\
+      / `._.-,._|_ \._.'`'-',' /  \-.| \  |`-'``._./ /`  / _  |`-.
+     |  / |.-/  \ `,        |  \_.,`-'_/_.'         |   ;.` \ /   \
+.--- `._\_`-',._/  |        \   / \_.';'  |     											    .`-/'.-,'`'\	  |
+|`./ |   ;`._/ \   /         '-.|    /   ;          |  \ |`-\ _/_.'
+; _\.|;   \    |.-'             `._.'`'-'            \_.`'`-'' |   _.'
+ \   '.`-'``._./                                        |  `,_.' '\.'|
+  `'--'    _ .-.                                										       _'.-.' / | /_ ;
+    .''-.,' `.  | _                                  ,' `.  ||_  '  /
+,.-'\ \ _|_.,-._./ \                                _|_.,-._.' \._-`
+ \''-',' /  \-.| \  |                           									  /` /  \-.| \  |_/-.,
+  `-._|  \_.,`-'_/_.'                           									  |  \_.,`-'_/_.'\-'/
+      \   / \_.';   |                             \   / \_.';   |__.'
+   .'_ '-|     /   ; .-.                    							    .-.'-.|    /   ; _`.
+  / _.'\  \._.'`'-''`.  | _                 										 _ |  .' `,\._.'`'-''._ ;
+  |.'\  .'      _|_.,-._.' \             											   / `._.-,._|_     `.  \'.|
+  '---'`     _,' /  \-.| \  |      _       |  / |.-/  \ `,-''. `'---'
+           .'_|  \_.,`-'_/_.'    /` `\,.-. `._\_`-',._/  | / /`-.,
+          / _.\   / \_.';   | .-'|  _ \   \|   ;`._/ \   /\''-'`/
+          |.'\ '-|     /   ; /   \ / '.;  									 |;   \    |.-`'.__.-'
+          '---'` .\._.'`'-'  |  /`'`,-.`\-'. `-'``._./
+                /_ .'\    .''`._\_ /-'| /  |   /\`_`.mx
+               : .' \;,.-'\ \ _`| ``-'`'._/-. | |'._ ;
+               |/ | ,' \''-''/ /`																													._,'  |/ /| \'.  \'.|
+               '---'    `-.__.'    _'-' |  |\ . `'---'
+                                  / /| ;\ 																									 /  |
+                                  |  |\ . '.\/
+                                  \ /.\ |   `
+                                   '.| /
+                                     '` 	
+	  
+
+ .-----------------------------------------------------------------.
+ /  .-.                                                         .-.  \
+|  /   \                                                       /   \  |
+| |\_.  |                                                     |    /| |
+|\|  | /|                                                     |\  | |/|
+| `---' |                                                     | `---' |
+|       |                                                     |       | *
+|       |-----------------------------------------------------|       |
+\       |                                                     |       /
+ \     /                                                       \     /
+  `---'                                                         `---'
+																		
+   																									
+</pre></div>
+
+<div id = "preVis2"><pre>
+
+</pre></div>
+<div id = "preVis3"><pre>
+______ MMMMMoooooooooooM8888888, 
+_____M6ooooMMMmoooooooM888888888, 
+_____Mmooo8oooooooooooooM888888888, 
+____MmmmooooooooooooooM888888888888, 
+___Moooooooooo8888888M8888888888888888, 
+__Mooooooooooooo88888M88888888888888888, 
+___MmooooooooooooooommM8888888888888888, 
+_______M88ooooo888mooMM88888888888888888, 
+________M88888888oommooM8888888888888888, 
+_________M888888ooooMM8888888888888888888, 
+_________MooooooooooM888888888888888888888, 
+______888MoooooooooM8888888888888888888888, 
+___888888MooooooooM88888888888888888888888, 
+__88888888MoooooooM8888888888mmmm88888888, 
+_888888888Mo8oooooM8888888MooooooooM888888, 
+8888888888Moo8oooM8888MM8ooooooooooooM88888, 
+8888888888Mooo88ooooM888MoooooooooooooM8888, 
+_M8o8888ooo8oo88ooo0ooMMoo888oooooooooooM88, 
+Mooo88888ooo8o88o8oooooooooo8888oooooooooM8, 
+Moo8888o8ooooo8ooooooooooooooo8888ooooooooM8, 
+Mooo88oooooooooooooooooooooooo888888oooooooM8, 
+Mooooooooooooooooooooooooooooo88888888ooooooM8, 
+_MooMooooooooooooooooooooooooooM888ooo88oooooM, 
+__Mmoooooooooooooooooooooooooo888Moooo8oooooooM, 
+___Moooooooooo8oooooooooooooo8888MMooooooooooooM, 
+____Moooooooo88ooooooooooooo88888MMM8oooooooooooM, 
+____Moooooooo88oooooooooooooo88888MMMMoooooooooooM, 
+____Moooooooo88Moooooooooooooooo88888MMMMoooooooooM, 
+___Mooooooooo88Moooooooooooooooo8MooooMMMMoooooooooM, 
+__Mooooooooo8MMooooooooooooooo88MoooooMMMMooooooooooM, 
+_Mooooooooo88MMoom888mooooooo88MooooooMM_MMoooooooooo, 
+_M8moooooo888MMoom@@8moooo8888M8oooooooMM__MMooooooo, 
+M@88moooo888MooMom8@8mooo8888MooooooooMM___Mmoooooo0, 
+_*M8mooo8888MooooMm8mooo888M888ooooooooMM___Moooooo00, 
+____MMMMMM8888oooooMMmmmmM88888oooooooMM_Moooooooo0, 
+__________M88Moooooo8888888888oooooooooooMMoooooooooo, 
+__________M88Mooooo8o888888888ooooooooooooMoooooooo88, 
+___________M88Mooooo8ooo888888oooooooooooMooooooo8888, 
+____________M888Mooo888ooooo888ooooooooooMoooooo8888M, 
+____________M88888Moo888oooooo8888ooooooMooooooo888M8, 
+_____________M888888Mo8888oooooo8888oooMooooooo888M88, 
+______________M8888888Mo8888ooooooooooMoooooooo88M888, 
+________________M888888M88888oooooooooMoooooooo8M8888, 
+_________________M8oo888M888888ooooooMoooooooo8M88888, 
+__________________M8ooooMM88888888ooMooooooooM8888ooo, 
+___________________MooooM_M88888888MooooooooM888ooooo, 
+____________________MooooM_M888888Mooooooo8M88**ooooo, 
+_____________________MooooM_mmmmmmMoooooo8Mmoooooo, 
+______________________MoooQooommmmMoooMMooooooooooo, 
+_____________________MM88ooo8ooooMMMooooooooooooooooo, 
+__________________mM8888M88o88mMmoooooooooooooooooooo, 
+____________mMMMoooooooooM888Mmoooooooooooooooooooooo, 
+_______MMMMoooooooooooooooMMooooooooooooooooooooooooo, 
+___MMMoooooooooooooooooMMoooooooooooooooooooooooooooo, 
+MMMooooooooooooooooooMMooooooooooooooooooooooooooooo8, 
+oooooooooooooooooooMMooooooooooooooooooooooooooooo888, 
+oooooooooooooooooMMooooooooooooooooooooooooooo8888888, 
+oooooooooooooooMMoooooooooooooooooooooooooo8888888888, 
+oooooooooooooMooooooooooooooooooooooooooo88888888888M, 
+ooooooooooooMooooooooooooooooooooooooo8888888888M____, 
+oooooooo88Mooooooooooooooooooooooo88888888888M_______, 
+oo8888888Mooooooooooooooooooooo888888MMMMMMMMMMMM8, 
+8888MMMMMooooooooooooooooooooo8888M888888888888888888, 
+8MMM888Moooooooooooooooooooo88M8ooooooooooo8888888888, 
+88oooooMoooooooooooooooooooMMoooooo888888888888888888, 
+8888888M8888oooooo88ooooooMoo888888888888888888888MM, 
+</pre></div>
+<canvas id="canvas">
+</canvas>								
+<script>
+function placer(cn) {
+    var ymax = $(window).height();
+    var xmax = $(window).width();
+    var min = 100;
+    var foo = Math.floor(Math.random() * 100);
+    var bar = Math.floor(Math.random() * 100);
+    return [foo, bar];
+}
+var imglist = ["grass3","eye1","eye2","grass","grass2"];
+for (i=0;i<imglist.length;i++) {
+    var imgClass = imglist[i];
+    var howmany = Math.floor(Math.random() * 50);
+    console.log(i);
+    console.log(howmany);
+    for (j=0;j<howmany;j++) {
+        var loc = placer(imgClass);
+        var foo = $('<div />').appendTo('#container');
+        foo.css('top',loc[0] +'%');
+        foo.css('left',loc[1]+'%');
+        foo.attr('class',imgClass);
+    }
+}
+</script>
+</div>
+<!--End of the room-->
+<!--Character dialogue-->
+<button id="myBtn"></button>
+<div id = "myModal" class= "modal">
+	<div class="modal-content">
+		<span class = "close">&times;</span><br>
+			<span id = "beginChar"></span>
+			</div></div></div>
+<script>
+var modalChar = document.getElementById("myModal");
+var btn = document.getElementById("myBtn");
+var span = document.getElementsByClassName("close")[0];
+var beginChar = document.getElementById("beginChar");
+var audio1 = document.getElementById("audio1");
+var audio2 = document.getElementById("audio2");
+btn.onclick = function(){
+	$('#myModal').fadeIn(1000);
+	$(audio1).animate({volume: 0}, 1000);	
+	audio2.volume = 0;
+	$(audio2).animate({volume: .03}, 1000);	
+	audio2.play();
+	beginChar.display = "block";
+      Typed.new('#beginChar', {
+        strings: ["<i>There was an urgency in the woods^1000<br>Each step I took felt more intense than the last^1000<br>I was alone, but not lonely...^1000"],
+        typeSpeed: 2,
+		showCursor: true,
+		startDelay: 1000,
+		callback: function(){
+		$(".close").css({"visibility":"visible"});
+		setTimeout(function(){
+		$(".close").css({"-webkit-animation":"blink 1s infinite","-moz-animation":"blink 1s infinite","animation":"blink 1s infinite"});
+		},1000);}
+      });
+}
+span.onclick = function (){
+	$('#myModal').fadeOut(1000);
+	$(audio2).animate({volume: 0}, 1000);	
+	$(audio1).animate({volume: .05}, 1000);	
+	audio1.play();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+body{
+	overflow:hidden;
+	background:white;
+	}
+#vase{
+	position:absolute;
+	left:0;
+	top:30%;
+	right:0;
+	bottom:0;
+	border-radius:25px;
+	background-image:url(blackroomelements/eye.gif);
+	background-size: 280px 250px;
+	background-repeat: no-repeat;
+	width:280px;
+	height:250px;
+	margin:0 auto;
+	-webkit-transition: all 1s ease-in-out;
+	-moz-transition: all 1s ease-in-out;
+	-ms-transition: all 1s ease-in-out;
+	-o-transition: all 1s ease-in-out;
+	transition: all 1s ease-in-out;
+	}
+#vase:hover{
+	-webkit-opacity: 0;
+	
+	opacity: 0;
+	}
+</style>
+</head>
+<body>
+<!--Audio-->
+<audio id="audio1" 
+src="sounds/R_fairy-bb6-2_silence1.mp3"
+type="audio/mp3">
+</audio> 
+<!--End Audio-->
+<script>
+var audio = document.getElementById("audio1");
+	  audio.volume = .01;
+	  audio.play();
+</script>
+<div id="vase"></div>
+</body>
+</html>

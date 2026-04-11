@@ -1,0 +1,586 @@
+<html>
+    <head>
+	<script>
+	paceOptions = {
+	ajax: false, // disabled
+	document: false, // disabled
+	eventLag: false, // disabled
+	elements: {
+	selectors: ['#bang']
+	}
+	};
+	</script>
+	<script src="/pace/pace.js"></script>
+    <meta charset="UTF-8" />
+    <script src="/js/phaser.min.js"></script>
+	<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="ui/1.12.1/jquery-ui.js"></script>
+    </head>
+	<style>
+body{
+	margin:0 auto;
+	background-color:black;
+}
+/*loading bar*/
+	body.pace-running:before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 1500;
+	background-color: rgba(0, 0, 0, 1);
+}
+body:before {
+	background-color: rgba(0, 0, 0, 0);
+	-webkit-transition: background-color 200ms;
+	-moz-transtition: background-color 200ms;
+	-ms-transition: background-color 200ms;
+	-o-transition: background-color: 200ms;
+	transition: background-color 200ms;
+}
+.pace {
+	-webkit-pointer-events: none;
+	pointer-events: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	z-index: 2000;
+	position: fixed;
+	margin: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 5px;
+	width: 200px;
+	background: #fff;
+	overflow: hidden;
+	border-radius:10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-ms-border-radius:10px;
+	-o-border-radius:10px;
+	}
+.pace .pace-progress {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+	max-width: 200px;
+	position: fixed;
+	z-index: 2000;
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 100%;
+	height: 100%;
+	width: 100%;
+	background: magenta;
+	}
+	.pace.pace-inactive {
+	display: none;
+	}
+#wholepage{
+	width:100%;
+	height:100%
+	width:100vw;
+	height:100vh;
+	overflow:hidden;
+	margin:0 auto;
+}
+#centercontain{
+	top:40px;
+	height:90vh;
+	width:90vw;
+	position:relative;
+	margin: 0 auto;
+	/*min-width:400px;*/
+	max-width:2500px;
+	max-height:2500px;
+}
+#red{
+	overflow:hidden;
+	position:absolute;
+	width:100px;
+	height:100%;
+	margin: 0 auto;
+}
+#blue{
+	position:absolute;
+	height:100%;
+	right:0;
+	width: calc(100% - 100px); /* IE9+ and future browsers */
+	width: -moz-calc(100% - 100px); /* Firefox */
+	width: -webkit-calc(100% - 100px); /* Chrome, Safari */
+	/*min-width:80vw-100px;*/
+	margin: 0 auto;
+	border-radius:10px;
+	border:2px solid transparent;
+	transition: border 2s;
+	overflow:hidden;
+}
+.leftimgcontain{
+  margin:0 auto;
+  text-align:center;
+  position:relative;
+  z-index:20;
+  background-size:contain;
+  background-repeat:no-repeat;
+}
+@font-face{
+	font-family: IBMFont;
+	src: url(/font/Px437_IBM_ISO9.ttf);
+	}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:999;
+}
+.easy1{
+	background-color: blue;
+	width:25px;
+	z-index:500;
+	right:10px;
+	top:10px;
+	position:absolute;
+	text-align:center;
+	border-radius:2px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: blue;
+}
+.easy1:hover{
+	background-color: pink;
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	text-align:center;
+	border-radius:6px;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;
+}
+</style>
+</head>
+<body>
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">The graveyard is more active than usual...<br><br>Use arrow keys to explore the area. Leave through a door when you're ready, or close the browser page.<br><br><input id="p2Back" type="button" value="> Close"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<div id="wholepage">
+<div id="centercontain">
+<div id="blue">
+</div>
+<div id="red">
+</div>
+</div>
+</div> 
+	<script>
+	//ENTER DOOR STUFF
+	var dooronegif = new Image();
+	dooronegif.src = 'door1.gif';
+	var doortwogif = new Image();
+	doortwogif.src = 'door2.gif';
+	var doortregif = new Image();
+	doortregif.src = 'door3.gif';
+	var imglist = ["door1","door2","door3"];
+	numImgs= Math.floor(Math.random() * imglist.length) +1;
+	toplist=[];
+	for (i=0;i<numImgs;i++){
+	  var prev=i-1;
+	  if (toplist[prev] == null){
+		toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+		while ($('#red').height()<toplist[i] + 100){
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+		}
+	  } else{
+		toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+		count = 0;
+		while (($('#red').height()<=toplist[i] + ((i+1) * 100)) && (count <= 100)){
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+			count = count + 1;
+		}	
+	  };
+	  imgindex = Math.floor(Math.random() * imglist.length);
+	  var startingimage = new Image();
+	  startingimage.src = imglist[imgindex] + "_start.png";
+	  var div = document.createElement("div");
+	  div.className = "leftimgcontain";
+	  div.id = imglist[i];
+	  div.style.top = toplist[i] + 'px';
+	  div.style.visibility="hidden";
+	  $('#red').append(div);
+	  $('#' + imglist[i]).append(startingimage);
+	};
+	function setdoorgif(objid){
+		var img = $(objid).find('img');
+		var src = img.attr('src');
+		var door = src.replace("_start.png", ".gif")
+		if (door == 'door1.gif'){
+			img.attr('src','door1.gif'); 
+		} else if (door == 'door2.gif'){
+			img.attr('src','door2.gif');
+		} else if (door == 'door3.gif'){
+			img.attr('src','door3.gif');
+		}	
+	}
+	function setlinkfaderedirect(){
+		cursors.right.enabled=false;
+		cursors.left.enabled=false;
+		cursors.up.enabled=false;
+		cursors.down.enabled=false;
+		player.alpha=0;
+		poof = game.add.sprite(player.position.x,player.position.y,"poof");
+		poof.smoothed=false;
+		poof.anchor.x=0.5;
+		poof.anchor.y=0.5;
+		poof.animations.add("poof",[],25,false,true);
+		poof.animations.play("poof",[],25,false,true);
+	  	$('body').css('pointer-events','none');
+		$("body").delay(500).animate({"opacity": "0"}, 2500); // fade out body
+	  	var linklist = ["/jessica.html"];
+		linkindex = Math.floor(Math.random() * linklist.length);
+		link = linklist[linkindex];
+		setTimeout(function(){
+			window.location.assign(link);
+		},3000);
+	}
+	$('#door1').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	});	
+	$('#door2').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	});	
+	$('#door3').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	}); 
+	var doorContain = $('#door');
+//DONE WITH DOOR STUFF
+	</script>
+	<script type="text/javascript">	
+	var game = new Phaser.Game(1000, 1000, Phaser.CANVAS, 'blue', { preload: preload, create: create, update: update });
+	function preload(){
+	game.load.image("tombstone1", "grave/tombstone1.png");
+	game.load.image("tombstone2", "grave/tombstone2.png");
+	game.load.image("tombstone3", "grave/tombstone3.png");
+	game.load.image("tombstone4", "grave/tombstone4.png");
+	game.load.image("tombstone5", "grave/tombstone5.png");
+	game.load.image("grass", "grave/grass.png");
+	game.load.image("grassclump1","grave/grassclump1.png");
+	game.load.image("grassclump3","grave/grassclump3.png");
+	game.load.image("plants13","grave/plants13.png");
+	game.load.image("plants2","grave/plants2.png");
+	game.load.image("plants11","grave/plants11.png");
+	game.load.spritesheet("carol1","grave/carol1.png",156,88);
+	game.load.spritesheet("carol2","grave/carol2.png",62,127);
+	game.load.spritesheet("carol3","grave/carol3.png",142,161);
+	game.load.spritesheet("carol4","grave/carol4.png",123,170);
+	game.load.spritesheet("carol5","grave/carol5.png",128,169);
+	game.load.spritesheet("carol6","grave/carol6.png",69,131);
+	game.load.spritesheet("ghost2","grave/ghost2.png",42,53);
+	game.load.spritesheet("ghost1","grave/ghost1.png",38,20);
+	game.load.image("icecream","grave/icecream.png");
+	game.load.spritesheet("zombie7","grave/zombie7.png",80,65);
+	game.load.spritesheet("zombie5","grave/zombie5.png",100,80);
+	game.load.spritesheet("zombie8","grave/zombie8.png",137,118);
+	game.load.spritesheet("zombie2","grave/zombie2.png",50,109);
+	game.load.image("head1","grave/head1.png");
+	game.load.image("head2","grave/head2.png");
+	game.load.image("head3","grave/head3.png");
+	game.load.image("grave1","grave/grave1.png");
+	game.load.image("grave7","grave/grave7.png");
+	game.load.image("grave5","grave/grave5.png");
+	game.load.spritesheet("flower5","grave/flower5.png",18,18);
+	game.load.spritesheet("flower4","grave/flower4.png",18,18);
+	game.load.image("food1","grave/food1.png");
+	game.load.image("food2","grave/food2.png");
+	game.load.image("food3","grave/food3.png");
+	game.load.image("food6","grave/food6.png");
+	game.load.image("food7","grave/food7.png");
+	game.load.spritesheet("candle1","grave/candle1.png",17,26);
+	game.load.spritesheet("spell15","grave/spell16.png",141,50);
+	game.load.spritesheet("vial1","grave/vial1.png",55,53);
+	game.load.image("smokepink","grave/smokepink.png");
+	game.load.spritesheet("crystalball","grave/crystalball.png",46,58);
+	game.load.spritesheet("eyeCursor","cursors/eyeCursor.png", 85,55);
+	game.load.spritesheet("poof","guiElements/geniepuff.png", 84,86);
+	game.load.bitmapFont('font', 'guiElements/font.png', 'guiElements/font.fnt');
+	game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+	game.renderer.renderSession.roundPixels = true;
+	game.world.setBounds(0,0, 2500,2500);
+	game.physics.startSystem(Phaser.Physics.ARCADE);
+	}	
+	function create(){
+	$('.leftimgcontain').css({"visibility":"visible"});
+	$("body").append("<div id='bang'></div>");
+	setTimeout(function(){
+	$('#blue').css({"border":"2px solid magenta"});
+	}, 2000);
+	game.stage.backgroundColor="#B7FFB7";
+	BG= game.add.tileSprite(0, 0,  game.world.width, game.world.height ,'grass');
+	BG.smoothed=false;
+	grasses = game.add.group ();
+	for (var i = 0; i < 50; i++){
+	grasses.create(game.world.randomX, game.world.randomY, 'grassclump1');
+	grasses.create(game.world.randomX, game.world.randomY, 'grassclump3');
+	grasses.create(game.world.randomX, game.world.randomY, 'plants13');
+	grasses.create(game.world.randomX, game.world.randomY, 'plants2');
+	grasses.create(game.world.randomX, game.world.randomY, 'plants11');
+	grasses.setAll("smoothed", false);}
+	dirt = game.add.group ();
+	for (var i = 0; i < 10; i++){
+	dirt.create(game.world.randomX, game.world.randomY, 'grave1');
+	dirt.create(game.world.randomX, game.world.randomY, 'grave7');
+	dirt.create(game.world.randomX, game.world.randomY, 'grave5');
+	dirt.setAll("smoothed", false);}
+	flowers = game.add.group ();
+	for (var i = 0; i < 50; i++){
+	flowers.create(game.world.randomX, game.world.randomY, 'flower5');
+	flowers.create(game.world.randomX, game.world.randomY, 'flower4');
+	flowers.setAll("smoothed", false);
+	flowers.callAll("animations.add","animations","flowers",[],5, true);
+	flowers.callAll("animations.play","animations","flowers");}
+	gore = game.add.group ();
+	for (var i = 0; i < 20; i++){
+	gore.create(game.world.randomX, game.world.randomY, 'head1');
+	gore.create(game.world.randomX, game.world.randomY, 'head2');
+	gore.create(game.world.randomX, game.world.randomY, 'head3');
+	gore.setAll("smoothed", false);}
+	foods = game.add.group ();
+	for (var i = 0; i < 2; i++){
+	foods.create(game.world.randomX, game.world.randomY, 'icecream');
+	foods.create(game.world.randomX, game.world.randomY, 'food1');
+	foods.create(game.world.randomX, game.world.randomY, 'food2');
+	foods.create(game.world.randomX, game.world.randomY, 'food3');
+	foods.create(game.world.randomX, game.world.randomY, 'food6');
+	foods.create(game.world.randomX, game.world.randomY, 'food7');
+	foods.setAll("smoothed", false);}
+	candles = game.add.group ();
+	for (var i = 0; i < 50; i++){
+	candles.create(game.world.randomX, game.world.randomY, 'candle1');
+	candles.setAll("smoothed", false);
+	candles.callAll("animations.add","animations","candles",[],10, true);
+	candles.callAll("animations.play","animations","candles");}
+	vials = game.add.group ();
+	for (var i = 0; i < 10; i++){
+	vials.create(game.world.randomX, game.world.randomY, 'vial1');
+	vials.setAll("smoothed", false);
+	vials.callAll("animations.add","animations","vials",[],5, true);
+	vials.callAll("animations.play","animations","vials");}
+	crystalball = game.add.group ();
+	for (var i = 0; i < 3; i++){
+	crystalball.create(game.world.randomX, game.world.randomY, 'crystalball');
+	crystalball.setAll("smoothed", false);
+	crystalball.setAll("scale.x", .6);
+	crystalball.setAll("scale.y", .6);
+	crystalball.callAll("animations.add","animations","crystalball",[],10, true);
+	crystalball.callAll("animations.play","animations","crystalball");}
+	tombstones = game.add.group ();
+	for (var i = 0; i < 30; i++){
+	tombstones.create(game.world.randomX, game.world.randomY, 'tombstone1');
+	tombstones.create(game.world.randomX, game.world.randomY, 'tombstone2');
+	tombstones.create(game.world.randomX, game.world.randomY, 'tombstone3');
+	tombstones.create(game.world.randomX, game.world.randomY, 'tombstone4');
+	tombstones.create(game.world.randomX, game.world.randomY, 'tombstone5');
+	tombstones.setAll("smoothed", false);}
+	zombies = game.add.group ();
+	for (var i = 0; i < 2; i++){
+	zombies.create(game.world.randomX, game.world.randomY, 'zombie7');
+	zombies.create(game.world.randomX, game.world.randomY, 'zombie5');
+	zombies.create(game.world.randomX, game.world.randomY, 'zombie8');
+	zombies.setAll("smoothed", false);
+	zombies.callAll("animations.add","animations","zombies",[],10, true);
+	zombies.callAll("animations.play","animations","zombies");}
+	cursors = game.input.keyboard.createCursorKeys();
+	player= game.add.sprite(100,0,"eyeCursor");	
+	game.physics.arcade.enable(player);
+	game.camera.follow(player);
+	player.body.collideWorldBounds = true;
+	player.anchor.set(0.5);
+	player.smoothed=false;
+	player.animations.add('blink', [], 2, true);
+	player.animations.play('blink', [],2,true);
+	arrows = game.add.bitmapText(player.position.x,player.position.y+60, 'font','  ← ↑ ↓ →\n arrow keys',28);
+	arrows.anchor.x=0.5;
+	arrows.smoothed=false;
+	arrows.alpha=1;
+	arrowTween = game.add.tween(arrows).to( { alpha: 0},1000,Phaser.Easing.Linear.None,true,0,-1);
+	carol = game.add.group ();
+	for (var i = 0; i < 2; i++){
+	carol.create(game.world.randomX, game.world.randomY, 'carol1');
+	carol.create(game.world.randomX, game.world.randomY, 'carol2');
+	carol.create(game.world.randomX, game.world.randomY, 'carol3');
+	carol.create(game.world.randomX, game.world.randomY, 'carol4');
+	carol.create(game.world.randomX, game.world.randomY, 'carol5');
+	carol.setAll("smoothed", false);
+	carol.callAll("animations.add","animations","carol",[],10, true);
+	carol.callAll("animations.play","animations","carol");}
+	ladyGroup = game.add.group();
+	ladyGroup.setAll("anchor.x", .5);
+	ladyGroup.setAll("anchor.y", .5);
+    ladyGroup.enableBody = true;
+	ladyGroupGen = game.time.events.loop(3500, genWalker, this);
+    ladyGroupGen.timer.start();
+	spells = game.add.group ();
+	for (var i = 0; i < 10; i++){
+	spells.create(game.world.randomX, game.world.randomY, 'spell15');
+	spells.setAll("smoothed", false);
+	spells.callAll("animations.add","animations","spells",[],10, true);
+	spells.callAll("animations.play","animations","spells");}
+	cloudGroup = game.add.group();
+    cloudGroup.enableBody = true;
+	cloudGroupGen = game.time.events.loop(800, generateCloud, this);
+    cloudGroupGen.timer.start();
+	ghost1 = game.add.group ();
+	for (var i = 0; i < 10; i++){
+	ghost1.create(game.world.randomX, game.world.randomY, 'ghost2');
+	ghost1.setAll("smoothed", false);
+	ghost1.callAll("animations.add","animations","ghost1",[],10, true);
+	ghost1.callAll("animations.play","animations","ghost1");}
+	ghostGroup = game.add.group();
+	ghostGroup.setAll("anchor.x", .5);
+	ghostGroup.setAll("anchor.y", .5);
+    ghostGroup.enableBody = true;
+	ghostGroupGen = game.time.events.loop(800, genGhost, this);
+    ghostGroupGen.timer.start();}
+	function update(){
+	player.body.velocity.x = 0;
+	player.body.velocity.y = 0;
+	if (cursors.down.isDown){      
+    player.body.velocity.y = 150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	else if (cursors.up.isDown){   
+    player.body.velocity.y = -150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}	
+	else if (cursors.right.isDown){
+    player.body.velocity.x = 150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	else if (cursors.left.isDown){  
+    player.body.velocity.x = -150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}}	
+	function genWalker(){
+	for (var i = 0; i < 1; i++){
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(80, 150);         
+	var lady;
+	lady = ladyGroup.getFirstExists(false);
+	if (!lady) {               
+	lady = game.add.sprite(-20, -10, 'carol6');
+	lady.preUpdate();
+	lady.smoothed=false;
+	lady.animations.add("lady", [],10,true);
+	lady.animations.play("lady");
+	ladyGroup.add(lady);             
+	lady.anchor.setTo(0.5, 0.5);            
+	game.physics.arcade.enableBody(lady);
+	lady.enableBody = true;}        
+	lady.anchor.setTo(0.5, 0.5);
+	lady.reset(-20,game.world.randomY); 
+	lady.body.velocity.x = velocityX;
+	lady.checkWorldBounds = true;
+	lady.outOfBoundsKill = true;}}
+	function generateCloud(){
+	for (var i = 0; i < 2; i++) {
+	var x = i * 10;
+	var velocityX = game.rnd.integerInRange(20, 80);           
+	var cloud;
+	cloud = cloudGroup.getFirstExists(false);
+	if (!cloud){            
+	cloud = game.add.sprite(x, -60, 'smokepink');
+	cloud.preUpdate();
+	cloudGroup.add(cloud);           
+	cloud.anchor.setTo(0.5, 0.5);
+	cloud.smoothed = false;
+	game.physics.arcade.enableBody(cloud);
+	cloud.enableBody = true;}
+	cloud.anchor.setTo(0.5, 0.5);
+	cloud.reset(-60,game.world.randomY); 
+	cloud.body.velocity.x = velocityX;
+	cloud.checkWorldBounds = true;
+	cloud.outOfBoundsKill = true;}}
+	function genGhost(){
+	for (var i = 0; i < 1; i++){
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(-100, -150);         
+	var ghost;
+	ghost = ghostGroup.getFirstExists(false);
+	if (!ghost) {               
+	ghost = game.add.sprite(-50, game.world.width, 'ghost1');
+	ghost.preUpdate();
+	ghost.smoothed=false;
+	ghost.animations.add("ghost", [],10,true);
+	ghost.animations.play("ghost");
+	ghostGroup.add(ghost);             
+	ghost.anchor.setTo(0.5, 0.5);            
+	game.physics.arcade.enableBody(ghost);
+	ghost.enableBody = true;}        
+	ghost.anchor.setTo(0.5, 0.5);
+	ghost.reset(game.world.width-50,game.world.randomY); 
+	ghost.body.velocity.x = velocityX;
+	ghost.checkWorldBounds = true;
+	ghost.outOfBoundsKill = true;}}
+</script>
+</body>
+</html>

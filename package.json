@@ -1,0 +1,12 @@
+{
+  "name": "pixel-sequence",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "mirror": "bash scripts/mirror-site.sh",
+    "localize:mirror": "node scripts/localize-mirror-links.mjs",
+    "build:index": "node scripts/build-asset-index.mjs",
+    "build": "npm run mirror && npm run build:index"
+  }
+}

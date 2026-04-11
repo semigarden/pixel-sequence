@@ -1,0 +1,637 @@
+<html>
+    <head>
+	<script>
+	paceOptions = {
+	ajax: false, // disabled
+	document: false, // disabled
+	eventLag: false, // disabled
+	elements: {
+	selectors: ['#bang']
+	}
+	};
+	</script>
+	<script src="pace/pace.js"></script>
+    <meta charset="UTF-8" />
+    <script src="js/phaser.min.js"></script>
+	<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="ui/1.12.1/jquery-ui.js"></script>
+    </head>
+	<style>
+body{
+	margin:0 auto;
+	background-color:black;
+}
+/*loading bar*/
+	body.pace-running:before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 1500;
+	background-color: rgba(0, 0, 0, 1);
+}
+body:before {
+	background-color: rgba(0, 0, 0, 0);
+	-webkit-transition: background-color 200ms;
+	-moz-transtition: background-color 200ms;
+	-ms-transition: background-color 200ms;
+	-o-transition: background-color: 200ms;
+	transition: background-color 200ms;
+}
+.pace {
+	-webkit-pointer-events: none;
+	pointer-events: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	z-index: 2000;
+	position: fixed;
+	margin: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 5px;
+	width: 200px;
+	background: #fff;
+	overflow: hidden;
+	border-radius:10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-ms-border-radius:10px;
+	-o-border-radius:10px;
+	}
+.pace .pace-progress {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+	max-width: 200px;
+	position: fixed;
+	z-index: 2000;
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 100%;
+	height: 100%;
+	width: 100%;
+	background: magenta;
+	}
+	.pace.pace-inactive {
+	display: none;
+	}
+#wholepage{
+	width:100%;
+	height:100%
+	width:100vw;
+	height:100vh;
+	overflow:hidden;
+	margin:0 auto;
+}
+#centercontain{
+	top:40px;
+	height:90vh;
+	width:90vw;
+	position:relative;
+	margin: 0 auto;
+	/*min-width:400px;*/
+	max-width:2500px;
+	max-height:2500px;
+}
+#red{
+	overflow:hidden;
+	position:absolute;
+	width:100px;
+	height:100%;
+	margin: 0 auto;
+}
+#blue{
+	position:absolute;
+	height:100%;
+	right:0;
+	width: calc(100% - 100px); /* IE9+ and future browsers */
+	width: -moz-calc(100% - 100px); /* Firefox */
+	width: -webkit-calc(100% - 100px); /* Chrome, Safari */
+	/*min-width:80vw-100px;*/
+	margin: 0 auto;
+	border-radius:10px;
+	overflow:hidden;
+	border:2px solid transparent;
+	transition: border 2s;
+}
+.leftimgcontain{
+  margin:0 auto;
+  text-align:center;
+  position:relative;
+  z-index:20;
+  background-size:contain;
+  background-repeat:no-repeat;
+}
+@font-face{
+	font-family: IBMFont;
+	src: url(font/Px437_IBM_ISO9.ttf);
+	}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:999;
+}
+.easy1{
+	background-color: blue;
+	width:25px;
+	z-index:500;
+	right:10px;
+	top:10px;
+	position:absolute;
+	text-align:center;
+	border-radius:2px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: blue;
+}
+.easy1:hover{
+	background-color: pink;
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	text-align:center;
+	border-radius:6px;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;
+}
+</style>
+<body>
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">You're floating above a waterfall of lava. Her name is Lola. Her hair is the color of the light reflected on your skin from the fire.<br><br>Use arrow keys to explore the area. Leave through a door when you're ready, or close the browser page.<br><br><input id="p2Back" type="button" value="> Close"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<!--
+<audio id="audio1" 
+src="sounds/arps/fm_minor_2_shorter-bb11-1s.mp3"
+type="audio/mp3"
+loop="true">
+</audio> 
+-->
+<div id="wholepage">
+<div id="centercontain">
+<div id="blue">
+</div>
+<div id="red">
+</div>
+</div>
+</div> 
+		<script>
+	//ENTER DOOR STUFF
+	var dooronegif = new Image();
+	dooronegif.src = 'door1.gif';
+	var doortwogif = new Image();
+	doortwogif.src = 'door2.gif';
+	var doortregif = new Image();
+	doortregif.src = 'door3.gif';
+	var imglist = ["door1","door2","door3"];
+	numImgs= Math.floor(Math.random() * imglist.length) +1;
+	toplist=[];
+	for (i=0;i<numImgs;i++){
+	  var prev=i-1;
+	  if (toplist[prev] == null){
+		toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+		while ($('#red').height()<toplist[i] + 100){
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+		}
+	  } else{
+		toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+		count = 0;
+		while (($('#red').height()<=toplist[i] + ((i+1) * 100)) && (count <= 100)){
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+			count = count + 1;
+		}	
+	  };
+	  imgindex = Math.floor(Math.random() * imglist.length);
+	  var startingimage = new Image();
+	  startingimage.src = imglist[imgindex] + "_start.png";
+	  var div = document.createElement("div");
+	  div.className = "leftimgcontain";
+	  div.id = imglist[i];
+	  div.style.top = toplist[i] + 'px';
+	  div.style.visibility="hidden";
+	  $('#red').append(div);
+	  $('#' + imglist[i]).append(startingimage);
+	};
+	function setdoorgif(objid){
+		var img = $(objid).find('img');
+		var src = img.attr('src');
+		var door = src.replace("_start.png", ".gif")
+		if (door == 'door1.gif'){
+			img.attr('src','door1.gif'); 
+		} else if (door == 'door2.gif'){
+			img.attr('src','door2.gif');
+		} else if (door == 'door3.gif'){
+			img.attr('src','door3.gif');
+		}	
+	}
+	function setlinkfaderedirect(){
+		/*
+		var audio = document.getElementById("audio1");
+		$(audio1).animate({volume: 0}, 1500);
+	*/
+		cursors.right.enabled=false;
+		cursors.left.enabled=false;
+		cursors.up.enabled=false;
+		cursors.down.enabled=false;
+		player.alpha=0;
+		poof = game.add.sprite(player.position.x,player.position.y,"poof");
+		poof.smoothed=false;
+		poof.anchor.x=0.5;
+		poof.anchor.y=0.5;
+		poof.animations.add("poof",[],25,false,true);
+		poof.animations.play("poof",[],25,false,true);
+	  	$('body').css('pointer-events','none');
+		$("body").delay(500).animate({"opacity": "0"}, 2500); // fade out body
+	  	var linklist = ["/cammy.html"];
+		linkindex = Math.floor(Math.random() * linklist.length);
+		link = linklist[linkindex];
+		setTimeout(function(){
+			window.location.assign(link);
+		},3000);
+	}
+	$('#door1').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	});	
+	$('#door2').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	});	
+	$('#door3').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	}); 
+	var doorContain = $('#door');
+//DONE WITH DOOR STUFF
+	</script>
+	<script type="text/javascript">	
+	var game = new Phaser.Game(1000, 1000, Phaser.CANVAS, 'blue', { preload: preload, create: create, update: update });
+	function preload() {
+	game.load.spritesheet("lava2","lola/lava2.png",64,64);
+	game.load.spritesheet("lola1","lola/lola1.png",128,136);
+	game.load.spritesheet("lolaWalk","lola/lolaWalk.png",54,133);
+	game.load.spritesheet("lola2","lola/lola2.png",125,120);
+	game.load.spritesheet("lola3","lola/lola3.png",68,136);
+	game.load.spritesheet("lola4","lola/lola4.png",63,138);
+	game.load.spritesheet("firehead","lola/firehead.png",141,136);
+	game.load.spritesheet("lavaSide","lola/lavaSide.png",64,64);
+	game.load.spritesheet("lavaTop","lola/lavaTop.png",64,24);
+	game.load.spritesheet("lavabub1","lola/lavabub1.png",54,30);
+	game.load.spritesheet("lavabub3","lola/lavabub3.png",115,30);
+	game.load.spritesheet("lavabub2","lola/lavabub2.png",122,38);
+	game.load.spritesheet("fireball3","lola/fireball3.png",21,32);
+	game.load.spritesheet("fireball2","lola/fireball2.png",21,32);
+	game.load.spritesheet("ship2","lola/ship2.png",381,118);
+	game.load.spritesheet("ship1","lola/ship1.png",382,112);
+	game.load.image("ground1","lola/ground3.png");
+	game.load.spritesheet("hummingbird","lola/hummingbird.png",44,29);
+	game.load.spritesheet("hummingbird2","lola/hummingbird2.png",44,29);
+	game.load.image("bluepen","lola/bluepen.png");
+	game.load.image("bluebook","lola/bluebook.png");
+	game.load.image("lilypink","lola/lilypink.png");
+	game.load.image("redskull","lola/redskull.png");
+	game.load.spritesheet("plant6","lola/plant6.png",71,88);
+	game.load.image("plant7","lola/plant7.png");
+	game.load.image("plant8","lola/plant8.png");
+	game.load.image("plant9","lola/plant9.png");
+	game.load.image("plant10","lola/plant10.png");
+	game.load.spritesheet("blob","lola/blob.png",52,32);
+	game.load.image("bonsai","lola/bonsai.png");
+	game.load.image("fence","lola/fence.png");
+	game.load.image("groundtile","lola/groundtile.png");
+	game.load.spritesheet("lavahand","lola/lavahand.png",80,105);
+	game.load.spritesheet("sonic1","lola/sonic1.png",16,20);
+	game.load.spritesheet("blueballoon","lola/blueballoon.png",32,75);
+	game.load.image("flag1","lola/flag1.png");
+	game.load.spritesheet("flyingthing","lola/flyingthing.png",39,39);
+	game.load.spritesheet("flyingthing2","lola/flyingthing2.png",39,39);
+	game.load.image("fogpink","lola/fogpink.png");
+	game.load.spritesheet("flowers11","lola/flowers11.png",25,34);
+	game.load.spritesheet("blueSpinner","lola/blueSpinner.png",30,31);
+	game.load.spritesheet("brain2","lola/brain2.png",94,88);
+	game.load.spritesheet("brain1","lola/brain1.png",94,88);
+	game.load.spritesheet("eyeCursor","cursors/eyeCursor.png", 85,55);
+	game.load.spritesheet("poof","guiElements/geniepuff.png", 84,86);
+		game.load.bitmapFont('font', 'guiElements/font.png', 'guiElements/font.fnt');
+
+	game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+	game.renderer.renderSession.roundPixels = true;
+	game.world.setBounds(0,0, 2500,2500);
+	game.physics.startSystem(Phaser.Physics.ARCADE);
+	}
+	function create(){
+	$('.leftimgcontain').css({"visibility":"visible"});
+	$("body").append("<div id='bang'></div>");
+	setTimeout(function(){
+	$('#blue').css({"border":"2px solid magenta"});
+	}, 2000);
+	game.stage.backgroundColor="#f5c27f";
+	BG= game.add.tileSprite(0, 0,  game.world.width, game.world.height/2 ,'lava2');
+	BG.smoothed=false;
+	BG.animations.add("lava",[],5,true);
+	BG.animations.play("lava");
+	BGSide= game.add.tileSprite(0, 1250,  game.world.width, 700 ,'lavaSide');
+	BGSide.smoothed=false;
+	BGSide.animations.add("BGSide",[],5,true);
+	BGSide.animations.play("BGSide");
+	lavaBub= game.add.tileSprite(0, 1240,  game.world.width, 30 ,'lavabub3');
+	lavaBub.smoothed=false;
+	lavaBub.animations.add("lavaBub",[],5,true);
+	lavaBub.animations.play("lavaBub");
+	lavaTop= game.add.tileSprite(0, 1250,  game.world.width, 24 ,'lavaTop');
+	lavaTop.smoothed=false;
+	lavaTop.animations.add("lavaTop",[],5,true);
+	lavaTop.animations.play("lavaTop");
+	Tile= game.add.tileSprite(0, 1950,  game.world.width, game.world.height ,'ground1');
+	Tile.smoothed=false;
+	//Tile.visible=false;
+	lavaBubble = game.add.group ();
+	for (var i = 0; i < 10; i++)
+	{
+	lavaBubble.create(lavaTop.position.x-10 + Math.random() * game.world.width, lavaTop.position.y + Math.random() * 600, 'lavabub1');
+	lavaBubble.create(lavaTop.position.x-10 + Math.random() * game.world.width, lavaTop.position.y + Math.random() * 600, 'lavabub2');
+	lavaBubble.setAll("smoothed", false);
+	lavaBubble.callAll("animations.add","animations","lavaBubble",[] ,5, true);
+	lavaBubble.callAll("animations.play","animations","lavaBubble");
+	}
+	lavaHand = game.add.group ();
+	for (var i = 0; i < 10; i++)
+	{
+	lavaHand.create(lavaTop.position.x-10 + Math.random() * game.world.width, lavaTop.position.y + Math.random() * 600, 'lavahand');
+	lavaHand.setAll("smoothed", false);
+	lavaHand.callAll("animations.add","animations","lavaHand",[] ,10, true);
+	lavaHand.callAll("animations.play","animations","lavaHand");
+	}
+	firehead = game.add.group ();
+	for (var i = 0; i < 4; i++)
+	{
+	firehead.create(lavaTop.position.x-10 + Math.random() * game.world.width, lavaTop.position.y + Math.random() * 600, 'firehead');
+	firehead.setAll("smoothed", false);
+	firehead.callAll("animations.add","animations","firehead",[] ,5, true);
+	firehead.callAll("animations.play","animations","firehead");
+	}
+	fog = game.add.group ();
+	for (var i = 0; i < 30; i++)
+	{
+	fog.create(game.world.randomX, game.world.randomY-800, 'fogpink');
+	fog.setAll("smoothed", false);
+	}
+	ship = game.add.group ();
+	for (var i = 0; i < 10; i++)
+	{
+	ship.create(game.world.randomX, game.world.randomY/2, 'ship1');
+	ship.setAll("smoothed", false);
+	ship.callAll("animations.add","animations","ship",[] ,10, true);
+	ship.callAll("animations.play","animations","ship");
+	}
+	ship.forEach(function(ship1){
+	lola = game.add.group ();
+	for (var i = 0; i < 4; i++)
+	lola.create(ship1.position.x + Math.random() *290,ship1.position.y-100, 'lola'+game.rnd.integerInRange(1, 4));
+	lola.setAll("smoothed", false);
+	lola.callAll("animations.add","animations","lola",[] ,5, true);
+	lola.callAll("animations.play","animations","lola");
+	}),this;
+	rings = game.add.group ();
+	for (var i = 0; i < 60; i++)
+	{
+	rings.create(game.world.randomX, game.world.randomY, 'sonic1');
+	rings.setAll("smoothed", false);
+	rings.callAll("animations.add","animations","rings",[] ,10, true);
+	rings.callAll("animations.play","animations","rings");
+	}
+	balloons = game.add.group ();
+	for (var i = 0; i < 10; i++)
+	{
+	balloons.create(game.world.randomX, game.world.randomY, 'blueballoon');
+	balloons.setAll("smoothed", false);
+	balloons.callAll("animations.add","animations","balloons",[] ,10, true);
+	balloons.callAll("animations.play","animations","balloons");
+	}
+	fence= game.add.tileSprite(0, 1930,  game.world.width, 22 ,'fence');
+	fence.smoothed=false;
+	cement = game.add.group ();
+	for (var i = 0; i < 20; i++)
+	{
+	cement.create(game.world.randomX, Tile.position.y + Math.random() * 550, 'groundtile');
+	cement.setAll("smoothed", false);
+	}
+	bonsai = game.add.group ();
+	for (var i = 0; i < 30; i++)
+	{
+	bonsai.create(game.world.randomX, 1910, 'bonsai');
+	bonsai.setAll("smoothed", false);
+	}
+	items = game.add.group ();
+	for (var i = 0; i < 4; i++)
+	{
+	items.create(game.world.randomX, Tile.position.y + Math.random() * 550, 'flag1');
+	items.create(game.world.randomX, Tile.position.y + Math.random() * 550, 'flag1');
+	items.create(game.world.randomX, Tile.position.y + Math.random() * 550, 'flag1');
+	items.create(game.world.randomX, Tile.position.y + Math.random() * 550, 'bluebook');
+	items.create(game.world.randomX, Tile.position.y + Math.random() * 550, 'bluepen');
+	items.create(game.world.randomX, Tile.position.y + Math.random() * 550, 'lilypink');
+	items.create(game.world.randomX, Tile.position.y + Math.random() * 550, 'redskull');
+	items.setAll("smoothed", false);
+	}
+	blob = game.add.group ();
+	for (var i = 0; i < 10; i++)
+	{
+	blob.create(game.world.randomX, Tile.position.y + Math.random() * 550, 'flowers11');
+	blob.create(game.world.randomX, Tile.position.y + Math.random() * 550, 'blob');
+	blob.setAll("smoothed", false);
+	blob.callAll("animations.add","animations","blob",[] ,10, true);
+	blob.callAll("animations.play","animations","blob");
+	}
+	plantStill = game.add.group ();
+	for (var i = 0; i < 6; i++)
+	{
+	plantStill.create(game.world.randomX, 1880, 'plant8');
+	plantStill.create(game.world.randomX, 1880, 'plant7');
+	plantStill.create(game.world.randomX, 1880, 'plant10');
+	plantStill.create(game.world.randomX, 1880, 'plant9');
+	plantStill.setAll("smoothed", false);
+	}
+	plant = game.add.group ();
+	for (var i = 0; i < 4; i++)
+	{
+	plant.create(game.world.randomX, 1880, 'plant6');
+	plant.setAll("smoothed", false);
+	plant.callAll("animations.add","animations","plant",[] ,2, true);
+	plant.callAll("animations.play","animations","plant");
+	}
+	cursors = game.input.keyboard.createCursorKeys();
+	player= game.add.sprite(100,0,"eyeCursor");	
+	game.physics.arcade.enable(player);
+	game.camera.follow(player);
+	player.body.collideWorldBounds = true;
+	player.anchor.set(0.5);
+	player.smoothed=false;
+	player.animations.add('blink', [], 2, true);
+	player.animations.play('blink', [],2,true);
+	arrows = game.add.bitmapText(player.position.x,player.position.y+60, 'font','  ← ↑ ↓ →\n arrow keys',28);
+	arrows.anchor.x=0.5;
+	arrows.smoothed=false;
+	arrows.alpha=1;
+	arrowTween = game.add.tween(arrows).to( { alpha: 0},1000,Phaser.Easing.Linear.None,true,0,-1);
+	lolaWalkGroup = game.add.group();
+    lolaWalkGroup.enableBody = true;
+	lolaWalkGroupGen = game.time.events.loop(4000,createWalk, this);
+    lolaWalkGroupGen.timer.start();
+	fireballGroup = game.add.group();
+    fireballGroup.enableBody = true;
+	fireballGroupGen = game.time.events.loop(1000,createFire, this);
+    fireballGroupGen.timer.start();
+	brain = game.add.group ();
+	for (var i = 0; i < 5; i++)
+	{
+	brain.create(game.world.randomX, game.world.randomY, 'brain1');
+	brain.create(game.world.randomX, game.world.randomY, 'brain2');
+	brain.setAll("smoothed", false);
+	brain.callAll("animations.add","animations","brain",[] ,5, true);
+	brain.callAll("animations.play","animations","brain");
+	}
+	hummingbird = game.add.group ();
+	for (var i = 0; i < 20; i++)
+	{
+	hummingbird.create(game.world.randomX, game.world.randomY, 'blueSpinner');
+	hummingbird.create(game.world.randomX, game.world.randomY, 'flyingthing');
+	hummingbird.create(game.world.randomX, game.world.randomY, 'flyingthing2');
+	hummingbird.create(game.world.randomX, game.world.randomY, 'hummingbird');
+	hummingbird.create(game.world.randomX, game.world.randomY, 'hummingbird2');
+
+	hummingbird.setAll("smoothed", false);
+	hummingbird.callAll("animations.add","animations","hummingbird",[] ,10, true);
+	hummingbird.callAll("animations.play","animations","hummingbird");
+	}
+	}
+	function update(){
+	player.body.velocity.x = 0;
+	player.body.velocity.y = 0;
+	if (cursors.down.isDown){ 
+    player.body.velocity.y = 150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	else if (cursors.up.isDown){
+    player.body.velocity.y = -150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}	
+	else if (cursors.right.isDown){
+    player.body.velocity.x = 150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	else if (cursors.left.isDown){  
+    player.body.velocity.x = -150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	}
+	function createFire(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityY = game.rnd.integerInRange(80, 150);         
+	var fireball;
+	fireball = fireballGroup.getFirstExists(false);
+	if (!fireball) {               
+	fireball = game.add.sprite(0, 0, 'fireball'+game.rnd.integerInRange(2,3));
+	fireball.animations.add("fireball", [],5,true);
+	fireball.animations.play("fireball");	
+	fireball.smoothed=false;
+	fireballGroup.add(fireball);  
+	fireball.anchor.setTo(0.5, 0.5);    			
+	game.physics.arcade.enableBody(fireball);
+	fireball.enableBody = true;
+	}        
+	fireball.anchor.setTo(0.5, 0.5);
+	fireball.reset(game.world.randomX,0); 
+	fireball.body.velocity.y = velocityY;
+	fireball.checkWorldBounds = true;
+	fireball.outOfBoundsKill = true;	
+	}}
+
+	function createWalk(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(40, 80);         
+	var lolaWalk;
+	lolaWalk = lolaWalkGroup.getFirstExists(false);
+	if (!lolaWalk) {               
+	lolaWalk = game.add.sprite(-10, 0, 'lolaWalk');
+	lolaWalk.animations.add("lolaWalk", [],8,true);
+	lolaWalk.animations.play("lolaWalk");	
+	lolaWalk.smoothed=false;
+	lolaWalkGroup.add(lolaWalk);  
+	lolaWalk.anchor.setTo(0.5, 0.5);    			
+	game.physics.arcade.enableBody(lolaWalk);
+	lolaWalk.enableBody = true;
+	}        
+	lolaWalk.anchor.setTo(0.5, 0.5);
+	lolaWalk.reset(-10,game.rnd.integerInRange(1990,2400));
+	lolaWalk.body.velocity.x = velocityX;
+	lolaWalk.checkWorldBounds = true;
+	lolaWalk.outOfBoundsKill = true;	
+	}
+	}
+	</script>
+	</body>
+	</html>

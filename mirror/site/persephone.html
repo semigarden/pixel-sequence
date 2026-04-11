@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="js/typed.js"></script>
+<meta charset="UTF-8" />
+<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="ui/1.12.1/jquery-ui.js"></script>
+<style>
+body{
+	overflow:hidden;
+	background-color:black;
+	opacity: 0;
+	margin:0;
+	}
+#container{
+	display:inline-block;
+	width:100%;
+	height:100%;
+	margin: 0 auto;
+	top: 0;
+	left: 0;
+	position:absolute;
+	z-index:3;
+	background:url("blackroomelements/grass4.png");
+	overflow:hidden;
+	}
+#canvas{
+	position:absolute;
+	z-index:3;
+	top:0;
+	left:0;
+	overflow:hidden;
+	pointer-events:none;
+	}
+pre{font-family:Courier;
+	font-size:13px;
+	}
+#plant{
+	position: absolute;
+	width: 144px;
+	height: 120px;
+	z-index:4;
+	bottom:15%;
+	right:40%;
+    background: url(blackroomelements/plant.gif);
+    background-size: 144px 120px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#plant3{
+	position: absolute;
+	width: 144px;
+	height: 120px;
+	z-index:4;
+	bottom:25%;
+	left:40%;
+    background: url(blackroomelements/plant.gif);
+    background-size: 144px 120px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#plant2{
+	position: absolute;
+	width: 152px;
+	height: 151px;
+	z-index:6;
+	bottom:5%;
+	left:35%;
+    background: url(blackroomelements/plant8.png);
+    background-size: 152px 151px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#plant2 .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+	bottom: 42%;
+    left: 160%;
+    margin-left: -100px;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#plant2 .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color:  transparent blue transparent transparent;
+}
+#plant2:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#vial2{
+	position: absolute;
+	width: 24px;
+	height:27px;
+	z-index:7;
+    background: url(blackroomelements/vial.png);
+    background-size: 24px 27px;
+	right:36%;
+	bottom:2%;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#vial2 .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	bottom: 150%;
+    left: 40%;
+    margin-left: -60px;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#vial2 .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+	z-index:7;
+    border-width: 5px;
+    border-style: solid;
+    border-color: blue transparent transparent transparent;
+}
+#vial2:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#fairy{
+	position: absolute;
+	width: 144px;
+	height: 120px;
+	z-index:5;
+	top:5%;
+	right:40%;
+    background: url(blackroomelements/fairy.gif);
+    background-size: 144px 120px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+.flower1{
+	position: absolute;
+	width: 47px;
+	height:61px;
+	z-index:1;
+    background: url(blackroomelements/flower13.png);
+    background-size: 47px 61px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+.vial{
+	position: absolute;
+	width: 24px;
+	height:27px;
+	z-index:1;
+    background: url(blackroomelements/vial.png);
+    background-size: 24px 27px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+.flower2{
+	position: absolute;
+	width: 57px;
+	height:52px;
+	z-index:1;
+    background: url(blackroomelements/flowers15.png);
+    background-size: 57px 52px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#bubbles{
+	position: absolute;
+	top: 50%; left: 50%;
+	transform: translate(-50%,-50%);
+	line-height:1.2;
+	width: 61px;
+	height:94px;
+	z-index:3;
+    background: url(blackroomelements/bubbles.png);
+    background-size: 61px 94px;
+    background-repeat: no-repeat;
+	cursor:default;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+@keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}
+@-moz-keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}
+@-webkit-keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}	
+.inner {
+	position: absolute;
+	line-height:1.2;
+	right:20%;
+	top:40%;
+	z-index:3;
+	border-radius:50px;
+	background-color:transparent;
+	width:100px;
+	height:100px;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;	
+}	
+.inner:hover{
+	border-radius:50px;
+	box-shadow: 0 0 28px magenta, inset 0 0 28px magenta;
+	background-color:magenta;
+}
+#candle{
+	position: absolute;
+	width: 20px;
+	height: 30px;
+    background: url(blackroomelements/candle2.gif);
+    background-size: 20px 30px;
+    background-repeat: no-repeat;
+	z-index:3;
+	left:40%;
+	top:40%;
+	cursor:auto;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#candle .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+	bottom: 120%;
+    left: 50%;
+    margin-left: -60px;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#candle .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: blue transparent transparent transparent;
+}
+#candle:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#preVis{
+	position: absolute;
+	z-index:4;
+	top:0;
+	left:5%;
+	color:blue;
+	pointer-events:none;
+	}
+#preVis2{
+	position: absolute;
+	z-index:4;
+	top:0;
+	right:5%;
+	color:white;
+	pointer-events:none;
+	}
+#preVis3{
+	position: absolute;
+	z-index:4;
+	top:10%;
+	left:10%;
+	color:black;
+	pointer-events:none;
+	}
+#nym5{
+	position: absolute;
+	width: 98px;
+	height: 158px;
+    background: url(blackroomelements/nym4.png);
+    background-size: 98px 158px;
+    background-repeat: no-repeat;
+	bottom:30%;
+	z-index:6;
+	border:none;
+	left:30%;	
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#nym5 .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	bottom: 110%;
+    left: 50%;
+    margin-left: -50px;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#nym5 .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: blue transparent transparent transparent;
+}
+#nym5:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#nym4{
+	position: absolute;
+	width: 98px;
+	height: 158px;
+    background: url(blackroomelements/nym6.png);
+    background-size: 98px 158px;
+    background-repeat: no-repeat;
+	bottom:10%;
+	z-index:6;
+	border:none;
+	left:20%;	
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#nym6{
+	position: absolute;
+	width: 98px;
+	height: 158px;
+    background: url(blackroomelements/nym5.png);
+    background-size: 98px 158px;
+    background-repeat: no-repeat;
+	bottom:10%;
+	z-index:6;
+	border:none;
+	right:20%;	
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#myBtn{
+	position: absolute;
+	width: 98px;
+	height: 158px;
+    background: url(blackroomelements/nym2.png);
+    background-size: 98px 158px;
+    background-repeat: no-repeat;
+	top:60%;
+	z-index:6;
+	border:none;
+	right:30%;	
+	outline:none;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#myBtn:hover{
+	cursor: pointer;
+	}
+@font-face{
+	font-family: IBMFont;
+	src: url(font/Px437_IBM_ISO9.ttf);
+	}
+.modal{
+	display:none;
+	line-height:1.2;
+	background:   linear-gradient(
+      rgba(255, 0, 255, 0.45), 
+      rgba(255, 0, 255, 0.45)
+    ), url("blackroomelements/bggif1.gif");
+	background-size:cover;
+	position: fixed;
+	z-index:99999;
+	padding-top:100px;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	box-shadow:0 0 56px magenta, inset 0 0 56px magenta;
+	overflow:auto;
+	text-shadow: 0 0 20px #FF00FF;
+	background-color: rgb(0,0,100); /* Fallback color */
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	}
+.modal-content {
+	box-shadow:0 0 56px magenta, inset 0 0 56px magenta;
+    background-color: rgba(0,0,0,1);
+    margin: auto;
+    padding: 20px;
+    border: 2px solid magenta;
+	border-radius: 25px;
+    width: 50%;
+	}
+.close {
+	visibility:hidden;
+    color: magenta;
+	background-color:transparent;
+	border-radius:20%;
+	width:22px;
+	height:22px;
+	line-height:24px;
+    float: right;
+	font-family: IBMFont;
+    font-size: 22px;
+	text-align:center;
+	-webkit-transition: all .7s ease-in-out;
+	-moz-transition: all .7s ease-in-out;
+	-ms-transition: all .7s ease-in-out;
+	-o-transition: all .7s ease-in-out;
+	transition: all .7s ease-in-out;
+	}
+.close:hover,
+.close:focus {
+    background-color:white;
+	color:magenta;
+    text-decoration: none;
+    cursor: pointer;
+	}
+.closeDialogue {
+    color: magenta;
+    float: right;
+	font-family: IBMFont;
+    font-size: 22px;
+	text-align: center;
+	visibility:hidden;
+	-webkit-transition: all .7s ease-in-out;
+	-moz-transition: all .7s ease-in-out;
+	-ms-transition: all .7s ease-in-out;
+	-o-transition: all .7s ease-in-out;
+	transition: all .7s ease-in-out;
+	}
+.closeDialogue:hover,
+.closeDialogue:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+	}
+#beginChar{
+	font-size:16px;
+	font-family: IBMFont;
+	color:white;
+	overflow:auto;
+	}
+#openingModal{
+	line-height:1.2;
+	position: fixed;
+	z-index:99999;
+	padding-top:100px;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	overflow:auto;
+    font-family: IBMFont;
+    background: rgba(0, 0, 100, .9);
+}
+.openingContent {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    background: black;
+	border: 2px solid white;
+	border-radius: 25px;
+	padding:20px;
+}
+#begin{
+	padding-top:20px;
+	font-size:16px;
+	font-family: IBMFont;
+	color:white;
+	overflow:auto;
+	}
+#speak{
+	box-shadow:0 0 6px magenta, inset 0 0 6px magenta;
+	position:relative;
+	font-size:16px;
+	font-family: IBMFont;
+    color:white;
+	overflow:auto;
+	border:1px solid magenta;
+	border-radius:5px;
+	padding:10px;
+	top:20px;
+	width:30%;
+	min-width:200px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	}
+#speak:hover{
+	cursor: pointer;
+	background-color:magenta;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;;
+	}
+#line1{
+	padding-top:20px;
+    color:white;
+	padding-right:30px;
+	font-size:16px;
+	display:none;
+	overflow:auto;
+	cursor:default;
+	}
+.typed-cursor{
+    opacity: 1;
+	color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	font-style:italic;
+    -webkit-animation: blink 0.7s infinite;
+    -moz-animation: blink 0.7s infinite;
+    animation: blink 0.7s infinite;
+}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+.typed-fade-out{
+    opacity: 0;
+    animation: 0;
+    transition: opacity .75s;
+}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:500;
+}
+.easy1{
+	background-color: transparent;
+	z-index:500;
+	position:relative;	
+	right:10px;
+	top:10px;
+	text-align:center;
+	border-radius:20%;
+	width:22px;
+	height:22px;
+	line-height:22px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: black;
+}
+.easy1:hover{
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;	
+}
+</style>
+</head>
+<body>
+<!--Audio-->
+<audio id="audio1" 
+src="sounds/crystal-bb4-1-DelaydReverbd.mp3"
+loop="true"  
+type="audio/mp3">
+</audio> 
+<audio id="audio2" 
+src="sounds/R_wicked-bb6-4-cass.mp3"
+loop="true"  
+type="audio/mp3">
+</audio> 
+<!--End Audio-->
+<script>
+setTimeout(function(){
+	$(".inner").css({"-webkit-animation":" pulse 2s linear 1s infinite","-moz-animation":"pulse 2s linear 1s infinite","animation":"pulse 2s linear 1s infinite"});
+	$(".inner").animate({"background-color": "#ff00ff"}, 6000);
+	//$("#thingy").mouseenter(function() 
+	//{ $(this).css("box-shadow","0 0 78px blue");}).mouseleave(function() {
+	//$(this).css("box-shadow", "0 0 28px blue"); });  
+	}, 45000);
+</script>
+<!--Opening Modal dialogue-->
+<div id="openingModal">
+    <div class="openingContent">
+    <div id ="begin">You awake in a room awash in pink light. Roses you recognize and strange plants you do not surround you.
+	</div>
+        <div id="speak">>>> read</div>
+		<span class="closeDialogue">&times;</span>
+		<div id = "line1">You pull a note out of your pocket that you wrote to yourself as a child. The note begins to float up slightly and disintegrate...
+		</div></div></div></div>
+<script>
+$("body").delay(500).animate({"opacity": "1"}, 700); // fade in body
+window.onload = function () {
+    document.getElementById('line1').onclick = function () {
+        document.getElementById('openingModal').style.display = "none" //close modal on click
+    };
+};		
+var modal = document.getElementById("openingModal");
+var begin = document.getElementById("begin");
+var speak = document.getElementById("speak");
+var line1 = document.getElementById("line1");
+var span = document.getElementsByClassName("closeDialogue")[0];
+span.onclick = function (){
+	$('#openingModal').fadeOut(1000);
+	var audio = document.getElementById("audio1");
+	audio.volume = 0;
+	$(audio).animate({volume: .04}, 4000);	
+	audio.play();
+	//modal.style.display = "none";
+}
+speak.onclick = function(){
+	modal.style.display = "block";
+	begin.style.display = "none";
+	speak.style.display = "none";
+	$('#line1').fadeIn(1500);
+	//line1.style.display="block";
+	$('.closeDialogue').css({"visibility":"visible"});
+	}
+</script>
+<!--End of opening Modal dialogue-->
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">The pink in this room is flesh-like, warm to your eyes.<br><br>Resize the browser to find hidden items. Hover over objects to discover their stories.<br><br><input id="p2Back" type="button" value="> Back"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<!--Canvas drawing-->
+<script>
+$(document).ready(function() {
+   initCanvas();
+draw();
+});
+function initCanvas() {
+$('#canvas').attr("width", $(window).width());
+$('#canvas').attr("height",$(window).height());
+}
+function draw() {
+   var c = document.getElementById("canvas");
+   var ctx = c.getContext("2d");
+   ctx.lineWidth=3;
+   ctx.strokeStyle="black";
+   var w = $(window).width()/2;
+   var h = $(window).height()/2;
+   var w2 = $(window).width();
+   var h2 = $(window).height();
+   var w3 = $(window).width()/1.3;
+   var h3 = $(window).height()/1.3;
+//ceiling 	
+	ctx.beginPath();
+	ctx.moveTo(0,0);
+	ctx.lineTo(w2,0);
+	ctx.lineTo(w2,h/2);
+	ctx.lineTo(0,h/2);
+	ctx.lineTo(0,0);
+	ctx.globalAlpha = .8;
+	ctx.fillStyle = 'magenta';
+	ctx.fill();
+	//ctx.stroke();
+	ctx.closePath();	
+//left wall	
+	ctx.beginPath();
+	ctx.moveTo(0,0);
+	ctx.lineTo(w/2,h/2);
+	ctx.lineTo(w/2,h+100);
+	ctx.lineTo(w/2-100,h+200);
+	ctx.lineTo(w/2-100,h-50);
+	ctx.lineTo(w/2-200,h+50);
+	ctx.lineTo(w/2-200,h+300);
+	ctx.lineTo(0,h2);
+	ctx.globalAlpha = 1;
+    ctx.fillStyle = "magenta";
+	ctx.fill();
+	//ctx.stroke();
+	ctx.closePath();	
+//middle wall
+	ctx.beginPath();
+	ctx.moveTo(w/2,h/2);
+	ctx.lineTo(w+w/2,h/2);
+	ctx.lineTo(w+w/2,h+100);
+	ctx.lineTo(w+100,h+100);
+	ctx.lineTo(w/2,h+100);
+	ctx.globalAlpha = 0.8;
+    ctx.fillStyle = 'pink';
+	ctx.globalAlpha = .8;
+    ctx.fill();
+	ctx.strokeStyle="magenta";
+	ctx.stroke();
+	ctx.closePath();
+//middle wall window
+	clearCircle(ctx,/*x=*/w-50,/*y=*/h-50,/*radius=*/50);
+	function clearCircle(ctx,x,y,radius) {
+	ctx.save();
+	ctx.beginPath();
+	ctx.arc(x, y, radius, 0, 2*Math.PI, true);
+	ctx.stroke();
+	ctx.clip();
+	ctx.clearRect(x-radius,y-radius,radius*2,radius*2);
+	ctx.restore();
+	}	
+//middle wall window right
+	clearCircle(ctx,/*x=*/w+100,/*y=*/h-50,/*radius=*/50);
+	function clearCircle(ctx,x,y,radius) {
+	ctx.save();
+	ctx.beginPath();
+	ctx.arc(x, y, radius, 0, 2*Math.PI, true);
+	ctx.lineWidth=10;
+    ctx.strokeStyle="#00ff00";
+	ctx.stroke();
+	ctx.clip();
+	ctx.clearRect(x-radius,y-radius,radius*2,radius*2);
+	ctx.restore();
+	}
+//right wall	
+	ctx.beginPath();
+	ctx.moveTo(w+w/2,h/2);
+	ctx.lineTo(w2,0);
+	ctx.lineTo(w2,h2);
+	ctx.lineTo(w+w/2,h+100);
+	ctx.lineTo(w+w/2,h/2);
+	ctx.globalAlpha = 1;
+    ctx.fillStyle = "magenta";
+	ctx.fill();
+	//ctx.stroke();
+	ctx.closePath();	
+}
+$( window ).resize(function() {
+initCanvas();
+draw();
+});
+</script>
+<!--The Room-->
+<div id ="container">
+<a href="dora.html" target="_self">
+<div id ="plant2">
+<span class="tooltiptext">The feathery arms of the viney weed sway casually, as if in a soft breeze</span>
+</div><a>
+<div id ="candle">
+<span class="tooltiptext">A small faint candle is lit behind the wall. The candle is familiar to you, perhaps you have seen it in another place
+</span>
+</div>
+<div id ="plant"></div>
+<div id ="plant3"></div>
+<div class="inner">
+<a href="sorn.html"><div id ="bubbles"></div></a></div>
+<div id="preVis"><pre>	
+                        __    _                                   
+                    _wr""        "-q__                             
+                 _dP                 9m_     
+               _#P                     9#_                         
+              d#@                       9#m                        
+             d##                         ###                       
+            J###                         ###L                      
+            {###K                       J###K                      
+            ]####K      ___aaa___      J####F                      
+        __gmM######_  w#P""   ""9#m  _d#####Mmw__                  
+     _g##############mZ_         __g##############m_               
+   _d####M@PPPP@@M#######Mmp gm#########@@PPP9@M####m_             
+  a###""          ,Z"#####@" '######"\g          ""M##m            
+ J#@"             0L  "*##     ##@"  J#              *#K           
+ #"               `#    "_gmwgm_~    dF               `#_          
+7F                 "#_   ]#####F   _dK                 JE          
+]                    *m__ ##### __g@"                   F          
+                       "PJ#####LP"                                 
+ `                       0######_                      '           
+                       _0########_                                   
+     .               _d#####^#####m__              ,              
+      "*w_________am#####P"   ~9#####mw_________w*"                  
+          ""9@#####@M""           ""P@#####@M""                    
+
+
+		  
+		  
+                .-~~~~~~~~~-._       _.-~~~~~~~~~-.
+            __.'              ~.   .~              `.__
+          .'//                  \./                  \\`.
+        .'//                     |                     \\`.
+      .'// .-~"""""""~~~~-._     |     _,-~~~~"""""""~-. \\`.
+    .'//.-"                 `-.  |  .-'                 "-.\\`.
+  .'//______.============-..   \ | /   ..-============.______\\`.
+.'______________________________\|/______________________________`.		
+
+
+        *
+     *  *r*  *
+  * *a* ^Y^ *i* *
+ *m*^Y^*^\^*^Y^*s*
+ ^Y^*\*e*/*l*/*^Y^
+ *\*t*|Y^\^Y|*l*/*
+*s*|Y^\\^/^//^Y|*a*
+^Y^\\_^\\\//^_//^Y^
+^\_^\_\_\//_/_/^_/^
+ ^^\_^\_\\/_/^_/^^
+   ^^\_ \// _/^^
+       \_\_/
+        /|\
+       /\\/\  
+</pre></div>	
+<div id="preVis2"><pre>
+    ?.$$$$$"     `L         ;;;;;;;,          .`.`.`.`$;??h,_        `h
+     ?$$$$$       ""'       `;;;;;;;;,         `.`.`.`.hJ"  `"??cc,    $
+ ?"???"??"          j'       :;;;;;;;;;;,       .`.`.`.`$               $
+ ;;,                 $        :;;;;;;;;;;;,      `.`.`.`.$c,,__          $
+ i;;,                 h         `':;;;;;;;;;,      `.`.`.`h    `"         ?c
+ `$;;;;,              $r           `:;;;;;;;;,      .`.`.`.$
+   J$i;;h             $;             `:;;;;;;;,      `.`.`.`$""=,
+ .$$$$h;,            ,C;       .j???c, `;t;;;;,        `.`.`.?c
+ $$$$$$h;,           $;,       J;;;;i;L. :?);;,           .`.`.?h,_
+ $$$$$$$;           j';        $;;;$h9;L `:?);;,                ,C?h.
+ ?$$$$$$;           $;,        `$;?ii$;;h `;L;;,                (C;;?h
+  3$$$$?;          J?;,         `h;;;;;;P  :;L;,                `$;;$?L
+ .$$$$;;'         ,C;;,           `?CjjF   `;3;,                 $;;?h$
+ $$$$;;:          $;;;,                    `;3;                  `h;;;F
+ $$$?;;        `.JF;;;,                     ;3;                   `hiF    J"
+ $$?;'     .`.`.c$h;;;;,                   ;;f;,                 ,;iF   z" z
+ C;;       .`.`JCCC$;;;;;                 ;;$;;;; `;i;,         ;;J"   J' J'
+ ;;      .`.` JF;;??$hi;;;;.            .;;$;;;;;, ;?$;;;,    ,;;i$   J'.P
+ '      `.`. ,C;;;;,  `"h;;;;;;;;;;;;;;;i$?;;;;;;;, :;?h;;;;;;;;9"?. j','
+       .`.` .$;;;;'       "??iijjjjii?""`.`;;;;;;;,  `;;?h;;;;iP   $,'.P
+      `.`. ,C;;;,                             `;;;;,  `;;;J""'     `h $
+     .`.  ,C;;;;'                               ;;,    ;;;9         $$
+    `.`  ,C;;;;f                                `;;,   `;;J  r      `L
+   .`   z$;;;;,                                 `;,     ;;9  $       h
+       j"`h;;;'                                 `;,     ;;$  `r      3
+      j' ,c;;,                                   ;,     ;;$   $      `h
+     .P <$;;,                                   `;,    .;;$.  ?.      $
+                     J" .          `"            -c,
+                    j'(r "??cc,,_                   h  $
+                    3.P          `"""""=c,,_         ? `L        
+                  zP""??cc,__               "=,_      ? ".      L
+                .P           ""??cc,_           "=c_   $ ".     $       .
+               ,"                   `"h,_          `=c. $ ".     h      $
+             ,J'                        `"==c,        `"$h ".    $     .F
+           ,"         """===cc,,,            "?c,         "??h   `L    J
+          J'                                     "=c,_       `?.  ?.   P
+         J'                                          "c,       `?. h  j'
+       ,J??;;??$c,,_     `=cccc,                        "r        $$  $
+     c"`.`.`.`;;;;;;??c,._        "=c                  .  "h.      3 .f
+   J??P`.`.`.`.`.;;;;;;;;;??;"==ccy, "c                `h    "c,   3 j
+ ,$i;;P`.`.`.`.`.`;;;;;;;;P`.`;ccc,"c `h                 ".    "h. j.$
+ 'hC;9F`.`.`.`.`.`.;;;;;;F.`.$9?;h;;$F  ?.                 ".     "?$'
+  ?h;P.`.`.`.`.`.`.;;;;;j'.`3;;???;;$?L  ?.                  "c     $
+   $P`.`.`.`.`.`.`.,;;;;9`.`?h;;;;;?'`.h  ?                    "h   $
+   ?;`.`.`.`.`.`.`.;;;;;9`.`.`"????`.`.?L                        "h $
+    $`.`.`.`.`.`.`;;;;;;9`.`.`.`.`.`.`.``h                         `$
+     L.`.`.`.`.``;;;;;;;?`.`.`.`.`.`.`.`.`$                   `,    $
+     `L`.`.`.`.`;;;j;;;;;L.`.`.`.`.`.`.`.`.?.                   ",  ?.
+       ?i`.`.`.;;;j;;;;;;?;`.`.`.`.`.`.`.`.`.h                   `,  L
+        `?i..`,;;$;;';;;.`.h.`.`.`.`.`.`.`.`.`?c                  $   h
+           "?h$??F.``;;;.`.;$c.`.`.`.`.`.`.`.`.`$L                `h  J
+                $;`.`;;`.`.`;;?hy_.`.`.`.`.`.`,c$$h.               ?.j'
+               .$`.`.;;`.`.`.;;;;"??$ccyyyccJ??;;;$3c               $$
+               j'`.`.;.`.`.`.`.;;;;;;;;;;;;;;;;;;;;$`h              `$
+              .$.`.`.`.`.`.`.`.``;;;;;;;;;;;;;;.`;;;$ "c             $
+              j'.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`;;;$. "c           $-
+              $`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.;;;$.  $L,        $
+              $`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`;;;$  `h "h     .$  ,P
+              F`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.;;;h  `h  "h   ;F. $
+              C`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`;;;L  `r   $, $ ?,f
+              h`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.;;9r  ?   `fcF  $
+              $`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.;;;$   L   $   j'
+              $`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.;;;;$  $   $   J'
+              $`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`;;;;;?h `cc='  J'
+              $`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.,;;;;;;9.J     $
+              ?`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`,;;;;;;;$$'     $
+              `h.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.,;;;;;;;9"       $
+               $.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.;;;;;;;;9         "h
+               $.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`;;;;;;;;;$          c????c
+               j.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`.`;;;;;;;;;9        .P
+			           *
+     *  *r*  *
+  * *a* ^Y^ *i* *
+ *m*^Y^*^\^*^Y^*s*
+ ^Y^*\*e*/*l*/*^Y^
+ *\*t*|Y^\^Y|*l*/*
+*s*|Y^\\^/^//^Y|*a*
+^Y^\\_^\\\//^_//^Y^
+^\_^\_\_\//_/_/^_/^
+ ^^\_^\_\\/_/^_/^^
+   ^^\_ \// _/^^
+       \_\_/
+        /|\
+       /\\/\ 
+</pre></div>	
+<div id="preVis3"><pre>
+     *					  *r			* 																*
+  * *a* ^Y												^ *							i* *
+ *m*^Y^*^\^*^Y^*s*
+ ^Y^*\*e								/*l*/*^Y^
+ *\*t*|Y^																		^Y|*l*/*
+*s*|Y^\\^/^//^Y|*a*
+																				^Y^\\_^\\\/		/^_//    ^Y^
+^\_^\_												\_		\//_/_/^_/^
+ ^^\_^\_\\/_							/^_/^^
+   ^^\_ \																		// _			^^
+       \											_\_													/	
+											/|					\
+													/\						\/					\
+</pre></div>
+<script>
+function placer(cn) {
+    var ymax = $(window).height();
+    var xmax = $(window).width();
+    var min = 50;
+    var foo = Math.floor(Math.random() * 100);
+    var bar = Math.floor(Math.random() * 100);
+    return [foo, bar];
+}
+var imglist = ["flower1","flower2","vial"];
+for (i=0;i<imglist.length;i++) {
+    var imgClass = imglist[i];
+    var howmany = Math.floor(Math.random() * 25);
+    console.log(i);
+    console.log(howmany);
+    for (j=0;j<howmany;j++) {
+        var loc = placer(imgClass);
+        var foo = $('<div />').appendTo('#container');
+        foo.css('top',loc[0] +'%');
+        foo.css('left',loc[1]+'%');
+        foo.attr('class',imgClass);
+    }
+}
+</script>
+<canvas id="canvas"></canvas>
+<a href="vast/jennifer.html" target="_self"><div id = "nym5"><span class="tooltiptext">Four kneeling women decorate every corner of the room with hair longer than you’ve ever seen. Are they praying or plotting? 
+</span></div></a>
+<a href="/shimmer.html" target="_self">
+<div id ="vial2">
+<span class="tooltiptext">A small container with a reddish cap sits near one of the kneeling women. It’s filled with a liquid, maybe ink or perfume</span>
+</div></a>
+<div id = "nym4"></div>
+<div id = "nym6"></div>
+<a href="lilith.html"target="_self"><div id = "fairy"></div></a>
+</div>	
+<!--End of the room-->
+<!--Character dialogue-->
+<button id="myBtn"></button>
+<div id = "myModal" class= "modal">
+	<div class="modal-content">
+		<span class = "close">&times;</span><br>
+			<span id = "beginChar"></span>
+			</div></div></div>
+<script>
+var modalChar = document.getElementById("myModal");
+var btn = document.getElementById("myBtn");
+var span = document.getElementsByClassName("close")[0];
+var beginChar = document.getElementById("beginChar");
+var audio1 = document.getElementById("audio1");
+var audio2 = document.getElementById("audio2");
+btn.onclick = function(){
+	$('#myModal').fadeIn(1000);
+	$(audio1).animate({volume: 0}, 1000);	
+	audio2.volume = 0;
+	$(audio2).animate({volume: .03}, 1000);	
+	audio2.play();
+	beginChar.display = "block";
+      Typed.new('#beginChar', {
+        strings: ["<i>I would crouch down beneath^500<br>the needles of a massive pine tree^500<br>and read Wuthering Heights with a flashlight^1000<br>Its big, dangerous, brooding heroes, who could eventually destroy me for real^1000<br>In that moment just seemed romantic...^1000"],
+        typeSpeed: 2,
+		showCursor: true,
+		startDelay: 1000,
+		callback: function(){
+		$(".close").css({"visibility":"visible"});
+		setTimeout(function(){
+		$(".close").css({"-webkit-animation":"blink 1s infinite","-moz-animation":"blink 1s infinite","animation":"blink 1s infinite"});
+		},1000);}
+      });
+}
+span.onclick = function (){
+	$('#myModal').fadeOut(1000);
+	$(audio2).animate({volume: 0}, 1000);	
+	$(audio1).animate({volume: .04}, 1000);	
+	audio1.play();
+}
+</script>
+<!--End character dialogue-->
+</body>
+</html>

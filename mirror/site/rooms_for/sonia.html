@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<head>
+<script>
+paceOptions = {
+  ajax: false, // disabled
+  document: false, // disabled
+  eventLag: false, // disabled
+  elements: {
+    selectors: ['#bang']
+  }
+};
+</script>
+<script src="/pace/pace.js"></script>
+<meta charset="UTF-8" />
+<script src="/js/phaser.min.js"></script>
+<script src="/rooms_for/js/boot.js"></script>
+<script src="/rooms_for/js/preload.js"></script>
+<script src="/rooms_for/js/gameStart.js"></script>
+<script src="../ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<style>
+body{
+	margin:0 auto;
+	background-color:black;
+	overflow: hidden;
+	}
+/*loading bar*/
+body.pace-running:before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 1500;
+	background-color: rgba(0, 0, 0, 1);
+}
+body:before {
+	background-color: rgba(0, 0, 0, 0);
+	-webkit-transition: background-color 200ms;
+	-moz-transtition: background-color 200ms;
+	-ms-transition: background-color 200ms;
+	-o-transition: background-color: 200ms;
+	transition: background-color 200ms;
+}
+.pace {
+	-webkit-pointer-events: none;
+	pointer-events: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	z-index: 2000;
+	position: fixed;
+	margin: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 5px;
+	width: 200px;
+	background: #fff;
+	overflow: hidden;
+	border-radius:10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-ms-border-radius:10px;
+	-o-border-radius:10px;
+	}
+.pace .pace-progress {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+	max-width: 200px;
+	position: fixed;
+	z-index: 2000;
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 100%;
+	height: 100%;
+	width: 100%;
+	background: magenta;
+	}
+	.pace.pace-inactive {
+	display: none;
+	}
+#gameDivContain{
+	position:relative;
+	margin:0 auto;
+	padding:10px;
+	height:90vh;
+	}
+#gameDiv{
+	position:relative;
+	top: 10px;
+	right:0px;
+	left:0px;
+	bottom:0px;
+	overflow: hidden;
+	width:80%;
+	height:auto;
+	border-radius:5px;
+	max-width:2200px;
+	max-height:2200px;
+	margin:auto;
+	border:2px solid transparent;
+	transition: border 2s;
+	}
+@font-face{
+	font-family: IBMFont;
+	src: url(/font/Px437_IBM_ISO9.ttf);
+	}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:999;
+}
+.easy1{
+	background-color: blue;
+	width:25px;
+	z-index:500;
+	right:10px;
+	top:10px;
+	position:absolute;
+	text-align:center;
+	border-radius:2px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: blue;
+}
+.easy1:hover{
+	background-color: pink;
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	text-align:center;
+	border-radius:6px;
+	outline:none;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;
+	outline:none;
+}
+</style>
+</head>
+    <body>
+	<div id="gameDivContain">
+	<div id="gameDiv"></div></div>
+	<div class="containerHelp">
+	<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+	<div class="easy2">Follow Sonia. She's been here before.<br><br>Exit through the door if it appears. Or close the browser when you've had enough.<br><br><input id="p2Back" type="button" value="> Close"></div>
+	</div>
+	<script>
+	$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+	});
+	$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+	});
+	</script> 
+	<!--Audio-->
+	<audio id="audio1"
+	type="audio/mp3"
+	loop="true">
+	</audio>
+	<!--End Audio-->
+	<script>
+	var audio1 = document.getElementById("audio1");
+	audio1.volume = 0;
+	$(audio1).animate({volume: .1}, 1400);	
+	audio1.play();
+	(function() {
+	var game = new Phaser.Game(1280, 720, Phaser.CANVAS, 'gameDiv');
+	game.state.add("boot",boot);
+	game.state.add("preload",preload);
+	game.state.add("gameStart",gameStart);
+	game.state.start("boot");
+	})();    
+	</script>
+</body>
+</html>

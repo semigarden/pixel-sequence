@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8"/>
+<script src="/pace/pace.js"></script>
+<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="ui/1.12.1/jquery-ui.js"></script>
+</head>
+<style>
+body{
+margin:0 auto;
+background-color:black;
+}
+/*loading bar*/
+body.pace-running:before {
+content: "";
+position: fixed;
+top: 0;
+left: 0;
+bottom: 0;
+right: 0;
+z-index: 1500;
+background-color: rgba(0, 0, 0, 1);
+}
+body:before {
+background-color: rgba(0, 0, 0, 0);
+-webkit-transition: background-color 200ms;
+-moz-transtition: background-color 200ms;
+-ms-transition: background-color 200ms;
+-o-transition: background-color: 200ms;
+transition: background-color 200ms;
+}
+.pace {
+-webkit-pointer-events: none;
+pointer-events: none;
+-webkit-user-select: none;
+-moz-user-select: none;
+user-select: none;
+z-index: 2000;
+position: fixed;
+margin: auto;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+height: 5px;
+width: 200px;
+background: #fff;
+overflow: hidden;
+border-radius:10px;
+-moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+-ms-border-radius:10px;
+-o-border-radius:10px;
+}
+.pace .pace-progress {
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+-ms-box-sizing: border-box;
+-o-box-sizing: border-box;
+box-sizing: border-box;
+-webkit-transform: translate3d(0, 0, 0);
+-moz-transform: translate3d(0, 0, 0);
+-ms-transform: translate3d(0, 0, 0);
+-o-transform: translate3d(0, 0, 0);
+transform: translate3d(0, 0, 0);
+max-width: 200px;
+position: fixed;
+z-index: 2000;
+display: block;
+position: absolute;
+top: 0;
+right: 100%;
+height: 100%;
+width: 100%;
+background: magenta;
+}
+.pace.pace-inactive {
+display: none;
+}
+.container{
+position:absolute;
+background-color:#00ff00;
+top: 50%;
+left: 50%;
+margin-right: -50%;
+transform: translate(-50%, -50%);
+width:90%;
+height:90%;
+border:1px solid transparent #00ff00;
+border-radius: 50px;
+overflow:hidden;
+}
+.one{
+position:absolute;
+top:5%;
+left:10%;
+z-index:2;
+width:560px;
+height:310px;
+}
+.two{
+position:absolute;
+top:20%;
+left:10%;
+z-index:2;
+width:560px;
+height:310px;
+}
+.three{
+position:absolute;
+top:40%;
+left:20%;
+z-index:2;
+width:560px;
+height:310px;
+}
+.four{
+position:absolute;
+top:70%;
+left:30%;
+z-index:2;
+width:560px;
+height:310px;
+}
+.five{
+position:absolute;
+top:70%;
+left:50%;
+z-index:2;
+width:560px;
+height:310px;
+}
+.six{
+position:absolute;
+top:62%;
+left:48%;
+z-index:2;
+width:560px;
+height:310px;
+}
+.seven{
+position:absolute;
+top:62%;
+left:15%;
+z-index:2;
+width:560px;
+height:310px;
+}
+.eight{
+position:absolute;
+top:33%;
+left:66%;
+z-index:2;
+width:560px;
+height:310px;
+}
+.nine{
+position:absolute;
+top:0;
+left:0;
+z-index:1;
+width:560px;
+height:310px;
+}
+.ten{
+position:absolute;
+top:-5%;
+left:57%;
+z-index:1;
+width:560px;
+height:310px;
+}
+.eleven{
+position:absolute;
+bottom:0;
+left:0;
+z-index:1;
+width:560px;
+height:310px;
+}
+.twelve{
+position:absolute;
+bottom:50%;
+right:20%;
+z-index:1;
+width:560px;
+height:310px;
+}
+.thirteen{
+position:absolute;
+bottom:20%;
+right:5%;
+z-index:1;
+width:560px;
+height:315px;
+}
+iframe{
+border:none;
+outline:none;
+}
+@font-face{
+	font-family: IBMFont;
+	src: url(/font/Px437_IBM_ISO9.ttf);
+	}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:999;
+}
+.easy1{
+	background-color: magenta;
+	color:white;
+	width:26px;
+	z-index:500;
+	right:10px;
+	top:10px;
+	position:absolute;
+	text-align:center;
+	border-radius:2px;
+	line-height:1.2;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+}
+.easy1:hover{
+	color:white;
+	background-color: magenta;
+	z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:white;
+	z-index:500;
+	right:0px;
+	text-align:center;
+	line-height:1.2;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	line-height:1.2;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;
+	line-height:1.2;
+}
+</style>
+<body>
+<script>
+</script>
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">You hear your heart, thumping.<br><br>Close the browser page to leave.<br><br><input id="p2Back" type="button" value="> Close"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<div class="container">
+<div class = "one">
+<iframe width="560" height="315" style="opacity:0.5;" src="https://www.youtube.com/embed/NzKZVYqUwEQ?controls=0&amp;showinfo=0;autoplay=1&amp;loop=1&amp;playlist=NzKZVYqUwEQ" frameborder="0" allowfullscreen></iframe>
+</div>
+<div class = "two">
+<iframe width="560" height="315" style="opacity:0.5;"src="https://www.youtube.com/embed/9-jl0aeTz_Q?rel=0&amp;controls=0&amp;showinfo=0;autoplay=1&amp;loop=1&amp;playlist=9-jl0aeTz_Q" frameborder="0" allowfullscreen></iframe>
+</div>
+<div class = "three">
+<iframe width="560" height="315" style="opacity:0.5;" src="https://www.youtube.com/embed/V9dEoLraUKs?rel=0&amp;controls=0&amp;showinfo=0;autoplay=1&amp;loop=1&amp;playlist=V9dEoLraUKs" frameborder="0" allowfullscreen></iframe>
+</div>
+<div class = "four">
+<iframe width="560" height="315"style="opacity:0.5;" src="https://www.youtube.com/embed/gx2baGWpggM?rel=0&amp;controls=0&amp;showinfo=0;autoplay=1&amp;loop=1&amp;playlist=gx2baGWpggM" frameborder="0" allowfullscreen></iframe>
+</div>
+<div class = "five">
+<iframe width="560" height="315"style="opacity:0.5;" src="https://www.youtube.com/embed/yKHWBFJtRHI?rel=0&amp;controls=0&amp;showinfo=0;autoplay=1&amp;loop=1&amp;playlist=yKHWBFJtRHI" frameborder="0" allowfullscreen></iframe>
+</div>
+<div class = "six">
+<iframe width="560" height="315" style="opacity:0.5;"src="https://www.youtube.com/embed/gd8I5zU8AVk?rel=0&amp;controls=0&amp;showinfo=0;autoplay=1&amp;loop=1&amp;playlist=gd8I5zU8AVk" frameborder="0" allowfullscreen></iframe>
+</div>
+<div class = "seven">
+<iframe width="560" height="315"style="opacity:0.5;" src="https://www.youtube.com/embed/0I3QZjDHcNA?rel=0&amp;controls=0&amp;showinfo=0;autoplay=1&amp;loop=1&amp;playlist=0I3QZjDHcNA" frameborder="0" allowfullscreen></iframe>
+</div>
+<div class = "eight">
+<iframe width="560" height="315" style="opacity:0.5;"src="https://www.youtube.com/embed/NUeYHl9bmws?rel=0&amp;controls=0&amp;showinfo=0;autoplay=1&amp;loop=1&amp;playlist=NUeYHl9bmws" frameborder="0" allowfullscreen></iframe>
+</div>
+<div class = "nine">
+<iframe width="560" height="315" style="opacity:0.5;"src="https://www.youtube.com/embed/ZlyWnLLe0xw?rel=0&amp;enablejsapi=1&amp;start=42&version=3&amp;controls=0&amp;showinfo=0;autoplay=1&amp;loop=1&amp;playlist=ZlyWnLLe0xw" frameborder="0" ></iframe>
+</div>
+<div class = "ten">
+<iframe width="560" height="315" style="opacity:0.5;"src="https://www.youtube.com/embed/MJB-4MPBT5c?rel=0&amp;controls=0&amp;showinfo=0;autoplay=1&amp;loop=1&amp;playlist=MJB-4MPBT5c" frameborder="0" allowfullscreen></iframe>
+</div>
+<div class = "eleven">
+<iframe id ="muteYouTubeVideoPlayer" width="560" height="315" style="opacity:0.5;"src="https://www.youtube.com/embed/OK-E1THyDjY?rel=0&amp;enablejsapi=1&amp;start=42&version=3&amp;controls=0&amp;showinfo=0;autoplay=1&amp;loop=1&amp;playlist=OK-E1THyDjY" frameborder="0" allowfullscreen></iframe>
+</div>
+<div class = "twelve">
+<iframe width="560" height="315" style="opacity:0.5;"src="https://www.youtube.com/embed/cUKXRdmgcfo?rel=0&amp;controls=0&amp;showinfo=0;autoplay=1&amp;loop=1&amp;playlist=cUKXRdmgcfo" frameborder="0" allowfullscreen></iframe>
+</div>
+<div class = "thirteen">
+<iframe width="560" height="315" style="opacity:0.5;"src="https://www.youtube.com/embed/P4FdRkh4bEI?rel=0&amp;controls=0&amp;showinfo=0;autoplay=1&amp;loop=1&amp;playlist=P4FdRkh4bEI" frameborder="0" ></iframe>
+</div>
+</div>
+<script async src="https://www.youtube.com/iframe_api"></script>
+<script>
+ function onYouTubeIframeAPIReady() {
+	var player;
+	player = new YT.Player('muteYouTubeVideoPlayer', {
+	videoId: 'OK-E1THyDjY', 
+	width: 560,               
+	height: 316,             
+	playerVars:{
+	autoplay: 1,        
+	controls: 0,       
+	showinfo: 0,        
+	modestbranding: 1, 
+	loop: 1,           
+	fs: 0,              
+	start:22,
+	cc_load_policy: 0, 
+	iv_load_policy: 3,  
+	autohide: 0},
+	events: {
+	onReady: function(e) {
+	e.target.mute();
+	}}});}
+	// Written by @labnol 
+</script>
+</body>
+</html>
+

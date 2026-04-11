@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="pace/pace.js"></script>
+<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="ui/1.12.1/jquery-ui.js"></script>
+<script src="js/typed.js"></script>
+<meta charset="UTF-8" />
+<style>
+body{
+	overflow:hidden;
+	background-color:black;
+	opacity: 0;
+	margin:0;
+	}
+#container{
+	display:inline-block;
+	width:100%;
+	height:100%;
+	margin: 0 auto;
+	top: 0;
+	left: 0;
+	position:absolute;
+	z-index:3;
+	background:#ff00ff;	
+	overflow:hidden;
+	}
+pre{font-family:Courier;
+	font-size:13px;
+	}
+#canvas{
+	position:absolute;
+	z-index:2;
+	top:0;
+	left:0;
+	overflow:hidden;
+	pointer-events:none;
+	}
+#bug{
+	position: absolute;
+	width: 94px;
+	height: 125px;
+	z-index:4;
+	bottom:20%;
+	right:40%;
+    background: url(blackroomelements/woman54.png);
+    background-size: 94px 125px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#bug .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: 80%;
+    left: 0;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#bug .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    right:50%;
+    margin-right: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent   transparent  blue transparent ;
+}
+#bug:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#bug2{
+	position: absolute;
+	width: 83px;
+	height: 131px;
+	z-index:4;
+	top:20%;
+	right:10%;
+    background: url(blackroomelements/woman54.png);
+    background-size: 83px 131px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#plant{
+	position: absolute;
+	width: 306px;
+	height: 200px;
+	z-index:4;
+	top:20%;
+	right:10%;
+    background: url(blackroomelements/plant9.png);
+    background-size:306px 200px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#plant .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: -5px;
+    right: 65%;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#plant .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    margin-right: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent  transparent  transparent blue;
+}
+#plant:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}	 
+#slime{
+	position: absolute;
+	width: 144px;
+	height: 120px;
+	z-index:4;
+	bottom:20%;
+	right:20%;
+    background: url(blackroomelements/slime13.gif);
+    background-size:144px 120px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#slime .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: 50%;
+    right: 80%;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#slime .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 40%;
+    left: 100%;
+    margin-right: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent  transparent  transparent blue;
+}
+#slime:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#slime3{
+	position: absolute;
+	width: 105px;
+	height: 48px;
+	z-index:3;
+	top:35%;
+	left:15%;
+    background: url(blackroomelements/slime3.png);
+    background-size:105px 48px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#corpse{
+	position: absolute;
+	width: 148px;
+	height: 76px;
+	z-index:6;
+	top:25%;
+	left:35%;
+    background: url(blackroomelements/corpse.png);
+    background-size:148px 76px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#corpse .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: -5px;
+    right: 105%;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#corpse .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 45%;
+    left: 100%;
+    margin-right: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent  transparent  transparent blue;
+}
+#corpse:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+} 
+#corpse2{
+	position: absolute;
+	width: 148px;
+	height: 76px;
+	z-index:2;
+	bottom:25%;
+	left:2%;
+    background: url(blackroomelements/corpse2.png);
+    background-size:148px 76px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#corpse2 .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: 110%;
+    left: 0;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#corpse2 .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    right:50%;
+    margin-right: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent   transparent  blue transparent ;
+}
+#corpse2:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}	
+
+#statue{
+	position: absolute;
+	top: 50%; left: 50%;
+	transform: translate(-50%,-50%);
+	line-height:1.2;
+	width: 60px;
+	height: 100px;
+	z-index:2;
+	cursor:default;
+    background: url(blackroomelements/statue.png);
+    background-size:60px 100px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+@keyframes pulse {
+  0% { box-shadow:0 0 28px blue, inset 0 0 28px blue; }
+  50% { box-shadow:0 0 56px blue, inset 0 0 54px blue; }
+  100% { box-shadow:0 0 28px blue, inset 0 0 28px blue; }
+}
+@-moz-keyframes pulse {
+  0% { box-shadow:0 0 28px blue, inset 0 0 28px blue; }
+  50% { box-shadow:0 0 56px blue, inset 0 0 54px blue; }
+  100% { box-shadow:0 0 28px blue, inset 0 0 28px blue; }
+}
+@-webkit-keyframes pulse {
+  0% { box-shadow:0 0 28px blue, inset 0 0 28px blue; }
+  50% { box-shadow:0 0 56px blue, inset 0 0 54px blue; }
+  100% { box-shadow:0 0 28px blue, inset 0 0 28px blue; }
+}	
+.inner {
+	position: absolute;
+	line-height:1.2;
+	bottom:0;
+	right:1%;
+	z-index:2;
+	border-radius:50px;
+	background-color:transparent;
+	width:100px;
+	height:100px;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;	
+}	
+.inner:hover{
+	border-radius:50px;
+	box-shadow: 0 0 28px blue, inset 0 0 28px blue;
+	background-color:blue;
+}
+#unicorn{
+	position: absolute;
+	width: 96px;
+	height: 116px;
+	z-index:2;
+	top:15%;
+	right:35%;
+    background: url(blackroomelements/unicorn.png);
+    background-size: 96px 116px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.slime2{
+	position: absolute;
+	width: 105px;
+	height: 48px;
+	z-index:1;
+    background: url(blackroomelements/slime3.png);
+    background-size:105px 48px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.flower1{
+	position: absolute;
+	width: 34px;
+	height: 43px;
+	z-index:1;
+    background: url(blackroomelements/flower10.png);
+    background-size: 34px 43px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+
+.flower2{
+	position: absolute;
+	width: 21px;
+	height: 27px;
+	z-index:1;
+    background: url(blackroomelements/flower11.png);
+    background-size: 21px 27px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.flower3{
+	position: absolute;
+	width: 35px;
+	height: 26px;
+	z-index:1;
+    background: url(blackroomelements/flower12.png);
+    background-size: 35px 26px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.bubbles{
+	position: absolute;
+	width: 61px;
+	height: 94px;
+	z-index:1;
+    background: url(blackroomelements/bubbles.png);
+    background-size: 61px 94px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.clothe{
+	position: absolute;
+	width: 171px;
+	height: 127px;
+	z-index:1;
+    background: url(blackroomelements/clothe1.png);
+    background-size: 171px 127px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#preVis{
+	position: absolute;
+	z-index:3;
+	top:0;
+	left:0;
+	color:blue;
+	pointer-events:none;
+}
+#preVis2{
+	position: absolute;
+	z-index:4;
+	top:10%;
+	left:20%;
+	color:red;
+	pointer-events:none;
+}
+#preVis3{
+	position: absolute;
+	z-index:3;
+	top:5%;
+	right:5%;
+	color:white;
+	pointer-events:none;
+}
+#myBtn{
+	position: absolute;
+	width: 200px;
+	height:160px;
+	z-index:4;
+    background: url(blackroomelements/woman11.png);
+	background-size: 200px 160px;
+	bottom:30%;
+	z-index:6;
+	border:none;
+	left:30%;	
+	outline:none;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+
+#myBtn:hover{
+	cursor: pointer;
+	}
+@font-face{
+	font-family: IBMFont;
+	src: url(font/Px437_IBM_ISO9.ttf);
+	}
+.modal{
+	display:none;
+	line-height:1.2;
+	background:   linear-gradient(
+      rgba(255, 0, 255, 0.45), 
+      rgba(255, 0, 255, 0.45)
+    ), url("blackroomelements/bggif1.gif");
+	background-size:cover;
+	position: fixed;
+	z-index:99999;
+	padding-top:100px;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	overflow:auto;
+	box-shadow:0 0 56px magenta, inset 0 0 56px magenta;
+	text-shadow: 0 0 20px #FF00FF;
+	background-color: rgb(0,0,100); /* Fallback color */
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	}
+.modal-content {
+	box-shadow:0 0 56px magenta, inset 0 0 56px magenta;
+    background-color: rgba(0,0,0,1);
+    margin: auto;
+    padding: 20px;
+    border: 2px solid magenta;
+	border-radius: 25px;
+    width: 50%;
+	}
+.close {
+	visibility:hidden;
+    color: magenta;
+	background-color:transparent;
+	border-radius:20%;
+	width:22px;
+	height:22px;
+	line-height:24px;
+    float: right;
+	font-family: IBMFont;
+    font-size: 22px;
+	text-align:center;
+	-webkit-transition: all .7s ease-in-out;
+	-moz-transition: all .7s ease-in-out;
+	-ms-transition: all .7s ease-in-out;
+	-o-transition: all .7s ease-in-out;
+	transition: all .7s ease-in-out;
+	}
+.close:hover,
+.close:focus {
+    background-color:white;
+	color:magenta;
+    text-decoration: none;
+    cursor: pointer;
+	}
+.closeDialogue {
+    color: magenta;
+    float: right;
+	font-family: IBMFont;
+    font-size: 22px;
+	text-align: center;
+	visibility:hidden;
+	-webkit-transition: all .7s ease-in-out;
+	-moz-transition: all .7s ease-in-out;
+	-ms-transition: all .7s ease-in-out;
+	-o-transition: all .7s ease-in-out;
+	transition: all .7s ease-in-out;
+	}
+.closeDialogue:hover,
+.closeDialogue:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+	}
+#beginChar{
+	font-size:16px;
+	font-family: IBMFont;
+	color:white;
+	overflow:auto;
+	}
+#openingModal{
+	line-height:1.2;
+	position: fixed;
+	z-index:99999;
+	padding-top:100px;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	overflow:auto;
+    font-family: IBMFont;
+    background: rgba(0, 0, 100, .9);
+}
+.openingContent {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    background: black;
+	border: 2px solid white;
+	border-radius: 25px;
+	padding:20px;
+}
+#begin{
+	padding-top:20px;
+	font-size:16px;
+	font-family: IBMFont;
+	color:white;
+	overflow:auto;
+	}
+#speak{
+	box-shadow:0 0 6px magenta, inset 0 0 6px magenta;
+	position:relative;
+	font-size:16px;
+	font-family: IBMFont;
+    color:white;
+	overflow:auto;
+	border:1px solid magenta;
+	border-radius:5px;
+	padding:10px;
+	top:20px;
+	width:30%;
+	min-width:200px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	}
+#speak:hover{
+	cursor: pointer;
+	background-color:magenta;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;;
+	}
+#line1{
+	padding-top:20px;
+    color:white;
+	padding-right:30px;
+	font-size:16px;
+	display:none;
+	overflow:auto;
+	cursor:default;
+	}
+.typed-cursor{
+    opacity: 1;
+	color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	font-style:italic;
+    -webkit-animation: blink 0.7s infinite;
+    -moz-animation: blink 0.7s infinite;
+    animation: blink 0.7s infinite;
+}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+.typed-fade-out{
+    opacity: 0;
+    animation: 0;
+    transition: opacity .75s;
+}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:500;
+}
+.easy1{
+	background-color: transparent;
+	z-index:500;
+	position:relative;	
+	right:10px;
+	top:10px;
+	text-align:center;
+	border-radius:20%;
+	width:22px;
+	height:22px;
+	line-height:22px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: black;
+}
+.easy1:hover{
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;	
+}
+</style>
+</head>
+<body>
+<!--Audio-->
+<audio id="audio1" 
+src="sounds/fm_minor_2_shorter-bb11-1s.mp3"
+loop="true"  
+type="audio/mp3">
+</audio> 
+<audio id="audio2" 
+src="sounds/DelaydReverbd_wicked_1.mp3"
+loop="true"  
+type="audio/mp3">
+</audio> 
+<!--End Audio-->
+<script>
+setTimeout(function(){
+	$(".inner").css({"-webkit-animation":" pulse 2s linear 1s infinite","-moz-animation":"pulse 2s linear 1s infinite","animation":"pulse 2s linear 1s infinite"});
+	$(".inner").animate({"background-color": "#ff00ff"}, 6000);
+	//$("#thingy").mouseenter(function() 
+	//{ $(this).css("box-shadow","0 0 78px blue");}).mouseleave(function() {
+	//$(this).css("box-shadow", "0 0 28px blue"); });  
+	}, 45000);
+</script>
+<!--Opening Modal dialogue-->
+<div id="openingModal">
+    <div class="openingContent">
+    <div id ="begin">The walls have disappeared. You feel silk and heat on your arms. The door opens and you are in the woods.
+	</div>
+        <div id="speak">>>> touch your skin</div>
+		<span class="closeDialogue">&times;</span>
+		<div id = "line1">You touch your skin but your fingers pass through your arms, leaving a burning smell...
+		</div></div></div></div>
+<script>
+$("body").delay(500).animate({"opacity": "1"}, 700); // fade in body
+window.onload = function () {
+    document.getElementById('line1').onclick = function () {
+        document.getElementById('openingModal').style.display = "none" //close modal on click
+    };
+};		
+var modal = document.getElementById("openingModal");
+var begin = document.getElementById("begin");
+var speak = document.getElementById("speak");
+var line1 = document.getElementById("line1");
+var span = document.getElementsByClassName("closeDialogue")[0];
+span.onclick = function (){
+	$('#openingModal').fadeOut(1000);
+	var audio = document.getElementById("audio1");
+	audio.volume = 0;
+	$(audio1).animate({volume: .05}, 4000);	
+	audio.play();
+	//modal.style.display = "none";
+}
+speak.onclick = function(){
+	modal.style.display = "block";
+	begin.style.display = "none";
+	speak.style.display = "none";
+	$('#line1').fadeIn(1500);
+	//line1.style.display="block";
+	$('.closeDialogue').css({"visibility":"visible"});
+	}
+</script>
+<!--End of opening Modal dialogue-->
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">There are no longer walls, only waves of magenta.<br><br>Resize the browser to find hidden items.<br><br><input id="p2Back" type="button" value="> Back"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<!--Canvas drawing-->
+<script>
+$(document).ready(function() {
+   initCanvas();
+draw();
+});
+function initCanvas() {
+$('#canvas').attr("width",$(window).width());
+$('#canvas').attr("height",$(window).height());
+}
+function draw() {
+   var c = document.getElementById("canvas");
+   var ctx = c.getContext("2d");
+   ctx.lineWidth=3;
+   ctx.strokeStyle="#ff00ff";
+   var w = $(window).width()/2;
+   var h = $(window).height()/2;
+   var w2 = $(window).width();
+   var h2 = $(window).height();
+   var w3 = $(window).width()/1.3;
+   var h3 = $(window).height()/1.3;
+//ceiling 	
+ctx.beginPath();
+	ctx.moveTo(0,0);
+	ctx.lineTo(w2,0);
+	ctx.lineTo(w2,h/2);
+	ctx.lineTo(0,h/2);
+	ctx.lineTo(0,0);
+	ctx.fillStyle = '#ff00ff';
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();	
+//left wall	
+	ctx.beginPath();
+	ctx.moveTo(0,0);
+	ctx.lineTo(w/2,h/2);
+	ctx.lineTo(w/2,h+100);
+	ctx.lineTo(w/2-100,h+200);
+	ctx.lineTo(w/2-100,h-50);
+	ctx.lineTo(w/2-200,h+50)
+	ctx.lineTo(w/2-200,h+300)
+	ctx.lineTo(0,h2)
+	ctx.fillStyle = '#ff00ff';
+	ctx.fill();
+    ctx.strokeStyle="white";
+	ctx.stroke();
+	ctx.closePath();	
+// middle wall
+	ctx.beginPath();
+	ctx.moveTo(w/2,h/2);
+	ctx.lineTo(w+w/2,h/2);
+	ctx.lineTo(w+w/2,h+100);
+	ctx.lineTo(w+100,h+100);
+	ctx.lineTo(w/2,h+100);
+    ctx.fillStyle = '#ff00ff';
+	ctx.fill();
+	ctx.strokeStyle="#ff00ff";
+	ctx.stroke();
+	ctx.closePath();
+// middle wall window
+	ctx.beginPath();
+	ctx.moveTo(w-100,h+20);
+	ctx.lineTo(w-100,h-100);
+	ctx.lineTo(w-200,h-100);
+	ctx.lineTo(w-200,h+20);
+	ctx.lineTo(w-100,h+20);
+	ctx.clearRect(w-200,h-100,100,120);
+	 ctx.strokeStyle="white";
+	ctx.stroke();
+	ctx.closePath();
+// middle wall window right
+	ctx.beginPath();
+	ctx.moveTo(w+100,h+20);
+	ctx.lineTo(w+100,h-100);
+	ctx.lineTo(w+200,h-100);
+	ctx.lineTo(w+200,h+20);
+	ctx.lineTo(w+100,h+20);
+	ctx.clearRect(w+100,h-100,100,120);
+	ctx.stroke();
+	ctx.closePath();
+//right wall	
+	ctx.beginPath();
+	ctx.moveTo(w+w/2,h/2);
+	ctx.lineTo(w2,0);
+	ctx.lineTo(w2,h2);
+	ctx.lineTo(w+w/2,h+100);
+	ctx.lineTo(w+w/2,h/2);
+	  ctx.strokeStyle="#ff00ff";
+	ctx.stroke();
+	ctx.fillStyle = '#ff00ff';
+	ctx.fill();
+	ctx.closePath();	
+}
+$( window ).resize(function() {
+initCanvas();
+draw();
+});
+</script>
+<!--End of canvas room-->
+<!--The Room-->
+<div id ="container">
+<a href="/rooms_for/sonia.html" target="_self">
+<div id ="bug"><span class="tooltiptext">An insect with the face of a woman curiously considers your own wingless body</span></div></a>
+<div id ="bug2"></div>
+<a href="lola.html"target="_self">
+<div id ="plant"><span class="tooltiptext">A head of sludge and hair poses elegantly<span></div></a>
+<a href="lilith.html"target="_self">
+<div id ="slime"><span class="tooltiptext">A tiny puddle of mauve liquid continuously engulfs itself</span></div>
+<a href="baby.html" target="_self">
+<div id ="corpse"><span class="tooltiptext">The smell of decay from the armored corpse mixes with the fragrance of the pink flowers</span></div></a>
+<a href="nukeem.html" target="_self">
+<div id ="corpse2"><span class="tooltiptext">Glowing mucus cautiously digests the remains of a creature</span></div></a>
+<a href="nukeem.html" target="_self">
+<div id ="slime3"></div></a>
+<div class="inner">
+<a href="succubus.html"><div id ="statue"></div></a></div>
+<a href="baby.html" target="_self">
+<div id ="unicorn"></div></a>
+<div id="preVis"><pre>     
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM                           MMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM                   MMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM                     MMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMDZDMMMO8OMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNMNNDND$N7MMMMMMMMMMMM				MMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMN8Z7++NNDD$IMMNNMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMDMIM87N8D88ONMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNNOII?M8D$88ZOMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM8D8O7$?IM8O88IMDMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNM$=+?DON88DO7MMMMMMMMMMMM	MMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMN7OI++NDOMDM7ODMOMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM88DDO$$?IMNZ$DNO8ONMNMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMZ7?ZO+=OO+?7ND8$8$NNMMMMMMMMMMM			MMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMZI++??+=+DO8$I~D7Z$878MMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM$?=+?++=?I?+=Z??NIOZOMMMMMMMMMMMM									MMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM$I++??+?8=Z?7===?D$OOO7MMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM7I+$$77II7$?+I==+NZ8$O8MMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMZI+=O8I++I7D$I===?M7$8$7DMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM7?=8$7I?Z7Z$8ZZ+$+~7$O?7MMMMMM								MMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMII+$7?++Z7+=I+7II$+~DZ$$7MMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMI77I++I$7I+=I+=+=$?~=Z$?MMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM7I?++$7777???++=D7I=~N87MMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMII?MI77I7I+=?===~O$I~D$I										MMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMI77?7I+?I=:~~N7?~=ZZMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMI7III?===~~~==7+:~878MMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM77II77?+===~=II=:~DI88MMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM77I?I7I?+==~=Z7~~N8IMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM77III??+=~~=I$?~~DOIMMMMMMMMMMM				MMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM7II++Z77O8ZOZI~~DZ$7DMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMII?+~=OZZ8DNO+:$8777MMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM8II?=:7$OODI?I=Z8Z8NMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM?7I+~:8$$7++=?DOO8MMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM?I?+~:~$Z+??=~~MMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM?7I+~:~NOZNZ?==MMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMI7I+~:~=8ZO8$?8MMMMMMMMMMM													MMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM?7I+~:~+7+=ZI$MNMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM7I=~:~ZI=~$$Z8MMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM77+~~=$?~::OMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMOIM8=OMMMMMMMMMMM7?=~~OI=~:NMNMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMM+$~:~+7$ZI~~:~77Z77Z+???O?7+~=:$?~~MMMMMMMMMMMMMMMMMMMMMMMM			MMM
+MMMMMMMMMMMM,=:~?O7?:~~=$$$Z+~::+Z$ZZI+??7?I7+==$++?88OZMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMI?7:::~O77?~~~?7ZZ+~::=I$OZI+?7?I7?+I$7~=ZO8I?Z8ZMDMMMMMMMMMMMMMMMMMMM
+MMMMMMMMD~O$?O:::~ZI+:::=?I$$~::=777I+=III7I=777I=OOO+?ZZZDZZOD$MMMMMMMMMMMMMMMM
+MMMMMMNN~::O7I7~::=7II~:~?7$$~:::?I7Z?+?I7=:D777?:OZ$7OZOZ7ZZ8?ZD?MMMMMMMMMMMMMM
+MMMMMM8OZ~::Z77?:::777~~~:I$Z~~::I7$$==I7+~:I77I~ZOZ?ZOOZ77Z7$OD8N8ZNMMMMMMMMMMM
+MMMMMM~+Z$Z::+$?+:::I?7~~:+7$I:::I777=+II~~$I7I+:OZ=ZDO$?7$?$DDDZZOOODMMMMMMMMMM
+MMMMM?~~:=O$:::II=::,I?I::,+77~:::?II~+7?=O?7I+~O7$$8D7I7$I8DD$$Z$Z=?OMMMMMMMMMM
+MMMMM??D+~~Z7:::??=:::??~,::+I+~::???=$I?ZZI7+~:?7=Z8$I7$+8D$7Z$7O?O8D$ZMMMMMMMM
+MMMMM:,?Z7=::$I~:~+=:::??:::=+?~:,+?+?7II87I?~Z777Z8$7$ZIDO$Z7777O8ZI7ZZ7MMMMMMM
+MMMMMZ,:::IZ=:~7I::==:::~+:::=++:~=+?7II$8OI~I$												$I?O8IZ7$8$I$O7O87$I7ZZZ88$MMMMMM
+MMMMMMM++=~::$7~=7=:~=~:~==:::~=~:=7I=?$?OI+~OO$IOOZZ$O8Z7ZI8O7?I77Z:$O8DDMMMMMM
+MMMMMMMM7+?+I?+=I$I?++?I+==+::::=?7I=??:=O7?:O$7I8Z$$NZOIZDZ$77II8DNNNDZINMMMMMM
+MMMMMMMMMM7$O8O$I+~:,:7IO7I++=~~~$++I7+~OM$$?=I$ZOZ$ZZ$ZZZZ7O8Z$III+?I7I$7MMMMMM
+MMMMMMMMMMMMMMMM$$$ZON,::=?7$I7$?=+ZOO8O7?8MZI=~8O														Z8Z$ON8D8OZZ$Z$II$ZZO$DMMMMMMM
+MMMMMMMMMMMMMMMMMMMMZ7O8=:~O?NMNNNNNMMZZ???ID$Z+~NZ87+=+~I87:+8O$ZZ7$8NMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMM88O8888D8DZOZDN+7I?IOOON$NOD8MON7MMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMNOMN8O$$N+$ZD88ZZ$I8ZNZZMMMM								MMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMD8DMDMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM																							
+</pre></div>
+
+<div id = "preVis2"><pre>
+
+</pre></div>
+<div id = "preVis3"><pre>
+	                                                                                
+                                              .,   =:==+:                       
+                                           +..:=  : +.??,=?                     
+                                         ..~.,.,=.,,?.  .. ??.                  
+                                         ?=     .Z,.=?. +   ?:I$                
+                                        ..+., ..? =+:.~.,. ?..                  
+                                         ...I~,.  $I=.?~7..I~,                  
+                                         .:, ..~   D...++=..=?..                
+                                          =.7..~Z  IZ ~~,.:?.++                 
+                                           .~.=   .77~.+ ...+?                  
+                                        ..7:    . ..~:,.. ,  ?,, .              
+                                       = ~~~:::   7,+=+   I ?=:+~:,.            
+                                      .I ?+:+:,~  .?+??,,,,7~~:  $~,=.          
+                                     ?. +~.7.I,+==. ,I: .  $. ,   ~             
+                                              ? ?=   .,,.. :  =.                
+                                                   Z+?,,??, .8                  
+                                  7         ..I ... .?=..?: .,~                 
+                                 .         :,~I..:~   . ....=+:+                
+                                 ..   :.  ,   . .,Z~    7 ..:,~I?.              
+                                ..    .=.     .  .Z.. , :=.+..:~ .              
+                                ?     ~D.   .:?? ?   .:  :?  ,I   .             
+                                .   .$.   7. I  ,  .. :  : , ,:=                
+                               +   $    .:       .. :.   .  ~?==                
+                               7 ,      ?           .     +. +:=~+              
+                              ..      .?            =,    :.~.,.                
+                              ,      ...            O7.    ...,                 
+                               ~   .?I              . +.   $.~.                 
+                               Z,   .         ..     I ,   . .:.                
+                                     .         .      ,O    . :+                
+                                    ,.                ,=    .~I I               
+                                    :.                :,    :.~+?               
+                                    :                 ?.    .:? I               
+                                    :.                I.   Z. + .               
+                                    :.               .:   .,,..                 
+                                    :          .:7:?..,   ~~=,:+?               
+                                    ?       ~8.: ::==.   :  =$,                 
+                                    =       . :~ ,~$I.   7=?.7                  
+                                    .       ..~,...      .?+.                   
+                                             ,=+,.    =. ,:                     
+                                            I   =    I: =+                      
+                                              =,?7  :                           
+                                            .~.?=?. .$.7                        
+                                              :~.?+.,??                         
+                                    .        .: ~I: .:=                         
+                                    I        O     ?II+:=:I                     
+                                    7        ,     OZI.??..                     
+                                    ..             =,.=, 7                      
+                                            I       .+~ =                       
+                                           .     .? .7~ +,                      
+                          ~:++,,:.=++      +     I   =~.                        
+                    7:      ?      $      ,.   .I...                            
+                8+    .     ~    .,      .    .I    .O.                         
+           ..I: ~     :     .    .      ..    7   ..     ,, .                   
+         .7           , .,            .I   , ,:   ,     =  ..77.                
+        :   .         ~        Z      =,    .,   ..    .     ,, $               
+      :     :.   ?    ?.       .      =               =.    I    ..+            
+    ?   :   .:   ,.   ,:   .  ~     .$      Z   ~    ?     7      . .:          
+     =  .    ,    .    O   .  +     7.              ~     $   .7      .Z        
+   :  ,  ,    :.  Z    ~   .  ,    Z,      O  :,   ~     O. .$     . :          
+ ..   .$  O ...?  ..       .  ,   ?.Z     ..  =   ~     +          .    . :     
+ = ,    ~  .   .   ,         ~.  ., +     :  7.   .    7  =.    .:      ..,     
+ ?.      . .    +  :    I   .,   :      .+  ..  .+   .: .?    ,=    ::.    .    
+ 7?.     ,. $   .   .   +   ,.   Z      ..  ..  =   .,  O    :~  . ~    :  .    
+ :. .       .$    . .    . .:   :: ,    .   ?      .: =:   .   .I        ,: ..  
+  7. $.     . =    . ~   ?+    . + 8   I.  .  :.    .,   .  .O,     .::      .  
+    O..I.   .7 .   ,  ..      ,.   : :.7   +  :   . .  .?..Z    . +    .  .,Z   
+      = .+.   := .           =    .     I  ,..    7 ..: +    .=Z  7+.      .    
+       ~I .+     ..   .DI .  .:Z: Z      ..  . . , ..I.  . 7I.           . .:   
+        .  ,=.?..     ?=~.,    , , ~$+    .~...   .+. .,, ..,:~=?$O?,.    .,    
+        +    .,=..I~  .,7,    .: ,  . ~ . ~7, .    ... . .$,..  ..,:==????.     
+               ..  .7:.     .,. .=  ,:..,.7Z    ~7   ,.    .~7.. .:I=.          
+                          O.  ..    :... .?.?=.       .,.                       
+                                ..:=?+~,.             		 
+</pre></div>
+<canvas id="canvas">
+</canvas>								
+<script>
+function placer(cn) {
+    var ymax = $(window).height();
+    var xmax = $(window).width();
+    var min = 100;
+    var foo = Math.floor(Math.random() * 100);
+    var bar = Math.floor(Math.random() * 100);
+    return [foo, bar];
+}
+var imglist = ["clothe","slime2","flower1","flower2","flower3","bubbles"];
+for (i=0;i<imglist.length;i++) {
+    var imgClass = imglist[i];
+    var howmany = Math.floor(Math.random() * 50+20);
+    console.log(i);
+    console.log(howmany);
+    for (j=0;j<howmany;j++) {
+        var loc = placer(imgClass);
+        var foo = $('<div />').appendTo('#container');
+        foo.css('top',loc[0] +'%');
+        foo.css('left',loc[1]+'%');
+        foo.attr('class',imgClass);
+    }
+}
+</script>
+</div>
+<!--End of the room-->
+<!--Character dialogue-->
+<button id="myBtn"></button>
+<div id = "myModal" class= "modal">
+	<div class="modal-content">
+		<span class = "close">&times;</span><br>
+			<span id = "beginChar"></span>
+			</div></div></div>
+<script>
+var modalChar = document.getElementById("myModal");
+var btn = document.getElementById("myBtn");
+var span = document.getElementsByClassName("close")[0];
+var beginChar = document.getElementById("beginChar");
+var audio1 = document.getElementById("audio1");
+var audio2 = document.getElementById("audio2");
+btn.onclick = function(){
+	$('#myModal').fadeIn(1000);
+	$(audio1).animate({volume: 0}, 1000);	
+	audio2.volume = 0;
+	$(audio2).animate({volume: .03}, 1000);	
+	audio2.play();
+	beginChar.display = "block";
+      Typed.new('#beginChar', {
+        strings: ["<i>In the winter it was difficult to distinguish my body^1000<br>Draped in white fabric^1000<br>From the virgin snow...^1000"],
+        typeSpeed: 2,
+		showCursor: true,
+		startDelay: 1000,
+		callback: function(){
+		$(".close").css({"visibility":"visible"});
+		setTimeout(function(){
+		$(".close").css({"-webkit-animation":"blink 1s infinite","-moz-animation":"blink 1s infinite","animation":"blink 1s infinite"});
+		},1000);}
+      });
+}
+span.onclick = function (){
+	$('#myModal').fadeOut(1000);
+	$(audio2).animate({volume: 0}, 1000);	
+	$(audio1).animate({volume: .05}, 1000);	
+	audio1.play();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="js/typed.js"></script>
+<meta charset="UTF-8" />
+<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="ui/1.12.1/jquery-ui.js"></script>
+<style>
+body{
+	overflow:hidden;
+	background-color:black;
+	opacity: 0;
+	}
+#container{
+	display:inline-block;
+	width:100%;
+	height:100%;
+	margin: 0 auto;
+	top: 0;
+	left: 0;
+	position:absolute;
+	z-index:3;
+	background:url("oasis/sand.png");	
+	overflow:hidden;
+	}
+pre{font-family:Courier;
+	font-size:13px;
+	}
+#canvas{
+	position:absolute;
+	z-index:2;
+	top:0;
+	left:0;
+	overflow:hidden;
+	pointer-events:none;
+	}
+#woman1{
+	position: absolute;
+	width: 114px;
+	height: 184px;
+	z-index:4;
+	bottom:20%;
+	right:30%;
+    background: url(blackroomelements/woman31.png);
+    background-size: 114px 184px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#woman2{
+	position: absolute;
+	width: 114px;
+	height: 184px;
+	z-index:4;
+	bottom:10%;
+	left:30%;
+    background: url(blackroomelements/woman32.png);
+    background-size: 114px 184px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#slime4{
+	position: absolute;
+	width: 118px;
+	height: 60px;
+	z-index:6;
+	bottom:5%;
+	right:22%;
+    background: url(blackroomelements/slime11.png);
+    background-size: 118px 60px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#slime4 .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: magenta;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#slime4 .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: magenta transparent transparent transparent;
+}
+#slime4:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#slime5{
+	position: absolute;
+	width: 118px;
+	height: 60px;
+	z-index:2;
+	bottom:30%;
+	left:5%;
+    background: url(blackroomelements/slime11.png);
+    background-size: 118px 60px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#slime6{
+	position: absolute;
+	width: 118px;
+	height: 60px;
+	z-index:2;
+	top:30%;
+	right:40%;
+    background: url(blackroomelements/slime11.png);
+    background-size: 118px 60px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#slime7{
+	position: absolute;
+	width: 118px;
+	height: 60px;
+	z-index:2;
+	top:10%;
+	right:25%;
+    background: url(blackroomelements/slime11.png);
+    background-size: 118px 60px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#box{
+	position: absolute;
+	width: 120px;
+	height: 73px;
+	z-index:8;
+	bottom:10%;
+	right:42%;
+    background: url(blackroomelements/box4.png);
+    background-size: 120px 73px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#box .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: magenta;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	bottom: 120%;
+    left: 50%;
+    margin-left: -60px;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#box .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: magenta transparent transparent transparent;
+}
+#box:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#bird{
+	position: absolute;
+	width: 112px;
+	height: 128px;
+	z-index:4;
+	top:5%;
+	left:10%;
+    background: url(blackroomelements/bird3.gif);
+    background-size: 112px 128px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#bird .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: magenta;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: 80%;
+    left: 100%;
+    margin-left: -100px;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#bird .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    right: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent magenta transparent ;
+}
+#bird:hover .tooltiptext {
+    visibility: visible;
+	opacity: .9;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#scorp{
+	position: absolute;
+	width: 82px;
+	height: 98px;
+	z-index:2;
+	top:15%;
+	left:30%;
+    background: url(blackroomelements/scorp.png);
+    background-size: 82px 98px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#scorp .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: magenta;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	top: 100%;
+    left: 50%;
+    margin-left: -60px;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#scorp .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color:  transparent transparent magenta transparent;
+}
+#scorp:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#seaweed{
+	position: absolute;
+	top: 50%; left: 50%;
+	transform: translate(-50%,-50%);
+	line-height:1.2;
+	width: 42px;
+	height: 51px;
+	z-index:2;
+	opacity:.8;
+	cursor:default;
+    background: url(blackroomelements/seaweed1.png);
+    background-size: 42px 51px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+@keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}
+@-moz-keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}
+@-webkit-keyframes pulse {
+  0% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+  50% { box-shadow:0 0 56px magenta, inset 0 0 54px magenta; }
+  100% { box-shadow:0 0 28px magenta, inset 0 0 28px magenta; }
+}	
+.inner {
+	position: absolute;
+	line-height:1.2;
+	top:10%;
+	right:15%;
+	z-index:1;
+	border-radius:50px;
+	background-color:transparent;
+	width:100px;
+	height:100px;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;	
+}	
+.inner:hover{
+	border-radius:50px;
+	box-shadow: 0 0 28px magenta, inset 0 0 28px magenta;
+	background-color:magenta;
+}
+#pool{
+	position: absolute;
+	width: 213px;
+	height: 57px;
+	z-index:4;
+	bottom:0;
+	left:15%;
+    background: url(blackroomelements/poolRed.png);
+    background-size: 213px 57px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#pool .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: magenta;
+    color: white;
+    text-align: center;
+	font-family: IBMFont;
+	font-size:12px;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+	bottom: 120%;
+    left: 50%;
+    margin-left: -60px;
+	 opacity: 0;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#pool .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: magenta transparent transparent transparent;
+}
+#pool:hover .tooltiptext {
+    visibility: visible;
+	 opacity: .8;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+	-ms-transition: all .4s ease-in-out;
+	-o-transition: all .4s ease-in-out;
+	transition: all .4s ease-in-out;
+}
+#dragonfly{
+	position: absolute;
+	width: 176px;
+	height: 112px;
+	z-index:3;
+	bottom:45%;
+	right:10%;
+    background: url(blackroomelements/dragonfly1.gif);
+    background-size: 176px 112px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+.lotus1{
+	position: absolute;
+	width: 43px;
+	height: 35px;
+	z-index:1;
+    background: url(blackroomelements/lotus2.png);
+    background-size: 43px 35px;
+    background-repeat: no-repeat;
+}
+.lotus2{
+	position: absolute;
+	width: 43px;
+	height: 35px;
+	z-index:1;
+    background: url(blackroomelements/lotus2.png);
+    background-size: 53px 45px;
+    background-repeat: no-repeat;
+}
+.sand3{
+	position: absolute;
+	width: 91px;
+	height: 40px;
+	z-index:1;
+    background: url(blackroomelements/slime2.png);
+    background-size:91px 40px;
+    background-repeat: no-repeat;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+}
+#preVis{
+	position: absolute;
+	z-index:3;
+	top:0;
+	left:0;
+	color:white;
+	pointer-events:none;
+}
+#preVis2{
+	position: absolute;
+	z-index:4;
+	top:0;
+	right:0;
+	color:blue;
+	pointer-events:none;
+}
+#myBtn{
+	position: absolute;
+	width: 114px;
+	height: 184px;
+    background: url(blackroomelements/woman33.png);
+    background-size: 114px 184px;
+    background-repeat: no-repeat;
+	bottom:30%;
+	z-index:6;
+	border:none;
+	left:40%;
+	outline:none;	
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+
+#myBtn:hover{
+	cursor: pointer;
+	}
+@font-face{
+	font-family: IBMFont;
+	src: url(font/Px437_IBM_ISO9.ttf);
+	}
+.modal{
+	display:none;
+	line-height:1.2;
+	background:   linear-gradient(
+      rgba(255, 0, 255, 0.45), 
+      rgba(255, 0, 255, 0.45)
+    ), url("blackroomelements/bggif1.gif");
+	background-size:cover;
+	position: fixed;
+	z-index:99999;
+	padding-top:100px;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	overflow:auto;
+	box-shadow:0 0 56px magenta, inset 0 0 56px magenta;
+	text-shadow: 0 0 20px #FF00FF;
+	background-color: rgb(0,0,100); /* Fallback color */
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	}
+.modal-content {
+	box-shadow:0 0 56px magenta, inset 0 0 56px magenta;
+    background-color: rgba(0,0,0,1);
+    margin: auto;
+    padding: 20px;
+    border: 2px solid magenta;
+	border-radius: 25px;
+    width: 50%;
+	}
+.close {
+	visibility:hidden;
+    color: magenta;
+	background-color:transparent;
+	border-radius:20%;
+	width:22px;
+	height:22px;
+	line-height:24px;
+    float: right;
+	font-family: IBMFont;
+    font-size: 22px;
+	text-align:center;
+	-webkit-transition: all .7s ease-in-out;
+	-moz-transition: all .7s ease-in-out;
+	-ms-transition: all .7s ease-in-out;
+	-o-transition: all .7s ease-in-out;
+	transition: all .7s ease-in-out;
+	}
+.close:hover,
+.close:focus {
+    background-color:white;
+	color:magenta;
+    text-decoration: none;
+    cursor: pointer;
+	}
+.closeDialogue {
+    color: magenta;
+    float: right;
+	font-family: IBMFont;
+    font-size: 22px;
+	text-align: center;
+	visibility:hidden;
+	-webkit-transition: all .7s ease-in-out;
+	-moz-transition: all .7s ease-in-out;
+	-ms-transition: all .7s ease-in-out;
+	-o-transition: all .7s ease-in-out;
+	transition: all .7s ease-in-out;
+	}
+.closeDialogue:hover,
+.closeDialogue:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+	}
+#beginChar{
+	font-size:16px;
+	font-family: IBMFont;
+	color:white;
+	overflow:auto;
+	}
+#openingModal{
+	line-height:1.2;
+	position: fixed;
+	z-index:99999;
+	padding-top:100px;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	overflow:auto;
+    font-family: IBMFont;
+    background: rgba(0, 0, 100, .9);
+}
+.openingContent {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    background: black;
+	border: 2px solid white;
+	border-radius: 25px;
+	padding:20px;
+}
+#begin{
+	padding-top:20px;
+	font-size:16px;
+	font-family: IBMFont;
+	color:white;
+	overflow:auto;
+	}
+#speak{
+	box-shadow:0 0 6px magenta, inset 0 0 6px magenta;
+	position:relative;
+	font-size:16px;
+	font-family: IBMFont;
+    color:white;
+	overflow:auto;
+	border:1px solid magenta;
+	border-radius:5px;
+	padding:10px;
+	top:20px;
+	width:40%;
+	min-width:200px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	}
+#speak:hover{
+	cursor: pointer;
+	background-color:magenta;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;;
+	}
+#line1{
+	padding-top:20px;
+    color:white;
+	padding-right:30px;
+	font-size:16px;
+	display:none;
+	overflow:auto;
+	cursor:default;
+	}
+.typed-cursor{
+    opacity: 1;
+	color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	font-style:italic;
+    -webkit-animation: blink 0.7s infinite;
+    -moz-animation: blink 0.7s infinite;
+    animation: blink 0.7s infinite;
+}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+.typed-fade-out{
+    opacity: 0;
+    animation: 0;
+    transition: opacity .75s;
+}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:500;
+}
+.easy1{
+	background-color: transparent;
+	z-index:500;
+	position:relative;	
+	right:10px;
+	top:10px;
+	text-align:center;
+	border-radius:20%;
+	width:22px;
+	height:22px;
+	line-height:22px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: black;
+}
+.easy1:hover{
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;	
+}
+</style>
+</head>
+<body>
+<!--Audio-->
+<audio id="audio1" 
+src="sounds/fairy-bb6-1-DelaydReverbd.mp3"
+loop="true"  
+type="audio/mp3">
+</audio> 
+<audio id="audio2" 
+src="sounds/R_wicked-bb5-1.mp3"
+loop="true"  
+type="audio/mp3">
+</audio> 
+<!--End Audio-->
+<script>
+setTimeout(function(){
+	$(".inner").css({"-webkit-animation":" pulse 2s linear 1s infinite","-moz-animation":"pulse 2s linear 1s infinite","animation":"pulse 2s linear 1s infinite"});
+	$(".inner").animate({"background-color": "#ff00ff"}, 6000);
+	//$("#thingy").mouseenter(function() 
+	//{ $(this).css("box-shadow","0 0 78px blue");}).mouseleave(function() {
+	//$(this).css("box-shadow", "0 0 28px blue"); });  
+	}, 45000);
+</script>
+<!--Opening Modal dialogue-->
+<div id="openingModal">
+    <div class="openingContent">
+    <div id ="begin">A room filled with sand. Pink flowers sway calmly amid puddles of bright slime. You sense a cold fog with your skin but see none. You cannot feel the sand.
+	</div>
+        <div id="speak">>>> pick up a mirror</div>
+		<span class="closeDialogue">&times;</span>
+		<div id = "line1">With your right hand you pick up a mirror and try to focus. You are unable to see your reflection because of an intrusive glare from an overhead light...
+		</div></div></div></div>
+<script>
+$("body").delay(500).animate({"opacity": "1"}, 700); // fade in body
+window.onload = function () {
+    document.getElementById('line1').onclick = function () {
+        document.getElementById('openingModal').style.display = "none" //close modal on click
+    };
+};		
+var modal = document.getElementById("openingModal");
+var begin = document.getElementById("begin");
+var speak = document.getElementById("speak");
+var line1 = document.getElementById("line1");
+var span = document.getElementsByClassName("closeDialogue")[0];
+span.onclick = function (){
+	$('#openingModal').fadeOut(1000);
+	var audio = document.getElementById("audio1");
+	audio.volume = 0;
+	$(audio1).animate({volume: .04}, 4000);	
+	audio.play();
+	//modal.style.display = "none";
+}
+speak.onclick = function(){
+	modal.style.display = "block";
+	begin.style.display = "none";
+	speak.style.display = "none";
+	$('#line1').fadeIn(1500);
+	//line1.style.display="block";
+	$('.closeDialogue').css({"visibility":"visible"});
+	}
+</script>
+<!--End of opening Modal dialogue-->
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">You squint your eyes in the bright light. A mirage?<br><br>Resize the browser to find hidden items. Hover over objects to discover their stories.<br><br><input id="p2Back" type="button" value="> Back"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<!--Canvas drawing-->
+<script>
+$(document).ready(function() {
+   initCanvas();
+draw();
+});
+function initCanvas() {
+$('#canvas').attr("width",$(window).width());
+$('#canvas').attr("height",$(window).height());
+}
+function draw() {
+   var c = document.getElementById("canvas");
+   var ctx = c.getContext("2d");
+   ctx.lineWidth=3;
+   ctx.strokeStyle="pink";
+   var w = $(window).width()/2;
+   var h = $(window).height()/2;
+   var w2 = $(window).width();
+   var h2 = $(window).height();
+   var w3 = $(window).width()/1.3;
+   var h3 = $(window).height()/1.3;
+//ceiling 	
+ctx.beginPath();
+	ctx.moveTo(0,0);
+	ctx.lineTo(w2,0);
+	ctx.lineTo(w2,h/2);
+	ctx.lineTo(0,h/2);
+	ctx.lineTo(0,0);
+	ctx.globalAlpha = .6;
+	ctx.fillStyle = 'pink';
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();	
+//left wall	
+	ctx.beginPath();
+	ctx.moveTo(0,0);
+	ctx.lineTo(w/2,h/2);
+	ctx.lineTo(w/2,h+100);
+	ctx.lineTo(w/2-100,h+200);
+	ctx.lineTo(w/2-100,h-50);
+	ctx.lineTo(w/2-200,h+50)
+	ctx.lineTo(w/2-200,h+300)
+	ctx.lineTo(0,h2)
+	ctx.globalAlpha = 1;
+	ctx.fillStyle = 'pink';
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();	
+// middle wall
+	ctx.beginPath();
+	ctx.moveTo(w/2,h/2);
+	ctx.lineTo(w+w/2,h/2);
+	ctx.lineTo(w+w/2,h+100);
+	ctx.lineTo(w+100,h+100);
+	ctx.lineTo(w/2,h+100);
+	ctx.globalAlpha = .4;
+	ctx.fillStyle = 'yellow';
+	ctx.fill();
+	ctx.stroke();
+	ctx.closePath();	
+//circle	
+	clearCircle(ctx,/*x=*/w,/*y=*/h-100,/*radius=*/50);
+	function clearCircle(ctx,x,y,radius) {
+	ctx.save();
+	ctx.beginPath();
+	ctx.arc(x, y, radius, 0, 2*Math.PI, true);
+	ctx.globalAlpha = 1;
+	ctx.lineWidth=6;
+    ctx.strokeStyle="red";
+	ctx.stroke();
+	ctx.clip();
+	ctx.clearRect(x-radius,y-radius,radius*2,radius*2);
+	ctx.restore();
+	}
+//right wall	
+	ctx.beginPath();
+	ctx.moveTo(w+w/2,h/2);
+	ctx.lineTo(w2,0);
+	ctx.lineTo(w2,h2);
+	ctx.lineTo(w+w/2,h+100);
+	ctx.lineTo(w+w/2,h/2);
+	ctx.globalAlpha = 1;
+	ctx.stroke();
+	ctx.fillStyle = 'pink';
+	ctx.fill();
+	ctx.closePath();	
+}
+
+$( window ).resize(function() {
+initCanvas();
+draw();
+});
+</script>
+<!--End of canvas drawing-->
+<!--Timer-->
+<script>
+setTimeout(function(){
+	$(".inner").css({"background-color":"magenta"});
+	},60000);
+</script>
+<!--The Room-->
+<div id ="container">
+<div id ="woman2"></div>
+<div id ="woman1"></div>
+<a href="vase.html" target="_self">
+<div id ="slime4"><span class="tooltiptext">Golden burgundy slime oozes from a jelly-like slug</span></div></a>
+<div id ="slime5"></div>
+<a href="cammy.html" target="_self">
+<div id ="pool"><span class="tooltiptext">Another stone pool, shimmering red, gives off a metallic ordor that permeates the room</span></div></a>
+<div id ="dragonfly"></div>
+<div id ="slime6"></div>
+<div id ="slime7"></div>
+<a href="vast/jennifer.html" target="_self">
+<div id ="box"><span class="tooltiptext">A small white wooden box hovers above the sand. It looks to be a large jewelry or toy chest</span>
+</div><a/>
+<a href="yuri.html"target="_self">
+<div id ="bird"><span class="tooltiptext">A green creature with large fangs watches you from above. It's skinny tail acts like a whip and creates a whooshing sound when flicked</span></div></a>
+<a href="red.html" target="_self"><div id ="scorp"><span class="tooltiptext">You marvel, unafraid, as you make out the form of a beautiful scorpion through the hazy wall</span>
+</div>
+<div class="inner">
+<a href="nureonna.html"><div id ="seaweed"></div></a></div>
+<div id="preVis"><pre> 
+             d888P
+      d8b d8888P:::P
+    d:::888b::::::P
+   d:::dP8888b:d8P														 d:::dP8888b:d8P
+  d:::dP 88b  Yb   .d8888b.							8b  Yb   .d8888b.
+ d::::P  88Yb  Yb .P::::::Y8b
+ 8:::8   88`Yb  YbP::::   :::b
+ 8:::P   88 `8   8!:::::::::::b
+ 8:dP    88  Yb d!!!::::::::::8									 d!!!::::::::::8
+ 8P    ..88   Yb8!!!::::::::::P
+  .d8:::::Yb  d888VKb:!:!::!:8
+ d::::::  ::dP:::::::::b!!!!8
+8!!::::::::P::::::::::::b!8P
+8:!!::::::d::::::: ::::           ::b
+8:!:::::::8!:::::::  :              :::8
+8:!!!:::::8!:::::::::              ::::8
+Yb:!!:::::8!!::::::::::::8
+ 8b:!!!:!!8!!!:!::::             :!!:dP											:!!!:!!8!!!:!:::::!!:dP
+  `8b:!!!:Yb!!!!:::::!d88
+      """  Y88!!!!!!!d8P								    """  Y88!!!!!!!d8P
+              """""""																				 """""""
+ ______________________
+(0RGSDOFCJftli;:.:. .  )
+ T""""""""""""""""""""T
+ |.;....,..........;..|
+ |;;:: .  .    .	      										|
+ l;;;:. :   				.  	   								..  								;
+ `;;:::.: .    .     									.'
+  l;;:. ..  .     .: ;
+  `;;::.. .    					.  ; .'
+   l;;:: .  .    /				  ;
+    \;;:. .   .,'						  /
+     `\;:.. ..' 							 .'
+       `\;:.. ..'
+         \;:. /
+          l; f
+          `;f'
+           ||
+           ;l.
+          ;: l
+         / ;  \
+       ,/  :   `.
+     ./' . :     `.
+    /' ,'  :       \
+   f  /  . :        i
+  ,' ;  .  :        `.
+  f ;  .   :      .  i
+ .'    :   :       . `.
+ f ,  .    ;       :  i
+ |    :  ,/`.       : |
+ |    ;,/;:. `.     . |
+ |___,/;;:. . .`._____|
+(QB0ZDOLC7itz!;:.:. .  )
+ """"""""""""""""""""""
+  
+     .              .   .'.     \   /
+   \   /      .'. .' '.'   '  -=  o  =-
+ -=  o  =-  .'   '              / | \
+   / | \                          |
+     |                            |
+     |                            |
+     |                      .=====|
+     |=====.                |.---.|
+     |.---.|                ||=o=||
+     ||=o=||                ||   ||
+     ||   ||                ||   ||
+     ||   ||                ||___||
+     ||___||                |[:::]|
+jgs  |[:::]|                '-----'
+
+</pre></div>
+
+<div id = "preVis2"><pre>
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"''    ''"EEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE,,'    / ,',' 'EEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE/OF  , / /'/   I-EEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE,/ I'  /,, ,/  "-,:"EEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE, ://, ///,    "EL  "-EEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE/ '/,  ///         '"EEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE/, ///   /         ,LAEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE, :I// /,JI          'JEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE,::/// , . L       ;""L EEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEFT''''''''''T."LLMF:::L        ':F:EEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEF                 ' ::......,,,.::.,,EEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEELL                                   /,:EEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEL           ,.----..,,            ,/:WE IEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEE         /            '.,        ;MML- )EEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEL    ,LL/                 ',     ,()  ,)EEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEL   MMF                     ", / /T) ))EEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEL  V/                      )// /    'JEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEL /         AML,        ,/ / //      :EEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEE"        ,MMMMMMWWL;--' /          :::EEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEI      ,WMMMMM''    ,-  L--         ':EEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEA      WMMMTT     -'  :L--- ---   TTY:EEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEI     AHH     ,"' J/:::,-,       .   EEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEL,   WM'   .' WM:;:...,,            EEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEL' ,/ ,.',,...:::::.............'.,,JEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEL'   ( '...::::/  (O)            IEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEE) )    ..:::/    '      )      IEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEE       .::(            )     /EEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEI      .::::,         /      IEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEE.   ::..:::::,,   ,,"      ,EEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEE,,::..   ...::::::        /EEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEI:.          ..         IEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEI.                     /EEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE,                       IEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE                       IEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEA                     ..'EEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEL                    ..  EEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEL               ..    EEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE ......               'EEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE    '...               'EEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEP"   ...                EEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEI ,,,,                   EEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE '''                    EEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEF           ...          'EEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE :.      .:::::.           EEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE' ::.    .:::::.            'EEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE   :,::::::'''              EEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEF'            .'                EEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEF'...''  '.EEEEF"'                   EEEEEEEE
+EEEEEEEEEEEEEEEEEEEEE'....         EF'                       EEEEEEEE
+EEEEEEEEEEEEEEEEEE'....        .."                          ,EEEEEEEE
+EEEEEEEEEEEEEEE'....        .."                             EEEEEEEEE
+EEEEEEEEEEEEE'....         ."                              JEEEEEEEEE
+EEEEEEEEEE'....         .."                               JEEEEEEEEEE
+EEEEEEEE'....         .."                               /   'EEEEEEEE
+EEEEEE'.....        .:"                               ,'     IEEEEEEE
+EEEE'.....        .:"                               ,'       'EEEEEEE
+EEE.....         ::"                            ,.'           EEEEEEE
+EF.....        ::"                         ,."'               'EEEEEE
+F....        .::"                     ,"':..'         ,::,     'EEEEE
+.      ,,,::,""                   ,"':::'            '    ':    'EEEE
+        ''.::/                 ,"':             ,"""",      .    'EEE
+         ."::                 ,'::'       .   ,"EEEEEEEA          'EE
+"       ::"                ,':'        .::  'EEEEEEEEEEEE,         EE
+EE'""..,,                 ":'        .:' :"EEEEEEEEEEEEEEEEE,      'E
+EEEEEEEEE                "        .::'.,'EEEEEEEEEEEEEEEEEEEL::::...E
+EEEEEEEEE..        ...  "    ..::'   ,EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEL..      ....   ...::'   ,JEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEE,...   ::,......'..    ,JEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEE,...                 ,JEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEE,...........   ,,"EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEE":,,,,,,,,""EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+                           DISROBING NUDE
+            REWORKED BY BILL, W0HBH, ST. LOUIS, MISSOURI
+</pre></div>
+<canvas id="canvas">
+</canvas>								
+<script>
+function placer(cn) {
+    var ymax = $(window).height();
+    var xmax = $(window).width();
+    var min = 100;
+    var foo = Math.floor(Math.random() * 100);
+    var bar = Math.floor(Math.random() * 100);
+    return [foo, bar];
+}
+var imglist = ["sand3","lotus1","lotus2"];
+for (i=0;i<imglist.length;i++) {
+    var imgClass = imglist[i];
+    var howmany = Math.floor(Math.random() * 50);
+    console.log(i);
+    console.log(howmany);
+    for (j=0;j<howmany;j++) {
+        var loc = placer(imgClass);
+        var foo = $('<div />').appendTo('#container');
+        foo.css('top',loc[0] +'%');
+        foo.css('left',loc[1]+'%');
+        foo.attr('class',imgClass);
+    }
+}
+</script>
+</div>
+<!--End of the Room-->
+<!--Character dialogue-->
+<button id="myBtn"></button>
+<div id = "myModal" class= "modal">
+	<div class="modal-content">
+		<span class = "close">&times;</span><br>
+			<span id = "beginChar"></span>
+			</div></div></div>
+<script>
+var modalChar = document.getElementById("myModal");
+var btn = document.getElementById("myBtn");
+var span = document.getElementsByClassName("close")[0];
+var beginChar = document.getElementById("beginChar");
+var audio1 = document.getElementById("audio1");
+var audio2 = document.getElementById("audio2");
+btn.onclick = function(){
+	$('#myModal').fadeIn(1000);
+	$(audio1).animate({volume: 0}, 1000);	
+	audio2.volume = 0;
+	$(audio2).animate({volume: .03}, 1000);	
+	audio2.play();
+	beginChar.display = "block";
+      Typed.new('#beginChar', {
+        strings: ["<i>I looked at the fields and shivered a little^1000<br>I thought I may get stuck in there^1000<br>And turn into some kind of ghost^1000<br>And end up haunting the woods and the swamp^1000<br>like Catherine Earnshaw...^1000"],
+        typeSpeed: 2,
+		showCursor: true,
+		startDelay: 1000,
+		callback: function(){
+		$(".close").css({"visibility":"visible"});
+		setTimeout(function(){
+		$(".close").css({"-webkit-animation":"blink 1s infinite","-moz-animation":"blink 1s infinite","animation":"blink 1s infinite"});
+		},1000);}
+      });
+}
+span.onclick = function (){
+	$('#myModal').fadeOut(1000);
+	$(audio2).animate({volume: 0}, 1000);	
+	$(audio1).animate({volume: .04}, 1000);	
+	audio1.play();
+}
+</script>
+<!--End character dialogue-->
+</body>
+</html>

@@ -1,0 +1,649 @@
+<html>
+    <head>
+	<script>
+	paceOptions = {
+	ajax: false, // disabled
+	document: false, // disabled
+	eventLag: false, // disabled
+	elements: {
+	selectors: ['#bang']
+	}
+	};
+	</script>
+	<script src="pace/pace.js"></script>
+    <meta charset="UTF-8" />
+    <script src="js/phaser.min.js"></script>
+	<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="ui/1.12.1/jquery-ui.js"></script>
+    </head>
+	<style>
+body{
+	margin:0 auto;
+	background-color:black;
+}
+/*loading bar*/
+	body.pace-running:before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 1500;
+	background-color: rgba(0, 0, 0, 1);
+}
+body:before {
+	background-color: rgba(0, 0, 0, 0);
+	-webkit-transition: background-color 200ms;
+	-moz-transtition: background-color 200ms;
+	-ms-transition: background-color 200ms;
+	-o-transition: background-color: 200ms;
+	transition: background-color 200ms;
+}
+.pace {
+	-webkit-pointer-events: none;
+	pointer-events: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	z-index: 2000;
+	position: fixed;
+	margin: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 5px;
+	width: 200px;
+	background: #fff;
+	overflow: hidden;
+	border-radius:10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-ms-border-radius:10px;
+	-o-border-radius:10px;
+	}
+.pace .pace-progress {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+	max-width: 200px;
+	position: fixed;
+	z-index: 2000;
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 100%;
+	height: 100%;
+	width: 100%;
+	background: magenta;
+	}
+	.pace.pace-inactive {
+	display: none;
+	}
+#wholepage{
+	width:100%;
+	height:100%
+	width:100vw;
+	height:100vh;
+	overflow:hidden;
+	margin:0 auto;
+}
+#centercontain{
+	top:40px;
+	height:90vh;
+	width:90vw;
+	position:relative;
+	margin: 0 auto;
+	/*min-width:400px;*/
+	max-width:2500px;
+	max-height:2500px;
+}
+#red{
+	overflow:hidden;
+	position:absolute;
+	width:100px;
+	height:100%;
+	margin: 0 auto;
+}
+#blue{
+	position:absolute;
+	height:100%;
+	right:0;
+	width: calc(100% - 100px); /* IE9+ and future browsers */
+	width: -moz-calc(100% - 100px); /* Firefox */
+	width: -webkit-calc(100% - 100px); /* Chrome, Safari */
+	/*min-width:80vw-100px;*/
+	margin: 0 auto;
+	border-radius:10px;
+	overflow:hidden;
+	border:2px solid transparent;
+	transition: border 2s;
+}
+.leftimgcontain{
+  margin:0 auto;
+  text-align:center;
+  position:relative;
+  z-index:20;
+  background-size:contain;
+  background-repeat:no-repeat;
+}
+@font-face{
+	font-family: IBMFont;
+	src: url(font/Px437_IBM_ISO9.ttf);
+	}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:999;
+}
+.easy1{
+	background-color: blue;
+	width:25px;
+	z-index:500;
+	right:10px;
+	top:10px;
+	position:absolute;
+	text-align:center;
+	border-radius:2px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: blue;
+}
+.easy1:hover{
+	background-color: pink;
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	text-align:center;
+	border-radius:6px;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;
+}
+</style>
+<body>
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">The city is cluttered with bones, remnants of a lost time. It's not nice to be here, but you're oddly calm.<br><br>Use arrow keys to explore the area. Leave through a door when you're ready, or close the browser page.<br><br><input id="p2Back" type="button" value="> Close"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<!--
+<audio id="audio1" 
+src="sounds/arps/fm_minor_2_shorter-bb11-1s.mp3"
+type="audio/mp3"
+loop="true">
+</audio> 
+-->
+<div id="wholepage">
+<div id="centercontain">
+<div id="blue">
+</div>
+<div id="red">
+</div>
+</div>
+</div> 
+		<script>
+	//ENTER DOOR STUFF
+	var dooronegif = new Image();
+	dooronegif.src = 'door1.gif';
+	var doortwogif = new Image();
+	doortwogif.src = 'door2.gif';
+	var doortregif = new Image();
+	doortregif.src = 'door3.gif';
+	var imglist = ["door1","door2","door3"];
+	numImgs= Math.floor(Math.random() * imglist.length) +1;
+	toplist=[];
+	for (i=0;i<numImgs;i++){
+	  var prev=i-1;
+	  if (toplist[prev] == null){
+		toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+		while ($('#red').height()<toplist[i] + 100){
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+		}
+	  } else{
+		toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+		count = 0;
+		while (($('#red').height()<=toplist[i] + ((i+1) * 100)) && (count <= 100)){
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+			count = count + 1;
+		}	
+	  };
+	  imgindex = Math.floor(Math.random() * imglist.length);
+	  var startingimage = new Image();
+	  startingimage.src = imglist[imgindex] + "_start.png";
+	  var div = document.createElement("div");
+	  div.className = "leftimgcontain";
+	  div.id = imglist[i];
+	  div.style.top = toplist[i] + 'px';
+	  div.style.visibility="hidden";
+	  $('#red').append(div);
+	  $('#' + imglist[i]).append(startingimage);
+	};
+	function setdoorgif(objid){
+		var img = $(objid).find('img');
+		var src = img.attr('src');
+		var door = src.replace("_start.png", ".gif")
+		if (door == 'door1.gif'){
+			img.attr('src','door1.gif'); 
+		} else if (door == 'door2.gif'){
+			img.attr('src','door2.gif');
+		} else if (door == 'door3.gif'){
+			img.attr('src','door3.gif');
+		}	
+	}
+	function setlinkfaderedirect(){
+		/*
+		var audio = document.getElementById("audio1");
+		$(audio1).animate({volume: 0}, 1500);
+	*/
+		cursors.right.enabled=false;
+		cursors.left.enabled=false;
+		cursors.up.enabled=false;
+		cursors.down.enabled=false;
+		player.alpha=0;
+		poof = game.add.sprite(player.position.x,player.position.y,"poof");
+		poof.smoothed=false;
+		poof.anchor.x=0.5;
+		poof.anchor.y=0.5;
+		poof.animations.add("poof",[],25,false,true);
+		poof.animations.play("poof",[],25,false,true);
+	  	$('body').css('pointer-events','none');
+		$("body").delay(500).animate({"opacity": "0"}, 2500); // fade out body
+	  	var linklist = ["/jade.html"];
+		linkindex = Math.floor(Math.random() * linklist.length);
+		link = linklist[linkindex];
+		setTimeout(function(){
+			window.location.assign(link);
+		},3000);
+	}
+	$('#door1').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	});	
+	$('#door2').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	});	
+	$('#door3').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	}); 
+	var doorContain = $('#door');
+//DONE WITH DOOR STUFF
+	</script>
+	<script type="text/javascript">	
+	var game = new Phaser.Game(1000, 1000, Phaser.CANVAS, 'blue', { preload: preload, create: create, update: update });
+	function preload() {
+	game.load.spritesheet("fall", "spin/fall71frames.png",112,160);
+	game.load.spritesheet("139slices", "spin/139slices.png",128,62);
+	game.load.spritesheet("zero1", "spin/zero1.png",39,64);
+	game.load.spritesheet("zerovan", "spin/zerovan.png",266,134);
+	game.load.spritesheet("spin1", "spin/spin1.png",65,207);
+	game.load.spritesheet("spin2", "spin/spin2.png",62,179);
+	game.load.spritesheet("spin3", "spin/spin3.png",42,203);
+	game.load.spritesheet("spin4", "spin/spin4.png",40,70);
+	game.load.spritesheet("spin5", "spin/spin5.png",74,75);
+	game.load.image("bg25","spin/bg25.png");
+	game.load.image("post1","spin/post1.png");
+	game.load.image("sign1","spin/sign1.png");
+	game.load.image("van1","spin/van1.png");
+	game.load.image("oda1","spin/oda1.png");
+	game.load.image("roadblock1","spin/roadblock1.png");
+	game.load.image("sign4","spin/sign4.png");
+	game.load.image("container1","spin/container1.png");
+	game.load.image("casinosign","spin/casinosign.png");
+	game.load.image("sign3","spin/sign3.png");
+	game.load.image("cone","spin/cone.png");
+	game.load.image("flag1","spin/flag1.png");
+	game.load.image("bg30","spin/bg30.png");
+	game.load.image("ground1","spin/ground1.png");
+	game.load.image("bones1","spin/bones1.png");
+	game.load.image("bones2","spin/bones2.png");
+	game.load.image("bones3","spin/bones3.png");
+	game.load.image("bones4","spin/bones4.png");
+	game.load.image("bones5","spin/bones5.png");
+	game.load.image("ground2","spin/ground2.png");
+	game.load.image("grass6","spin/grass6.png");
+	game.load.image("grass7","spin/grass7.png");
+	game.load.image("grass8","spin/grass8.png");
+	game.load.image("sign5","spin/sign5.png");
+	game.load.image("sign6","spin/sign6.png");
+	game.load.image("sign7","spin/sign7.png");
+	game.load.image("trash1","spin/trash1.png");
+	game.load.image("sign8","spin/sign8.png");
+	game.load.spritesheet("floater1", "spin/floater1.png",50,71);
+	game.load.spritesheet("sign2", "spin/sign2.png",50,94);
+	game.load.spritesheet("roadsign1", "spin/roadsign1.png",70,96);
+	game.load.image("bluebrick","spin/bluebrick.png");
+	game.load.image("soda1","spin/bottle.png");
+	game.load.image("trash3","spin/mail1.png");
+	game.load.spritesheet("flying", "spin/dove.png",34,32);
+	game.load.image("orbRed","spin/orbRed.png");
+	game.load.image("bush1","spin/bush1.png");
+	game.load.image("fogsand3","spin/fogsand3.png");
+	game.load.spritesheet("eyeCursor","cursors/eyeCursor.png", 85,55);
+	game.load.spritesheet("poof","guiElements/geniepuff.png", 84,86);
+		game.load.bitmapFont('font', 'guiElements/font.png', 'guiElements/font.fnt');
+
+	game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+	game.renderer.renderSession.roundPixels = true;
+	game.world.setBounds(0,0, 2500,2500);
+	game.physics.startSystem(Phaser.Physics.ARCADE);
+	}	
+	function create(){
+	$('.leftimgcontain').css({"visibility":"visible"});
+	$("body").append("<div id='bang'></div>");
+	setTimeout(function(){
+	$('#blue').css({"border":"2px solid magenta"});
+	}, 2000);
+	game.physics.startSystem(Phaser.Physics.ARCADE);
+	game.stage.backgroundColor="#4a9c9c";
+	BG= game.add.tileSprite(0, 0,  game.world.width,256 ,'bg25');
+	BG.smoothed=false;
+	floor= game.add.tileSprite(0, 200,  game.world.width,game.world.height ,'bluebrick');
+	floor.smoothed=false;
+	building= game.add.tileSprite(0, 150,  game.world.width,149 ,'bg30');
+	building.smoothed=false;
+	ground = game.add.group ();
+	for (var i = 0; i <40; i++)
+	{
+	ground.create(game.world.randomX, game.world.randomY+300, 'ground1');
+	ground.create(game.world.randomX, game.world.randomY+300, 'ground2');
+	ground.create(game.world.randomX, game.world.randomY+300, 'grass6');
+	ground.create(game.world.randomX, game.world.randomY+300, 'grass7');
+	ground.create(game.world.randomX, game.world.randomY+300, 'grass8');
+	ground.setAll("smoothed", false);
+	}
+	bones = game.add.group ();
+	for (var i = 0; i < 20; i++)
+	{
+	bones.create(game.world.randomX, game.world.randomY+290, 'bones1');
+	bones.create(game.world.randomX, game.world.randomY+290, 'bones2');
+	bones.create(game.world.randomX, game.world.randomY+290, 'bones3');
+	bones.create(game.world.randomX, game.world.randomY+290, 'bones4');
+	bones.create(game.world.randomX, game.world.randomY+290, 'bones5');
+	bones.setAll("smoothed", false);
+	}
+	grass= game.add.tileSprite(0, 280,  game.world.width,26 ,'bush1');
+	grass.smoothed=false;
+	flag = game.add.group ();
+	for (var i = 0; i < 30; i++)
+	{
+	flag.create(game.world.randomX, game.world.randomY+290, 'flag1');
+	flag.setAll("smoothed", false);
+	}
+	oda = game.add.group ();
+	for (var i = 0; i < 20; i++)
+	{
+	oda.create(game.world.randomX, game.world.randomY+290, 'soda1');
+	oda.create(game.world.randomX, game.world.randomY+290, 'sign8');
+	oda.create(game.world.randomX, game.world.randomY+290, 'oda1');
+	oda.create(game.world.randomX, game.world.randomY+290, 'trash3');
+	oda.setAll("smoothed", false);
+	}
+	streetPosts = game.add.group ();
+	for (var i = 0; i < 10; i++)
+	{
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'floater1');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'cone');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'container1');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'casinosign');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'sign4');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'sign3');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'post1');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'orbRed');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'orbRed');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'sign1');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'sign5');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'sign6');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'sign7');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'trash1');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'roadblock1');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'spin1');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'spin2');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'spin3');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'spin4');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, 'spin5');
+	streetPosts.create(game.world.randomX, game.world.randomY+290, '139slices');
+	streetPosts.setAll("smoothed", false);
+	streetPosts.setAll("anchor.x", .5);
+	streetPosts.setAll("anchor.y", .5);
+	streetPosts.callAll("animations.add","animations","streetPosts",[],10, true);
+	streetPosts.callAll("animations.play","animations","streetPosts");
+	}
+	streetPosts.sort();
+	cursors = game.input.keyboard.createCursorKeys();
+	player= game.add.sprite(100,0,"eyeCursor");	
+	game.physics.arcade.enable(player);
+	game.camera.follow(player);
+	player.body.collideWorldBounds = true;
+	player.anchor.set(0.5);
+	player.smoothed=false;
+	player.animations.add('blink', [], 2, true);
+	player.animations.play('blink', [],2,true);
+	arrows = game.add.bitmapText(player.position.x,player.position.y+60, 'font','  ← ↑ ↓ →\n arrow keys',28);
+	arrows.anchor.x=0.5;
+	arrows.smoothed=false;
+	arrows.alpha=1;
+	arrowTween = game.add.tween(arrows).to( { alpha: 0},1000,Phaser.Easing.Linear.None,true,0,-1);
+	roadsigns = game.add.group ();
+	roadsigns.enableBody = true;
+	for (var i = 0; i < 25; i++)
+	{
+	roadsigns.create(game.world.randomX, game.world.randomY+290, 'roadsign1');
+	roadsigns.setAll("smoothed", false);
+	roadsigns.forEach (function (roadsign1){
+	roadsign1.body.immovable=true;
+	var roadanim = roadsign1.animations.add("roadsigns", [],10,false);
+	roadanim.onComplete.add(correctFrame,this);
+	function correctFrame(){
+	roadsign1.frame=0;
+	}}),this;}
+	zero1 = game.add.group ();
+	for (var i = 0; i < 30; i++)
+	{
+	zero1.create(game.world.randomX, game.world.randomY+290, 'fall');
+	zero1.setAll("smoothed", false);
+	zero1.callAll("animations.add","animations","zero1",[] ,15, true);
+	zero1.callAll("animations.play","animations","zero1");
+	}
+	ladyGroup = game.add.group();
+	ladyGroup.setAll("anchor.x", .5);
+	ladyGroup.setAll("anchor.y", .5);
+    ladyGroup.enableBody = true;
+	ladyGroupGen = game.time.events.loop(4000, genWalker, this);
+    ladyGroupGen.timer.start();
+	vanGroup = game.add.group();
+    vanGroup.enableBody = true;
+	vanGroupGen = game.time.events.loop(1000,createVan, this);
+    vanGroupGen.timer.start();
+	vanGroup.sort();
+	vanGroup.add(ladyGroup);
+	fog = game.add.group ();
+	for (var i = 0; i < 10; i++)
+	{
+	fog.create(game.world.randomX, game.world.randomY, 'fogsand3');
+	fog.setAll("smoothed", false);
+	}
+	flyGroup = game.add.group();
+    flyGroup.enableBody = true;
+	flyGroupGen = game.time.events.loop(800,genFly, this);
+    flyGroupGen.timer.start();
+	flyGroup2 = game.add.group();
+    flyGroup2.enableBody = true;
+	flyGroupGen2 = game.time.events.loop(1200,genFly2, this);
+    flyGroupGen2.timer.start();
+	}
+	function update(){
+	streetPosts.sort('y', Phaser.Group.SORT_ASCENDING);
+	vanGroup.sort('y', Phaser.Group.SORT_ASCENDING);
+	game.physics.arcade.overlap(vanGroup, roadsigns, animSign, null, this);
+	player.body.velocity.x = 0;
+	player.body.velocity.y = 0;
+	if (cursors.down.isDown){ 
+    player.body.velocity.y = 150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	else if (cursors.up.isDown){
+    player.body.velocity.y = -150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}	
+	else if (cursors.right.isDown){
+    player.body.velocity.x = 150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	else if (cursors.left.isDown){  
+    player.body.velocity.x = -150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}}
+	function createVan(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(100, 350);         
+	var van;
+	van = vanGroup.getFirstExists(false);
+	if (!van) {               
+	van = game.add.sprite(-60, 0, 'zerovan');
+	van.animations.add("van", [],25,true);
+	van.animations.play("van");	
+	van.smoothed=false;
+	vanGroup.add(van);  
+	van.anchor.setTo(0.5, 0.5);    			
+	game.physics.arcade.enableBody(van);
+	van.enableBody = true;
+	}        
+	van.anchor.setTo(0.5, 0.5);
+	van.reset(-60,game.world.randomY+290); 
+	van.body.velocity.x = velocityX;
+	van.checkWorldBounds = true;
+	van.outOfBoundsKill = true;	
+	}}
+	function animSign(roadsign1, van){
+	van.animations.play("roadsigns", [],10,false); //why does the var van affect the sign?
+	}
+	function genWalker(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(80, 150);         
+	var lady;
+	lady = ladyGroup.getFirstExists(false);
+	if (!lady) {               
+	lady = game.add.sprite(-10, -10, 'zero1');
+	lady.preUpdate();
+	lady.smoothed=false;
+	lady.animations.add("lady", [],10,true);
+	lady.animations.play("lady");
+	ladyGroup.add(lady);             
+	lady.anchor.setTo(0.5, 0.5);            
+	game.physics.arcade.enableBody(lady);
+	lady.enableBody = true;
+	}        
+	lady.anchor.setTo(0.5, 0.5);
+	lady.reset(-10,game.world.randomY+290); 
+	lady.body.velocity.x = velocityX;
+	lady.checkWorldBounds = true;
+	lady.outOfBoundsKill = true;
+	}}
+	function genFly(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(180, 250);         
+	var flyer;
+	flyer = flyGroup.getFirstExists(false);
+	if (!flyer) {               
+	flyer = game.add.sprite(-10, -10, 'flying');
+	flyer.preUpdate();
+	flyer.smoothed=false;
+	flyer.animations.add("flyer", [],10,true);
+	flyer.animations.play("flyer");
+	flyGroup.add(flyer);             
+	flyer.anchor.setTo(0.5, 0.5);            
+	game.physics.arcade.enableBody(flyer);
+	flyer.enableBody = true;
+	}        
+	flyer.anchor.setTo(0.5, 0.5);
+	flyer.reset(-10,game.world.randomY); 
+	flyer.body.velocity.x = velocityX;
+	flyer.checkWorldBounds = true;
+	flyer.outOfBoundsKill = true;
+	}}
+	function genFly2(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(180, 250);         
+	var flyer2;
+	flyer2 = flyGroup2.getFirstExists(false);
+	if (!flyer2) {               
+	flyer2 = game.add.sprite(-10, -10, 'flying');
+	flyer2.preUpdate();
+	flyer2.smoothed=false;
+	flyer2.animations.add("flyer2", [],10,true);
+	flyer2.animations.play("flyer2");
+	flyGroup2.add(flyer2);             
+	flyer2.anchor.setTo(0.5, 0.5);            
+	game.physics.arcade.enableBody(flyer2);
+	flyer2.enableBody = true;
+	}        
+	flyer2.anchor.setTo(0.5, 0.5);
+	flyer2.reset(-10,game.rnd.integerInRange(10,200)); 
+	flyer2.body.velocity.x = velocityX;
+	flyer2.checkWorldBounds = true;
+	flyer2.outOfBoundsKill = true;
+	}}
+	</script>
+</body>
+</html>

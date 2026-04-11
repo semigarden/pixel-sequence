@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+    <head>
+	<script>
+	paceOptions = {
+	ajax: false, // disabled
+	document: false, // disabled
+	eventLag: false, // disabled
+	elements: {
+	selectors: ['#bang']
+	}
+	};
+	</script>
+		<script src="../pace/pace.js"></script>
+        <meta charset="UTF-8" />
+        <script src="js/phaser.min.js"></script>
+		<script src="../ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="pragma" content="no-cache" />
+<style>
+body{
+margin:0 auto;
+background-color:black;
+overflow:auto;
+}
+/*loading bar*/
+	body.pace-running:before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 1500;
+	background-color: rgba(0, 0, 0, 1);
+}
+body:before {
+	background-color: rgba(0, 0, 0, 0);
+	-webkit-transition: background-color 200ms;
+	-moz-transtition: background-color 200ms;
+	-ms-transition: background-color 200ms;
+	-o-transition: background-color: 200ms;
+	transition: background-color 200ms;
+}
+.pace {
+	-webkit-pointer-events: none;
+	pointer-events: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	z-index: 2000;
+	position: fixed;
+	margin: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 5px;
+	width: 200px;
+	background: #fff;
+	overflow: hidden;
+	border-radius:10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-ms-border-radius:10px;
+	-o-border-radius:10px;
+	}
+.pace .pace-progress {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+	max-width: 200px;
+	position: fixed;
+	z-index: 2000;
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 100%;
+	height: 100%;
+	width: 100%;
+	background: magenta;
+	}
+	.pace.pace-inactive {
+	display: none;
+	}
+/*plane*/
+#planeColorFader{
+	position:absolute;
+	height:720px;
+	width:1280px;
+	top:0px;left:0; right:0;
+	background-color:black;
+	}
+#plane{
+	position:absolute;
+	left:0; right:0;
+	z-index:1;
+	margin:auto;
+	width:100%;
+	max-width:1280px;
+	min-width:640px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	/*border:3px solid magenta;*/
+	border-radius: 25px;
+	overflow: hidden;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#plane img {
+	flex-shrink: 0;
+	min-width: 100%;
+	min-height: 100%;
+	}
+/*game div*/
+#gameDiv{
+	position:absolute;
+	margin:auto;
+	left:0; right:0;
+	z-index:2;
+	width:100%;
+	max-width:1280px;
+	min-width:640px;
+	overflow: hidden;
+	}
+/*font import*/
+	@font-face{
+	font-family: IBMFont;
+	src: url(../font/Px437_IBM_ISO9.ttf);
+	}
+/*buttons*/
+#buttonsContain{
+	position:absolute;
+	line-height:1.2;
+	left:0;right:0;
+	z-index:5;
+	margin:auto;
+	width:100%;
+	max-width:1280px;
+	min-width:640px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	visibility: hidden;
+	outline:none;
+	image-rendering:optimizeSpeed;          	/* Legal fallback */
+	image-rendering:-moz-crisp-edges;          /* Firefox        */
+	image-rendering:-o-crisp-edges;            /* Opera          */
+	image-rendering:-webkit-optimize-contrast; /* Safari         */
+	image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+	image-rendering:crisp-edges;               /* CSS4 Proposed  */
+	image-rendering:pixelated;                 /* CSS4 Proposed  */
+	-ms-interpolation-mode:nearest-neighbor;   /* IE8+           */
+	}
+#buttonContain{
+	line-height:1.2;
+	position:absolute;
+	margin:auto;
+	left:0;right:0;
+	width:1280px;
+	outline:none;
+	}
+#east {
+	font-family: IBMFont;
+	font-size: 16px;
+	font-weight: bold;
+	background:black;
+	color:white;
+	border-radius:8px;
+	outline:none;
+	}
+#east:hover{
+	background-color:pink;
+	}
+#east:disabled{
+	opacity:0.6;
+	}
+#east:disabled:hover{
+	background-color:black;
+	}
+#west {
+	font-family: IBMFont;
+	font-size: 16px;
+	font-weight: bold;
+	background:black;
+	color:white;
+	border-radius:8px;
+	outline:none;
+	}
+#west:hover{
+	background-color:pink;
+	}
+#west:disabled{
+	opacity:0.6;
+	}
+#west:disabled:hover{
+	background-color:black;
+	}
+#south {
+	font-family: IBMFont;
+	font-size: 16px;
+	font-weight: bold;
+	background:black;
+	color:white;
+	border-radius:8px;
+	outline:none;
+	}
+#south:hover{
+	background-color:pink;
+	}
+#south:disabled{
+	opacity:0.6;
+	}
+#south:disabled:hover{
+	background-color:black;
+	}
+#north {
+	font-family: IBMFont;
+	font-size: 16px;
+	font-weight: bold;
+	background:black;
+	color:white;
+	border-radius:8px;
+	outline:none;
+	}
+#north:hover{
+	background-color:pink;
+	}
+#north:disabled{
+	opacity:0.6;
+	}
+#north:disabled:hover{
+	background-color:black;
+	}
+/*border*/
+#borders{
+	position:absolute;
+	top:0;
+	left:0;
+	background:url("rooms/background1.png");
+	background-size:cover;
+	width:1280px;
+	height:720px;
+	z-index:99;
+}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+.typed-fade-out{
+    opacity: 0;
+    animation: 0;
+    transition: opacity .75s;
+}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:999;
+}
+.easy1{
+	background-color: blue;
+	width:25px;
+	z-index:500;
+	right:10px;
+	top:10px;
+	position:absolute;
+	text-align:center;
+	border-radius:2px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: blue;
+}
+.easy1:hover{
+	background-color: pink;
+	 z-index:500;
+}
+#p1Next{
+	outline:none;
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	text-align:center;
+	border-radius:6px;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	outline:none;
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;
+}
+</style>
+</head>
+<body>
+<!--Audio-->
+<audio id="audio1"
+src="sounds/pluckArp_6add9_effects.mp3"
+type="audio/mp3"
+loop="true">
+</audio>
+<audio id="audio2"
+type="audio/mp3">
+</audio>
+<!--End Audio-->
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">Navigate this strange place as best you can. Relax and enjoy the view.<br><br>You'll know the way out when you see it. Or close the browser page when you've had enough.<br><br><input id="p2Back" type="button" value="> Close"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<div id="gameDiv"></div>
+<div id="plane"></div>
+<div id="buttonsContain">
+<center>
+<input id="north" type="button" value="north" style="visibility:hidden;" onclick="loadImg('n')"/>
+<input id="south" type="button" value="south" style="visibility:hidden;" onclick="loadImg('s')"/>
+<input id="west" type="button" value="west" style="visibility:hidden;" onclick="loadImg('w')"/>
+<input id="east" type="button" value="east" style="visibility:hidden;" onclick="loadImg('e')"/>
+</center>
+</div>
+<script> var startImg = '';</script>
+<script defer src="themap.js"></script>
+<script defer src="game.js"></script>
+<script defer src="buttons.js"></script>
+</body>
+</html>

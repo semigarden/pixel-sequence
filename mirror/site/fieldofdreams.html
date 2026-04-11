@@ -1,0 +1,636 @@
+<html>
+    <head>
+	<script>
+	paceOptions = {
+	ajax: false, // disabled
+	document: false, // disabled
+	eventLag: false, // disabled
+	elements: {
+	selectors: ['#bang']
+	}
+	};
+	</script>
+	<script src="/pace/pace.js"></script>
+    <meta charset="UTF-8" />
+    <script src="/js/phaser.min.js"></script>
+	<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="ui/1.12.1/jquery-ui.js"></script>
+	<style>
+body{
+	margin:0 auto;
+	background-color:black;
+}
+/*loading bar*/
+	body.pace-running:before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 1500;
+	background-color: rgba(0, 0, 0, 1);
+}
+body:before {
+	background-color: rgba(0, 0, 0, 0);
+	-webkit-transition: background-color 200ms;
+	-moz-transtition: background-color 200ms;
+	-ms-transition: background-color 200ms;
+	-o-transition: background-color: 200ms;
+	transition: background-color 200ms;
+}
+.pace {
+	-webkit-pointer-events: none;
+	pointer-events: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	z-index: 2000;
+	position: fixed;
+	margin: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 5px;
+	width: 200px;
+	background: #fff;
+	overflow: hidden;
+	border-radius:10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-ms-border-radius:10px;
+	-o-border-radius:10px;
+	}
+.pace .pace-progress {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+	max-width: 200px;
+	position: fixed;
+	z-index: 2000;
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 100%;
+	height: 100%;
+	width: 100%;
+	background: magenta;
+	}
+	.pace.pace-inactive {
+	display: none;
+	}
+#wholepage{
+	width:100%;
+	height:100%
+	width:100vw;
+	height:100vh;
+	overflow:hidden;
+	margin:0 auto;
+}
+#centercontain{
+	top:40px;
+	height:90vh;
+	width:90vw;
+	position:relative;
+	margin: 0 auto;
+	/*min-width:400px;*/
+	max-width:2500px;
+	max-height:2500px;
+}
+#red{
+	overflow:hidden;
+	position:absolute;
+	width:100px;
+	height:100%;
+	margin: 0 auto;
+}
+#blue{
+	position:absolute;
+	height:100%;
+	right:0;
+	width: calc(100% - 100px); /* IE9+ and future browsers */
+	width: -moz-calc(100% - 100px); /* Firefox */
+	width: -webkit-calc(100% - 100px); /* Chrome, Safari */
+	/*min-width:80vw-100px;*/
+	margin: 0 auto;
+	border-radius:10px;
+	overflow:hidden;
+	border:2px solid transparent;
+	transition: border 2s;
+}
+.leftimgcontain{
+  margin:0 auto;
+  text-align:center;
+  position:relative;
+  z-index:20;
+  background-size:contain;
+  background-repeat:no-repeat;
+}
+@font-face{
+	font-family: IBMFont;
+	src: url(/font/Px437_IBM_ISO9.ttf);
+	}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:999;
+}
+.easy1{
+	background-color: blue;
+	width:25px;
+	z-index:500;
+	right:10px;
+	top:10px;
+	position:absolute;
+	text-align:center;
+	border-radius:2px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: blue;
+}
+.easy1:hover{
+	background-color: pink;
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	text-align:center;
+	border-radius:6px;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;
+}
+</style>
+</head>
+<body>
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">The hills are shining silver, under a dancing sky.<br><br>Use arrow keys to explore the area. Leave through a door when you're ready, or close the browser page.<br><br><input id="p2Back" type="button" value="> Close"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<audio id="audio1" 
+src="/sounds/R_outs/delayed/fairy-bb6-1-DelaydReverbd.mp3"
+type="audio/mp3"
+loop="true">
+</audio> 
+<div id="wholepage">
+<div id="centercontain">
+<div id="blue">
+</div>
+<div id="red">
+</div>
+</div>
+</div> 
+	<script>
+	//ENTER DOOR STUFF
+	var dooronegif = new Image();
+	dooronegif.src = 'door1.gif';
+	var doortwogif = new Image();
+	doortwogif.src = 'door2.gif';
+	var doortregif = new Image();
+	doortregif.src = 'door3.gif';
+	var imglist = ["door1","door2","door3"];
+	numImgs= Math.floor(Math.random() * imglist.length) +1;
+	toplist=[];
+	for (i=0;i<numImgs;i++){
+	  var prev=i-1;
+	  if (toplist[prev] == null){
+		toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+		while ($('#red').height()<toplist[i] + 100){
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+		}
+	  } else{
+		toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+		count = 0;
+		while (($('#red').height()<=toplist[i] + ((i+1) * 100)) && (count <= 100)){
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+			count = count + 1;
+		}	
+	  };
+	  imgindex = Math.floor(Math.random() * imglist.length);
+	  var startingimage = new Image();
+	  startingimage.src = imglist[imgindex] + "_start.png";
+	  var div = document.createElement("div");
+	  div.className = "leftimgcontain";
+	  div.id = imglist[i];
+	  div.style.top = toplist[i] + 'px';
+	  div.style.visibility="hidden";
+	  $('#red').append(div);
+	  $('#' + imglist[i]).append(startingimage);
+	};
+	function setdoorgif(objid){
+		var img = $(objid).find('img');
+		var src = img.attr('src');
+		var door = src.replace("_start.png", ".gif")
+		if (door == 'door1.gif'){
+			img.attr('src','door1.gif'); 
+		} else if (door == 'door2.gif'){
+			img.attr('src','door2.gif');
+		} else if (door == 'door3.gif'){
+			img.attr('src','door3.gif');
+		}	
+	}
+	function setlinkfaderedirect(){
+		/*
+		var audio = document.getElementById("audio1");
+		$(audio1).animate({volume: 0}, 1500);
+	*/
+		cursors.right.enabled=false;
+		cursors.left.enabled=false;
+		cursors.up.enabled=false;
+		cursors.down.enabled=false;
+		player.alpha=0;
+		poof = game.add.sprite(player.position.x,player.position.y,"poof");
+		poof.smoothed=false;
+		poof.anchor.x=0.5;
+		poof.anchor.y=0.5;
+		poof.animations.add("poof",[],25,false,true);
+		poof.animations.play("poof",[],25,false,true);
+	  	$('body').css('pointer-events','none');
+		$("body").delay(500).animate({"opacity": "0"}, 2500); // fade out body
+	  	var linklist = ["/shimmer.html","/glimmer.html"];
+		linkindex = Math.floor(Math.random() * linklist.length);
+		link = linklist[linkindex];
+		setTimeout(function(){
+			window.location.assign(link);
+		},3000);
+	}
+	$('#door1').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	});	
+	$('#door2').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	});	
+	$('#door3').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	}); 
+	var doorContain = $('#door');
+//DONE WITH DOOR STUFF
+	</script>
+	<script type="text/javascript">	
+	var game = new Phaser.Game(1000, 1000, Phaser.CANVAS, 'blue', { preload: preload, create: create, update: update });
+	function preload() {
+	game.load.spritesheet("guns", "field/guns.png",124,50);
+	game.load.image("lilypink", "field/lilypink.png");
+	game.load.image("bluepen", "field/bluepen.png");
+	game.load.image("bluebook", "field/bluebook.png");
+	game.load.image("redskull", "field/redskull.png");
+	game.load.image("grass_tile", "field/grass10.png");
+	game.load.image("grass8", "field/grass8.png");
+	game.load.image("grass5", "field/grass5.png");
+	game.load.spritesheet("grass", "field/grass.png",50,36);
+	game.load.spritesheet("faceflower2", "field/faceflower2.png",32,40);
+	game.load.spritesheet("faceflower1", "field/faceflower1.png",32,40);
+	game.load.spritesheet("sluggo1", "field/sluggo1.png",47,40);
+	game.load.spritesheet("sluggo2", "field/sluggo2.png",47,40);
+	game.load.spritesheet("sluggo3", "field/sluggo3.png",46,40);
+	game.load.spritesheet("wolfie2", "field/wolfie2.png",48,73);
+	game.load.spritesheet("wolfie1", "field/wolfie1.png",48,73);
+	game.load.spritesheet("worm", "field/worm.png",63,67);
+	game.load.spritesheet("rabbit2", "field/rabbit2.png",46,42);
+	game.load.spritesheet("rabbit1", "field/rabbit1.png",46,42);
+	game.load.spritesheet("eyemonster", "field/eyemonster.png",258,142);
+	game.load.image("statue13", "field/statue13.png");
+	game.load.image("statue12", "field/statue12.png");
+	game.load.image("smallfairy2", "field/smallfairy2.png");
+	game.load.image("smallfairy", "field/smallfairy.png");
+	game.load.image("background3", "field/background3.png");
+	game.load.spritesheet("mariobirds", "field/mariobirds.png",18,36);
+	game.load.image("blue1", "field/blue1.png");
+	game.load.image("blue2", "field/blue2.png");
+	game.load.image("radio", "field/radio.png");
+	game.load.spritesheet("harpy1", "field/harpy1.png",70,84);
+	game.load.spritesheet("chizuru1", "field/chizuru1.png",91,133);
+	game.load.spritesheet("chiz3", "field/chiz3.png",124,128);
+	game.load.spritesheet("chiz2", "field/chiz2.png",146,136);
+	game.load.spritesheet("chiz1", "field/chiz1.png",112,95);
+	game.load.image("grassLong", "field/grassLong.png");
+	game.load.spritesheet("eyeCursor","cursors/eyeCursor.png", 85,55);
+	game.load.spritesheet("poof","guiElements/geniepuff.png", 84,86);
+	game.load.bitmapFont('font', 'guiElements/font.png', 'guiElements/font.fnt');
+	game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+	game.renderer.renderSession.roundPixels = true;
+	game.world.setBounds(0,0, 2500,2500);
+	game.physics.startSystem(Phaser.Physics.ARCADE);
+	}
+	function create(){
+	$('.leftimgcontain').css({"visibility":"visible"});
+	$("body").append("<div id='bang'></div>");
+	setTimeout(function(){
+	$('#blue').css({"border":"2px solid magenta"});
+	}, 2000);
+	background= game.add.tileSprite(0, 0,  game.world.width, game.world.height,'grass_tile');
+	background.smoothed = false;
+	backgroundTop= game.add.tileSprite(0, 0,  game.world.width, 192,'background3');
+	backgroundTop.smoothed = false;
+	backgroundGrass= game.add.tileSprite(0, 160,  game.world.width, 42,'grassLong');
+	backgroundGrass.smoothed = false;
+	grassAnim = game.add.group ();
+	for (var i = 0; i < 60; i++)
+	{
+	grassAnim.create(game.world.randomX, game.world.randomY+30, 'grass');
+	grassAnim.setAll("smoothed", false);
+	grassAnim.callAll("animations.add","animations","grassAnim",[],10, true);
+	grassAnim.callAll("animations.play","animations","grassAnim");
+	}
+	guns = game.add.group ();
+	for (var i = 0; i < 40; i++)
+	{
+	guns.create(game.world.randomX, game.world.randomY+30, 'guns');
+	guns.setAll("smoothed", false);
+	guns.forEach(function (guns){
+	guns.frame = game.rnd.integerInRange(0, 36);
+	guns.scale.x = .8;
+	guns.scale.y = .8;
+	}),this;
+	}
+	things = game.add.group ();
+	for (var i = 0; i < 40; i++)
+	{
+	things.create(game.world.randomX, game.world.randomY+30, 'bluebook');
+	things.create(game.world.randomX, game.world.randomY+30, 'bluepen');
+	things.create(game.world.randomX, game.world.randomY+30, 'redskull');
+	things.setAll("smoothed", false);
+	}
+	lily = game.add.group ();
+	for (var i = 0; i < 40; i++)
+	{
+	lily.create(game.world.randomX, game.world.randomY+30, 'lilypink');
+	lily.setAll("smoothed", false);
+	}
+	grass = game.add.group ();
+	for (var i = 0; i < 40; i++)
+	{
+	grass.create(game.world.randomX, game.world.randomY+30, 'grass8');
+	grass.create(game.world.randomX, game.world.randomY+30, 'grass5');
+	grass.setAll("smoothed", false);
+	}
+	radio = game.add.group ();
+	for (var i = 0; i < 10; i++)
+	{
+	radio.create(game.world.randomX, game.world.randomY, 'radio');
+	radio.setAll("smoothed", false);
+	}
+	worm = game.add.group ();
+	for (var i = 0; i < 3; i++)
+	{
+	worm.create(game.world.randomX, game.world.randomY+30, 'worm');
+	worm.setAll("smoothed", false);
+	worm.callAll("animations.add","animations","worm",[] ,10, true);
+	worm.callAll("animations.play","animations","worm");
+	}
+	cursors = game.input.keyboard.createCursorKeys();
+	player= game.add.sprite(100,0,"eyeCursor");	
+	game.physics.arcade.enable(player);
+	game.camera.follow(player);
+	player.body.collideWorldBounds = true;
+	player.anchor.set(0.5);
+	player.smoothed=false;
+	player.animations.add('blink', [], 2, true);
+	player.animations.play('blink', [],2,true);
+	arrows = game.add.bitmapText(player.position.x,player.position.y+60, 'font','  ← ↑ ↓ →\n arrow keys',28);
+	arrows.anchor.x=0.5;
+	arrows.smoothed=false;
+	arrows.alpha=1;
+	arrowTween = game.add.tween(arrows).to( { alpha: 0},1000,Phaser.Easing.Linear.None,true,0,-1);
+	sluggos = game.add.group ();
+	for (var i = 0; i < 3; i++)
+	{
+	sluggos.create(game.world.randomX, game.world.randomY+30, 'sluggo3');
+	sluggos.create(game.world.randomX, game.world.randomY+30, 'sluggo2');
+	sluggos.create(game.world.randomX, game.world.randomY+30, 'sluggo1');
+	sluggos.setAll("smoothed", false);
+	sluggos.callAll("animations.add","animations","sluggos",[] ,10, true);
+	sluggos.callAll("animations.play","animations","sluggos");
+	}
+	rabbit = game.add.group ();
+	for (var i = 0; i < 5; i++)
+	{
+	rabbit.create(game.world.randomX, game.world.randomY+30, 'rabbit2');
+	rabbit.create(game.world.randomX, game.world.randomY+30, 'rabbit1');
+	rabbit.setAll("smoothed", false);
+	rabbit.callAll("animations.add","animations","rabbit",[] ,10, true);
+	rabbit.callAll("animations.play","animations","rabbit");
+	}
+	wolf = game.add.group ();
+	for (var i = 0; i < 5; i++)
+	{
+	wolf.create(game.world.randomX, game.world.randomY+30, 'wolfie1');
+	wolf.create(game.world.randomX, game.world.randomY+30, 'wolfie2');
+	wolf.setAll("smoothed", false);
+	wolf.callAll("animations.add","animations","wolf",[] ,10, true);
+	wolf.callAll("animations.play","animations","wolf");
+	}
+	mariobird = game.add.group();
+    mariobird.enableBody = true;
+	mariobirdGen = game.time.events.loop(4500, genMariobird, this);
+    mariobirdGen.timer.start();
+	chair = game.add.group ();
+	for (var i = 0; i < 2; i++)
+	{
+	chair.create(game.world.randomX, game.world.randomY+30, 'blue2');
+	chair.create(game.world.randomX, game.world.randomY+30, 'blue1');
+	chair.setAll("smoothed", false);
+	}
+	statues = game.add.group ();
+	for (var i = 0; i < 5; i++)
+	{
+	statues.create(game.world.randomX, game.world.randomY+30, 'statue13');
+	statues.create(game.world.randomX, game.world.randomY+30, 'statue12');
+	statues.setAll("scale.x", 1.4);
+	statues.setAll("scale.y", 1.4);
+	statues.setAll("smoothed", false);
+	}
+	eyemonster = game.add.group ();
+	for (var i = 0; i < 5; i++)
+	{
+	eyemonster.create(game.world.randomX, game.world.randomY+100, 'eyemonster');
+	eyemonster.setAll("smoothed", false);
+	eyemonster.callAll("animations.add","animations","eyemonster",[] ,10, true);
+	eyemonster.callAll("animations.play","animations","eyemonster");
+	}
+	eyemonster.forEach(function (eyemonster){
+	grassmonster = game.add.group ();
+	for (var i = 0; i < 5; i++)
+	{
+	grassmonster.create(eyemonster.position.x-20+ Math.random() * 250, eyemonster.position.y+70, 'grass8');
+	grassmonster.setAll("smoothed", false);
+	}}),this;
+	chiz = game.add.group ();
+	for (var i = 0; i < 5; i++)
+	{
+	chiz.create(game.world.randomX, game.world.randomY+30, 'chiz1');
+	chiz.create(game.world.randomX, game.world.randomY+30, 'chiz2');
+	chiz.create(game.world.randomX, game.world.randomY+30, 'chiz3');
+	chiz.create(game.world.randomX, game.world.randomY+30, 'chizuru1');
+	chiz.setAll("smoothed", false);
+	chiz.callAll("animations.add","animations","chiz",[] ,10, true);
+	chiz.callAll("animations.play","animations","chiz");
+	}
+	faceflowers = game.add.group ();
+	for (var i = 0; i < 10; i++)
+	{
+	faceflowers.create(game.world.randomX, game.world.randomY, 'faceflower1');
+	faceflowers.create(game.world.randomX, game.world.randomY, 'faceflower2');
+	faceflowers.setAll("smoothed", false);
+	faceflowers.callAll("animations.add","animations","faceflowers",[] ,10, true);
+	faceflowers.callAll("animations.play","animations","faceflowers");
+	}
+	smallFairy = game.add.group ();
+	for (var i = 0; i < 10; i++)
+	{
+	smallFairy.create(game.world.randomX, game.world.randomY, 'smallfairy');
+	smallFairy.create(game.world.randomX, game.world.randomY, 'smallfairy2');
+	smallFairy.setAll("smoothed", false);
+	}
+	harpyGroup = game.add.group();
+    harpyGroup.enableBody = true;
+	harpyGroupGen = game.time.events.loop(4500, genHarpy, this);
+    harpyGroupGen.timer.start();
+	}
+	function update(){
+	player.body.velocity.x = 0;
+	player.body.velocity.y = 0;
+	if (cursors.down.isDown){      
+    player.body.velocity.y = 150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	else if (cursors.up.isDown){   
+    player.body.velocity.y = -150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}	
+	else if (cursors.right.isDown){
+    player.body.velocity.x = 150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	else if (cursors.left.isDown){  
+    player.body.velocity.x = -150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}}	
+	function genMariobird(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(150, 250);
+	var bird;
+	bird = mariobird.getFirstExists(false);
+	if (!bird) {
+	bird = game.add.sprite(-10, 0, 'mariobirds');
+	bird.preUpdate();
+	bird.smoothed=false;
+	bird.scale.x = 2;
+	bird.scale.y = 2;
+	bird.animations.add("bird", [2,3], 10,true);
+	bird.animations.play("bird");
+	mariobird.add(bird);
+	bird.anchor.setTo(0, 0.5);
+	game.physics.arcade.enableBody(bird);
+	bird.enableBody = true;}
+	bird.anchor.setTo(0, 0.5);
+	bird.reset(-10,game.world.randomY-100); 
+	bird.body.velocity.x = velocityX;
+	bird.checkWorldBounds = true;
+	bird.outOfBoundsKill = true;}
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(150, 250);
+	var bird;
+	bird = mariobird.getFirstExists(false);
+	if (!bird) {
+	bird = game.add.sprite(-10, 0, 'mariobirds');
+	bird.preUpdate();
+	bird.smoothed=false;
+	bird.scale.x = 2;
+	bird.scale.y = 2;
+	bird.animations.add("bird", [0,1], 10,true);
+	bird.animations.play("bird");
+	mariobird.add(bird);
+	bird.anchor.setTo(0, 0.5);
+	game.physics.arcade.enableBody(bird);
+	bird.enableBody = true;}
+	bird.anchor.setTo(0, 0.5);
+	bird.reset(-10,game.world.randomY-100); 
+	bird.body.velocity.x = velocityX;
+	bird.checkWorldBounds = true;
+	bird.outOfBoundsKill = true;}}
+	function genHarpy(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(-250, -350);
+	var harpy;
+	harpy = harpyGroup.getFirstExists(false);
+	if (!harpy) {
+	harpy = game.add.sprite(-20, 0, 'harpy1');
+	harpy.preUpdate();
+	harpy.smoothed=false;
+	harpy.scale.x = 1.6;
+	harpy.scale.y = 1.6;
+	harpy.animations.add("harpy", [], 10,true);
+	harpy.animations.play("harpy");
+	harpyGroup.add(harpy);
+	harpy.anchor.setTo(0, 0.5);
+	game.physics.arcade.enableBody(harpy);
+	harpy.enableBody = true;}
+	harpy.anchor.setTo(0, 0.5);
+	harpy.reset(game.world.width-20,game.world.randomY); 
+	harpy.body.velocity.x = velocityX;
+	harpy.checkWorldBounds = true;
+	harpy.outOfBoundsKill = true;}}
+</script>
+</body>
+</html>

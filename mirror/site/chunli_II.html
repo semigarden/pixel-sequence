@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	  <!-- Chun-Li (SSF) is a work by Cassie McQuater, 2019.
+	  All sprites belong to their respective copyright owners.
+	  This HTML page was brought under stewardship of Christopher Coleman and Laleh Mehran in 2023,
+	  and is owned by them as an artwork. -->
+    <script>
+      //loading bar selectors
+      paceOptions = {
+        ajax: false,
+        document: false,
+        eventLag: false,
+        elements: {
+          selectors: ['#bang'] //when this dummy div is loaded, page is loaded, and pace will display page
+        }
+      };
+    </script>
+    <script src="pace/pace.js"></script>
+    <meta charset="UTF-8" />
+    <script src="js/phaser.min.js"></script>
+    <script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="ui/1.12.1/jquery-ui.js"></script>
+		<style>
+			body {
+				margin: 0 auto;
+				background-color: black;
+			}
+			
+			/*loading bar*/
+			body.pace-running:before {
+				content: "";
+				position: fixed;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				z-index: 1500;
+				background-color: rgba(0, 0, 0, 1);
+			}
+			
+			body:before {
+				background-color: rgba(0, 0, 0, 0);
+				-webkit-transition: background-color 200ms;
+				-moz-transtition: background-color 200ms;
+				-ms-transition: background-color 200ms;
+				-o-transition: background-color: 200ms;
+				transition: background-color 200ms;
+			}
+			
+			.pace {
+				-webkit-pointer-events: none;
+				pointer-events: none;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				user-select: none;
+				z-index: 2000;
+				position: fixed;
+				margin: auto;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				height: 5px;
+				width: 200px;
+				background: #fff;
+				overflow: hidden;
+				border-radius: 10px;
+				-moz-border-radius: 10px;
+				-webkit-border-radius: 10px;
+				-ms-border-radius: 10px;
+				-o-border-radius: 10px;
+			}
+			
+			.pace .pace-progress {
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				-ms-box-sizing: border-box;
+				-o-box-sizing: border-box;
+				box-sizing: border-box;
+				-webkit-transform: translate3d(0, 0, 0);
+				-moz-transform: translate3d(0, 0, 0);
+				-ms-transform: translate3d(0, 0, 0);
+				-o-transform: translate3d(0, 0, 0);
+				transform: translate3d(0, 0, 0);
+				max-width: 200px;
+				position: fixed;
+				z-index: 2000;
+				display: block;
+				position: absolute;
+				top: 0;
+				right: 100%;
+				height: 100%;
+				width: 100%;
+				background: magenta;
+			}
+			
+			.pace.pace-inactive {
+				display: none;
+			}
+			
+			/*page layout*/
+			#wholepage {
+				width: 100%;
+				height: 100%
+				width: 100vw;
+				height: 100vh;
+				overflow: hidden;
+				margin: 0 auto;
+			}
+			
+			#centercontain {
+				top: 40px;
+				height: 90vh;
+				width: 90vw;
+				position: relative;
+				margin: 0 auto;
+				/*min-width: 400px;*/
+				max-width: 2500px;
+				max-height: 2500px;
+			}
+			
+			#red {
+				overflow: hidden;
+				position: absolute;
+				width: 100px;
+				height: 100%;
+				margin: 0 auto;
+			}
+			
+			#blue {
+				position: absolute;
+				height: 100%;
+				right: 0;
+				width: calc(100% - 100px); /* IE9+ and future browsers */
+				width: -moz-calc(100% - 100px); /* Firefox */
+				width: -webkit-calc(100% - 100px); /* Chrome, Safari */
+				/*min-width:80vw-100px;*/
+				margin: 0 auto;
+				border-radius: 10px;
+				overflow: hidden;
+				border: 2px solid transparent;
+				transition: border 2s;
+			}
+			
+			.leftimgcontain {
+				margin: 0 auto;
+				text-align: center;
+				position: relative;
+				z-index: 20;
+				background-size: contain;
+				background-repeat: no-repeat;
+			}
+			
+			@font-face {
+				font-family: IBMFont;
+				src: url(font/Px437_IBM_ISO9.ttf);
+			}
+			
+			@keyframes blink {
+				0% { opacity: 1; }
+				50% { opacity: 0; }
+				100% { opacity: 1; }
+			}
+			
+			@-webkit-keyframes blink {
+				0% { opacity: 1; }
+				50% { opacity: 0; }
+				100% { opacity: 1; }
+		  }
+			
+			@-moz-keyframes blink {
+				0% { opacity: 1; }
+				50% { opacity: 0; }
+				100% { opacity: 1; }
+			}
+			
+			* { 
+				box-sizing: border-box;
+			}
+			
+			.containerHelp {
+				float: right;
+				z-index: 999;
+			}
+			
+			.easy1 {
+				background-color: blue;
+				width: 25px;
+				z-index: 500;
+				right: 10px;
+				top: 10px;
+				position: absolute;
+				text-align: center;
+				border-radius: 2px;
+				-webkit-animation: blink 2s infinite;
+				-moz-animation: blink 2s infinite;
+				animation: blink 2s infinite;
+				background-color: blue;
+			}
+			
+			.easy1:hover {
+				background-color: pink;
+				z-index: 500;
+			}
+			
+			#p1Next {
+				border: none;
+				background-color: transparent;
+				font-size: 16px;
+				font-family: IBMFont;
+				color: magenta;
+				z-index: 500;
+				text-align: center;
+				border-radius: 6px;
+			}
+			
+			.easy2 {
+				position: absolute;
+				display: none;
+				padding: 10px;
+				background-color: black;
+				border: 1px solid magenta;
+				width: 200px;
+				font-family: IBMFont;
+				color: white;
+				border-radius: 6px;
+				right: 10px;
+				z-index: 500;
+				top: 10px;
+			}
+			
+			#p2Back {
+				border: none;
+				background-color: magenta;
+				font-size: 16px;
+				font-family: IBMFont;
+				color: black;
+				z-index: 500;
+			}
+			</style>
+		</head>
+	<body>
+    <!--short narrative-->
+    <div class="containerHelp">
+      <div class="easy1">
+        <input id="p1Next" type="button" value="?">
+      </div>
+      <div class="easy2">In a vast desert, you've found an oasis. 
+	    <br><br>Use arrow keys to explore the area. Leave through a door when you're ready, or close the browser page.
+	    <br><br>
+        <input id="p2Back" type="button" value="> Close">
+      </div>
+    </div>
+    <script>
+      $("#p1Next").click(function() {
+        $('.easy1').slideToggle(500);
+        $('.easy2').slideToggle(500);
+      });
+      $("#p2Back").click(function() {
+        $('.easy1').slideToggle(500);
+        $('.easy2').slideToggle(500);
+      });
+    </script>
+		<div id="wholepage">
+			<div id="centercontain">
+				<div id="blue"></div>
+				<div id="red"></div>
+			</div>
+		</div> 
+	<script>
+		//left side doors with urls
+		var dooronegif = new Image();
+		dooronegif.src = 'door1.gif';
+		var doortwogif = new Image();
+		doortwogif.src = 'door2.gif';
+		var doortregif = new Image();
+		doortregif.src = 'door3.gif';
+		var imglist = ["door1","door2","door3"];
+		numImgs= Math.floor(Math.random() * imglist.length) +1;
+		toplist=[];
+		for (i=0;i<numImgs;i++){
+			var prev=i-1;
+			if (toplist[prev] == null){
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+			while ($('#red').height()<toplist[i] + 100){
+				toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+			}
+			} else{
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+			count = 0;
+			while (($('#red').height()<=toplist[i] + ((i+1) * 100)) && (count <= 100)){
+				toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+				count = count + 1;
+			}	
+			};
+			imgindex = Math.floor(Math.random() * imglist.length);
+			var startingimage = new Image();
+			startingimage.src = imglist[imgindex] + "_start.png";
+			var div = document.createElement("div");
+			div.className = "leftimgcontain";
+			div.id = imglist[i];
+			div.style.top = toplist[i] + 'px';
+			div.style.visibility="hidden";
+			$('#red').append(div);
+			$('#' + imglist[i]).append(startingimage);
+		};
+		function setdoorgif(objid){
+			var img = $(objid).find('img');
+			var src = img.attr('src');
+			var door = src.replace("_start.png", ".gif")
+			if (door == 'door1.gif'){
+				img.attr('src','door1.gif'); 
+			} else if (door == 'door2.gif'){
+				img.attr('src','door2.gif');
+			} else if (door == 'door3.gif'){
+				img.attr('src','door3.gif');
+			}	
+		}
+		function setlinkfaderedirect(){
+			cursors.right.enabled=false;
+			cursors.left.enabled=false;
+			cursors.up.enabled=false;
+			cursors.down.enabled=false;
+			player.alpha=0;
+			poof = game.add.sprite(player.position.x,player.position.y,"poof");
+			poof.smoothed=false;
+			poof.anchor.x=0.5;
+			poof.anchor.y=0.5;
+			poof.animations.add("poof",[],25,false,true);
+			poof.animations.play("poof",[],25,false,true);
+				$('body').css('pointer-events','none');
+			$("body").delay(500).animate({"opacity": "0"}, 2500); // fade out body
+				var linklist = ["/dora.html"];
+			linkindex = Math.floor(Math.random() * linklist.length);
+			link = linklist[linkindex];
+			setTimeout(function(){
+				window.location.assign(link);
+			},3000);
+		}
+		$('#door1').click(function(){
+			setdoorgif(this);
+			setlinkfaderedirect();
+		});	
+		$('#door2').click(function(){
+			setdoorgif(this);
+			setlinkfaderedirect();
+		});	
+		$('#door3').click(function(){
+			setdoorgif(this);
+			setlinkfaderedirect();
+		}); 
+		var doorContain = $('#door');
+	</script>
+	<script type = "text/javascript" >
+  var game = new Phaser.Game(1000, 1000, Phaser.CANVAS, 'blue', {
+    preload: preload,
+    create: create,
+    update: update
+  });
+	function preload() {
+		//preload sprites
+		game.load.spritesheet("sonic1", "chunli2/sonic1.png", 16, 20);
+		game.load.spritesheet("poof", "chunli2/geniepuff.png", 84, 86);
+		game.load.image("barrel1", "chunli2/barrel1.png");
+		game.load.image("boombox", "chunli2/boombox.png");
+		game.load.spritesheet("arcade1", "chunli2/arcade1.png", 56, 80);
+		game.load.spritesheet("arcade2", "chunli2/arcade2.png", 56, 80);
+		game.load.image("checkers", "chunli2/checkers.png");
+		game.load.image("water1", "chunli2/water1.png");
+		game.load.image("water2", "chunli2/water2.png");
+		game.load.spritesheet("fan", "chunli2/fan.png", 33, 63);
+		game.load.image("sand", "chunli2/sand.png");
+		game.load.spritesheet("bird", "chunli2/bird.png", 27, 32);
+		game.load.spritesheet("arco2", "chunli2/arco2.png", 135, 235);
+		game.load.spritesheet("arco3", "chunli2/arco3.png", 136, 183);
+		game.load.spritesheet("arco4", "chunli2/arco4.png", 136, 198);
+		game.load.spritesheet("arco5", "chunli2/arco5.png", 134, 210);
+		game.load.spritesheet("chunli3", "chunli2/chunli_18.png", 52, 139);
+		game.load.spritesheet("chunli4", "chunli2/chunli4.png", 93, 91);
+		game.load.spritesheet("chunli5", "chunli2/chunli5.png", 93, 91);
+		game.load.spritesheet("chunli6", "chunli2/chunli6.png", 75, 104);
+		game.load.spritesheet("chunli7", "chunli2/chunli7.png", 75, 104);
+		game.load.spritesheet("chunli8", "chunli2/chunli8.png", 85, 88);
+		game.load.spritesheet("chunli9", "chunli2/chunli_16.png", 117, 121);
+		game.load.spritesheet("chunli10", "chunli2/chunli10.png", 52, 99);
+		game.load.image("bg50", "chunli2/bg50.png");
+		game.load.spritesheet("egg3", "chunli2/egg3.png", 48, 50);
+		game.load.spritesheet("waterfall6", "chunli2/waterfall6.png", 512, 120);
+		game.load.spritesheet("flower7", "chunli2/flower7.png", 28, 43);
+		game.load.image("flower23", "chunli2/flower23.png");
+		game.load.image("background3", "chunli2/background3.png");
+		game.load.image("garden1", "chunli2/garden1.png");
+		game.load.image("garden2", "chunli2/garden2.png");
+		game.load.image("flower24", "chunli2/flower24.png");
+		game.load.image("flower32", "chunli2/flower32.png");
+		game.load.image("flower27", "chunli2/flower27.png");
+		game.load.image("flower28", "chunli2/flower28.png");
+		game.load.image("love", "chunli2/love.png");
+		game.load.spritesheet("pinkSpin", "chunli2/pinkSpin.png", 30, 31);
+		game.load.image("carousel", "chunli2/carousel.png");
+		game.load.image("van1", "chunli2/van1.png");
+		game.load.image("van3", "chunli2/van3.png");
+		game.load.image("cowskull3", "chunli2/cowskull3.png");
+		game.load.image("rock18", "chunli2/rock18.png");
+		game.load.image("truck1", "chunli2/truck1.png");
+		game.load.image("ground12", "chunli2/ground12.png");
+		game.load.image("splash", "chunli2/splash.png");
+		game.load.image("graf2", "chunli2/graf1.png");
+		game.load.image("sign5", "chunli2/sign5.png");
+		game.load.image("spinach", "chunli2/spinach.png");
+		game.load.image("couch2", "chunli2/couch2.png");
+		game.load.image("junk", "chunli2/junk18.png");
+		game.load.image("oilcan3", "chunli2/oilcan3.png");
+		game.load.image("statue", "chunli2/statue11_1.png");
+		game.load.image("caution4", "chunli2/caution4.png");
+		game.load.spritesheet("wind2", "chunli2/wind2.png", 67, 127);
+		game.load.image("rock16", "chunli2/rock16.png");
+		game.load.image("rock15", "chunli2/rock15.png");
+		game.load.spritesheet("star", "chunli2/star.png", 130, 137);
+		game.load.spritesheet("ticks", "chunli2/ticks.png", 40, 32);
+		game.load.image("batnail", "chunli2/pliers.png");
+		game.load.image("lighter", "chunli2/lighter_1.png");
+		game.load.spritesheet("plant1", "chunli2/plant1.png", 38, 49);
+		game.load.image("mag", "chunli2/mag.png");
+		game.load.image("glasses1", "chunli2/glasses1.png");
+		game.load.image("boulder3", "chunli2/boulder3.png");
+		game.load.spritesheet("billboardAnim", "chunli2/billboardAnim.png", 64, 94);
+		game.load.spritesheet("billboardAnim2", "chunli2/billboardAnim2.png", 64, 94);
+		game.load.spritesheet("statue29", "chunli2/statue29.png", 43, 96);
+		game.load.image("cowskull4", "chunli2/cowskull4.png");
+		game.load.image("wall5", "chunli2/wall5.png");
+		game.load.image("bush5", "chunli2/bush5.png");
+		game.load.image("plant23", "chunli2/plant23.png");
+		game.load.image("tires", "chunli2/tires.png");
+		game.load.spritesheet("chunli11", "chunli2/chunli11.png", 53, 79);
+		game.load.spritesheet("chunli12", "chunli2/chunli12.png", 117, 121);
+		game.load.spritesheet("chunli13", "chunli2/chunli13.png", 51, 99);
+		game.load.spritesheet("chunli14", "chunli2/chunli14.png", 93, 91);
+		game.load.spritesheet("chunli15", "chunli2/chunli15.png", 85, 88);
+		game.load.spritesheet("chunli16", "chunli2/chunli16.png", 98, 76);
+		//preload gui elements
+		game.load.spritesheet("eyeCursor", "cursors/eyeCursor.png", 85, 55);
+		game.load.bitmapFont('font', 'guiElements/font.png', 'guiElements/font.fnt');
+		//physics and scaling
+		game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+		game.renderer.renderSession.roundPixels = true;
+		game.world.setBounds(0, 0, 2500, 2500);
+		game.physics.startSystem(Phaser.Physics.ARCADE);
+	}
+
+	function create() {
+		$('.leftimgcontain').css({
+			"visibility": "visible"
+		});
+		//tell pace that load is complete when the "dummy" div "bang" is displayed
+		//remove if not using pace loading bar
+		$("body").append("<div id='bang'></div>");
+		//create a magenta frame around the game div and fade it in
+		setTimeout(function() {
+			$('#blue').css({
+				"border": "2px solid magenta"
+			});
+		}, 2000);
+    //begin art
+		game.stage.backgroundColor = "#ffebb7";
+		sand = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'sand');
+		bg = game.add.tileSprite(0, 0, game.world.width, 184, 'bg50');
+		bg.smoothed = false;
+		bgWater = game.add.tileSprite(0, 0, game.world.width, 120, 'waterfall6');
+		bgWater.smoothed = false
+		bgWater.animations.add("water6", [], 10, true);
+		bgWater.animations.play("water6");
+		worms = game.add.group();
+		for (var i = 0; i < 10; i++) {
+			worms.create(game.world.randomX, game.rnd.integerInRange(80, 120), 'egg3');
+			worms.create(game.world.randomX, game.rnd.integerInRange(90, 140), 'flower7');
+			worms.create(game.world.randomX, game.rnd.integerInRange(50, 100), 'flower23');
+			worms.setAll("smoothed", false);
+			worms.callAll("animations.add", "animations", "worms", [], 10, true);
+			worms.callAll("animations.play", "animations", "worms");
+		}
+		worms.sort();
+		grounds = game.add.tileSprite(0, 175, game.world.width, 183, 'background3');
+		grounds.smoothed = false;
+		flowersTop = game.add.group();
+		for (var i = 0; i < 8; i++) {
+			worms.create(game.world.randomX, game.rnd.integerInRange(50, 100), 'flower23');
+			flowersTop.create(game.world.randomX, game.rnd.integerInRange(180, 240), 'flower32');
+			flowersTop.create(game.world.randomX, game.rnd.integerInRange(180, 240), 'flower32');
+			flowersTop.setAll("smoothed", false);
+		}
+		statue29 = game.add.group();
+		for (var i = 0; i < 5; i++) {
+			statue29.create(game.world.randomX, game.rnd.integerInRange(80, 320), 'chunli16');
+			statue29.create(game.world.randomX, game.rnd.integerInRange(80, 320), 'statue29');
+			statue29.create(game.world.randomX, game.rnd.integerInRange(80, 320), 'statue29');
+			statue29.setAll("smoothed", false);
+			statue29.callAll("animations.add", "animations", "statue29", [], 5, true);
+			statue29.callAll("animations.play", "animations", "statue29");
+		}
+		garden = game.add.tileSprite(0, 220, game.world.width, 129, 'garden1');
+		garden.smoothed = false;
+		garden2 = game.add.tileSprite(0, 280, game.world.width, 105, 'garden2');
+		garden2.smoothed = false;
+		simGround = game.add.tileSprite(0, 385, game.world.width, 305, 'ground12');
+		simGround.smoothed = false;
+		splash = game.add.group();
+		for (var i = 0; i < 10; i++) {
+			splash.create(game.world.randomX, game.rnd.integerInRange(450, 650), 'splash');
+			splash.create(game.world.randomX, game.rnd.integerInRange(450, 650), 'cowskull3');
+			splash.create(game.world.randomX, game.rnd.integerInRange(450, 650), 'graf2');
+			splash.setAll("smoothed", false);
+		}
+		simCit = game.add.tileSprite(0, 280, game.world.width, 206, 'truck1');
+		simCit.smoothed = false
+		simCuts = game.add.group();
+		for (var i = 0; i < 1; i++) {
+			simCuts.create(120, 250, 'arco3');
+			simCuts.create(520, 220, 'arco5');
+			simCuts.create(1080, 240, 'arco4');
+			simCuts.create(1530, 200, 'arco2');
+			simCuts.create(1960, 230, 'arco5');
+			simCuts.setAll("smoothed", false);
+			simCuts.callAll("animations.add", "animations", "simCuts", [], 10, true);
+			simCuts.callAll("animations.play", "animations", "simCuts");
+		}
+		simTops = game.add.group();
+		for (var i = 0; i < 3; i++) {
+			simTops.create(game.world.randomX, game.rnd.integerInRange(380, 450), 'arco2');
+			simTops.create(game.world.randomX, game.rnd.integerInRange(380, 450), 'arco3');
+			simTops.create(game.world.randomX, game.rnd.integerInRange(380, 450), 'arco4');
+			simTops.create(game.world.randomX, game.rnd.integerInRange(380, 450), 'statue29');
+			simTops.setAll("smoothed", false);
+			simTops.callAll("animations.add", "animations", "simTops", [], 10, true);
+			simTops.callAll("animations.play", "animations", "simTops");
+		}
+		simTops.sort();
+		wallTop = game.add.tileSprite(0, 635, game.world.width, 57, 'wall5');
+		wallTop.smoothed = false;
+		bushTop = game.add.tileSprite(0, 585, game.world.width, 131, 'bush5');
+		bushTop.smoothed = false;
+		puddles = game.add.physicsGroup();
+		for (var i = 0; i < 10; i++) {
+			puddles.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'water1');
+			puddles.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'water2');
+			puddles.setAll("smoothed", false);
+		}
+		checkers = game.add.physicsGroup();
+		for (var i = 0; i < 50; i++) {
+			checkers.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'checkers');
+			checkers.setAll("smoothed", false);
+		}
+		bones = game.add.physicsGroup();
+		for (var i = 0; i < 10; i++) {
+			bones.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'cowskull3');
+			bones.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'cowskull4');
+			bones.setAll("smoothed", false);
+		}
+		combined = game.add.physicsGroup();
+		for (var i = 0; i < 2; i++) {
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'sign5');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'spinach');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'couch2');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'junk');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'statue');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'oilcan3');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'caution4');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'wind2');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock15');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock16');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'ticks');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'batnail');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'lighter');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'plant1');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'mag');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'glasses1');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'boulder3');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'billboardAnim');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'billboardAnim2');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'plant23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'tires');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock18');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock18');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock18');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock18');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock18');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower24');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower27');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower28');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'love');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'love');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'carousel');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'arcade1');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'arcade2');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'barrel1');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'fan');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'boombox');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'van1');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'van3');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock18');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock18');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock18');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock18');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock18');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower24');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower27');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower28');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'love');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'love');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'carousel');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'arcade1');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'arcade2');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'barrel1');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'fan');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'boombox');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'van1');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'van3');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'sign5');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'spinach');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'couch2');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'junk');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'statue');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'oilcan3');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'caution4');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'wind2');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock15');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock16');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'ticks');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'batnail');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'lighter');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'plant1');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'mag');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'glasses1');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'boulder3');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'billboardAnim');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'billboardAnim2');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'plant23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'tires');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'truck1');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock18');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock18');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock18');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock18');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'rock18');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower23');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower24');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower27');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'flower28');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'love');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'love');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'carousel');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'arcade1');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'arcade2');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'barrel1');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'fan');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'boombox');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'van1');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'van3');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'chunli3');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'chunli4');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'chunli5');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'chunli6');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'chunli7');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'chunli8');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'chunli9');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'chunli10');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'chunli11');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'chunli12');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'chunli13');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'chunli14');
+			combined.create(game.world.randomX, game.rnd.integerInRange(700, 2700), 'chunli15');
+			combined.callAll("animations.add", "animations", "combined", [], 10, true);
+			combined.callAll("animations.play", "animations", "combined");
+			combined.setAll("smoothed", false);
+			combined.setAll("anchor.x", 0.5);
+			combined.setAll("anchor.y", 0.5);
+		}
+		combined.sort();
+		//define cursor
+		cursors = game.input.keyboard.createCursorKeys();
+    //cursor movement
+		player = game.add.sprite(100, 0, "eyeCursor");
+		game.physics.arcade.enable(player);
+		game.camera.follow(player);
+		player.body.collideWorldBounds = true;
+		player.anchor.set(0.5);
+		player.smoothed = false;
+		player.animations.add('blink', [], 2, true);
+		player.animations.play('blink', [], 2, true);
+		arrows = game.add.bitmapText(player.position.x, player.position.y + 60, 'font', '  ← ↑ ↓ →\n arrow keys', 28);
+		arrows.anchor.x = 0.5;
+		arrows.smoothed = false;
+		arrows.alpha = 1;
+		//remove arrows once button pressed
+		arrowTween = game.add.tween(arrows).to({
+			alpha: 0
+		}, 1000, Phaser.Easing.Linear.None, true, 0, -1);
+		overTop = game.add.group();
+		for (var i = 0; i < 10; i++) {
+			overTop.create(game.world.randomX, game.rnd.integerInRange(0, 2450), 'poof');
+			overTop.create(game.world.randomX, game.rnd.integerInRange(0, 2450), 'pinkSpin');
+			overTop.create(game.world.randomX, game.rnd.integerInRange(0, 2450), 'sonic1');
+			overTop.create(game.world.randomX, game.rnd.integerInRange(0, 2450), 'star');
+			overTop.create(game.world.randomX, game.rnd.integerInRange(0, 2450), 'pinkSpin');
+			overTop.setAll("smoothed", false);
+			overTop.callAll("animations.add", "animations", "overTop", [], 10, true);
+			overTop.callAll("animations.play", "animations", "overTop");
+		}
+		//birds over top
+		birdsGroup = game.add.group();
+		birdsGroup.enableBody = true;
+		birdsGen = game.time.events.loop(500, genBirds, this);
+		birdsGen.timer.start();
+	}
+
+	function update() {
+		//sorting
+		combined.sort('y', Phaser.Group.SORT_ASCENDING);
+		simTops.sort('y', Phaser.Group.SORT_ASCENDING);
+		//cursor movement
+		player.body.velocity.x = 0;
+		player.body.velocity.y = 0;
+		if (cursors.down.isDown) {
+			player.body.velocity.y = 150;
+			if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }
+		} else if (cursors.up.isDown) {
+			player.body.velocity.y = -150;
+			if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }
+		} else if (cursors.right.isDown) {
+			player.body.velocity.x = 150;
+			if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }
+		} else if (cursors.left.isDown) {
+			player.body.velocity.x = -150;
+			if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }
+		}
+	}
+	
+	//generate birds, remove them when offscreen & attempt recycle
+	function genBirds() {
+		for (var i = 0; i < 1; i++) {
+			var x = i * 1;
+			var velocityX = game.rnd.integerInRange(120, 200);
+			var bird;
+			bird = birdsGroup.getFirstExists(false);
+			if (!bird) {
+				bird = game.add.sprite(-10, 0, 'bird');
+				bird.preUpdate();
+				bird.smoothed = false;
+				bird.animations.add("bird", [], 10, true);
+				bird.animations.play("bird");
+				birdsGroup.add(bird);
+				bird.anchor.setTo(0.5, 0.5);
+				game.physics.arcade.enableBody(bird);
+				bird.enableBody = true;
+			}
+			bird.anchor.setTo(0.5, 0.5);
+			bird.reset(-10, game.world.randomY);
+			bird.body.velocity.x = velocityX // * deltaTime;
+			bird.checkWorldBounds = true;
+			bird.outOfBoundsKill = true;
+		}
+	}
+    </script>
+  </body>
+</html>

@@ -1,0 +1,518 @@
+<html>
+    <head>
+	<script>
+	paceOptions = {
+	ajax: false, // disabled
+	document: false, // disabled
+	eventLag: false, // disabled
+	elements: {
+	selectors: ['#bang']
+	}
+	};
+	</script>
+	<script src="pace/pace.js"></script>
+    <meta charset="UTF-8" />
+    <script src="js/phaser.min.js"></script>
+	<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="ui/1.12.1/jquery-ui.js"></script>
+	<style>
+body{
+	margin:0 auto;
+	background-color:black;
+}
+/*loading bar*/
+	body.pace-running:before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 1500;
+	background-color: rgba(0, 0, 0, 1);
+}
+body:before {
+	background-color: rgba(0, 0, 0, 0);
+	-webkit-transition: background-color 200ms;
+	-moz-transtition: background-color 200ms;
+	-ms-transition: background-color 200ms;
+	-o-transition: background-color: 200ms;
+	transition: background-color 200ms;
+}
+.pace {
+	-webkit-pointer-events: none;
+	pointer-events: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	z-index: 2000;
+	position: fixed;
+	margin: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 5px;
+	width: 200px;
+	background: #fff;
+	overflow: hidden;
+	border-radius:10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-ms-border-radius:10px;
+	-o-border-radius:10px;
+	}
+.pace .pace-progress {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+	max-width: 200px;
+	position: fixed;
+	z-index: 2000;
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 100%;
+	height: 100%;
+	width: 100%;
+	background: magenta;
+	}
+	.pace.pace-inactive {
+	display: none;
+	}
+#wholepage{
+	width:100%;
+	height:100%
+	width:100vw;
+	height:100vh;
+	overflow:hidden;
+	margin:0 auto;
+}
+#centercontain{
+	top:40px;
+	height:90vh;
+	width:90vw;
+	position:relative;
+	margin: 0 auto;
+	/*min-width:400px;*/
+	max-width:2500px;
+	max-height:2500px;
+}
+#red{
+	overflow:hidden;
+	position:absolute;
+	width:100px;
+	height:100%;
+	margin: 0 auto;
+}
+#blue{
+	position:absolute;
+	height:100%;
+	right:0;
+	width: calc(100% - 100px); /* IE9+ and future browsers */
+	width: -moz-calc(100% - 100px); /* Firefox */
+	width: -webkit-calc(100% - 100px); /* Chrome, Safari */
+	/*min-width:80vw-100px;*/
+	margin: 0 auto;
+	border-radius:10px;
+	border:2px solid transparent;
+	transition: border 2s;
+	overflow:hidden;
+}
+.leftimgcontain{
+  margin:0 auto;
+  text-align:center;
+  position:relative;
+  z-index:20;
+  background-size:contain;
+  background-repeat:no-repeat;
+}
+@font-face{
+	font-family: IBMFont;
+	src: url(font/Px437_IBM_ISO9.ttf);
+	}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:999;
+}
+.easy1{
+	background-color: blue;
+	width:25px;
+	z-index:500;
+	right:10px;
+	top:10px;
+	position:absolute;
+	text-align:center;
+	border-radius:2px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: blue;
+}
+.easy1:hover{
+	background-color: pink;
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	text-align:center;
+	border-radius:6px;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;
+}
+</style>
+</head>
+<body>
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">In this vast furnace, we reach out for each other. Only we can keep each other safe.<br><br>Use arrow keys to explore the area. Leave through a door when you're ready, or close the browser page.<br><br><input id="p2Back" type="button" value="> Close"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<!--
+<audio id="audio1" 
+src="sounds/arps/fm_minor_2_shorter-bb11-1s.mp3"
+type="audio/mp3"
+loop="true">
+</audio> 
+-->
+<div id="wholepage">
+<div id="centercontain">
+<div id="blue">
+</div>
+<div id="red">
+</div>
+</div>
+</div> 
+	<script>
+	//ENTER DOOR STUFF
+	var dooronegif = new Image();
+	dooronegif.src = 'door1.gif';
+	var doortwogif = new Image();
+	doortwogif.src = 'door2.gif';
+	var doortregif = new Image();
+	doortregif.src = 'door3.gif';
+	var imglist = ["door1","door2","door3"];
+	numImgs= Math.floor(Math.random() * imglist.length) +1;
+	toplist=[];
+	for (i=0;i<numImgs;i++){
+	  var prev=i-1;
+	  if (toplist[prev] == null){
+		toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+		while ($('#red').height()<toplist[i] + 100){
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+		}
+	  } else{
+		toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+		count = 0;
+		while (($('#red').height()<=toplist[i] + ((i+1) * 100)) && (count <= 100)){
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+			count = count + 1;
+		}	
+	  };
+	  imgindex = Math.floor(Math.random() * imglist.length);
+	  var startingimage = new Image();
+	  startingimage.src = imglist[imgindex] + "_start.png";
+	  var div = document.createElement("div");
+	  div.className = "leftimgcontain";
+	  div.id = imglist[i];
+	  div.style.top = toplist[i] + 'px';
+	  div.style.visibility="hidden";
+	  $('#red').append(div);
+	  $('#' + imglist[i]).append(startingimage);
+	};
+	function setdoorgif(objid){
+		var img = $(objid).find('img');
+		var src = img.attr('src');
+		var door = src.replace("_start.png", ".gif")
+		if (door == 'door1.gif'){
+			img.attr('src','door1.gif'); 
+		} else if (door == 'door2.gif'){
+			img.attr('src','door2.gif');
+		} else if (door == 'door3.gif'){
+			img.attr('src','door3.gif');
+		}	
+	}
+	function setlinkfaderedirect(){
+		/*
+		var audio = document.getElementById("audio1");
+		$(audio1).animate({volume: 0}, 1500);
+	*/
+		cursors.right.enabled=false;
+		cursors.left.enabled=false;
+		cursors.up.enabled=false;
+		cursors.down.enabled=false;
+		player.alpha=0;
+		poof = game.add.sprite(player.position.x,player.position.y,"poof");
+		poof.smoothed=false;
+		poof.anchor.x=0.5;
+		poof.anchor.y=0.5;
+		poof.animations.add("poof",[],25,false,true);
+		poof.animations.play("poof",[],25,false,true);
+	  	$('body').css('pointer-events','none');
+		$("body").delay(500).animate({"opacity": "0"}, 2500); // fade out body
+	  	var linklist = ["/tyris.html"];
+		linkindex = Math.floor(Math.random() * linklist.length);
+		link = linklist[linkindex];
+		setTimeout(function(){
+			window.location.assign(link);
+		},3000);
+	}
+	$('#door1').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	});	
+	$('#door2').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	});	
+	$('#door3').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	}); 
+	var doorContain = $('#door');
+//DONE WITH DOOR STUFF
+	</script>
+	<script type="text/javascript">	
+	var game = new Phaser.Game(1000, 1000, Phaser.CANVAS, 'blue', { preload: preload, create: create, update: update });
+	function preload() {
+	game.load.spritesheet("catherine", "catherine/catherine1.png",126,79);
+	game.load.spritesheet("catherine2", "catherine/catherine2.png",126,79);
+	game.load.spritesheet("wheat", "catherine/wheat.png",320,84);
+	game.load.image("singlewheat", "catherine/singlewheat.png");
+	game.load.image("oilcan3", "catherine/oilcan3.png");
+	game.load.image("oilcan2", "catherine/oilcan2.png");
+	game.load.image("oilcan1", "catherine/oilcan1.png");
+	game.load.spritesheet("mudhand", "catherine/mudhand.png",60,63);
+	game.load.spritesheet("mudhand2", "catherine/mudhand2.png",60,63);
+	game.load.spritesheet("simdust", "catherine/simdust.png",142,146);
+	game.load.spritesheet("simcitywind", "catherine/simcitywind.png",254,250);
+	game.load.spritesheet("reddust", "catherine/reddust.png",320,128);
+	game.load.spritesheet("reddust2", "catherine/reddust2.png",168,74);
+	game.load.spritesheet("eyeCursor","cursors/eyeCursor.png", 85,55);
+	game.load.spritesheet("poof","guiElements/geniepuff.png", 84,86);
+	game.load.bitmapFont('font', 'guiElements/font.png', 'guiElements/font.fnt');
+	game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+	game.renderer.renderSession.roundPixels = true;
+	game.world.setBounds(0,0, 2500,2500);
+	game.physics.startSystem(Phaser.Physics.ARCADE);
+	}	
+	function create(){
+	$('.leftimgcontain').css({"visibility":"visible"});
+	$("body").append("<div id='bang'></div>");
+	setTimeout(function(){
+	$('#blue').css({"border":"2px solid magenta"});
+	}, 2000);
+	game.stage.backgroundColor="#b5a563";
+	wheatSingle = game.add.group ();
+	for (var i = 0; i < 50; i++)
+	{
+	wheatSingle.create(game.world.randomX, game.world.randomY, 'singlewheat');
+	wheatSingle.setAll("smoothed", false);
+	}
+	wheat = game.add.group ();
+	for (var i = 0; i < 35; i++)
+	{
+	wheat.create(game.world.randomX, game.world.randomY, 'wheat');
+	wheat.create(game.world.randomX, game.world.randomY, 'wheat');
+	wheat.create(game.world.randomX, game.world.randomY, 'wheat');
+	wheat.create(game.world.randomX, game.world.randomY, 'wheat');
+	wheat.setAll("smoothed", false);
+	wheat.callAll("animations.add","animations","wheat",[] ,10, true);
+	wheat.callAll("animations.play","animations","wheat");
+	}
+	oilcans = game.add.group ();
+	for (var i = 0; i < 25; i++)
+	{
+	oilcans.create(game.world.randomX, game.world.randomY, 'oilcan1');
+	oilcans.create(game.world.randomX, game.world.randomY, 'oilcan2');
+	oilcans.create(game.world.randomX, game.world.randomY, 'oilcan3');
+	oilcans.setAll("smoothed", false);
+	oilcans.setAll("scale.x", .8);
+	oilcans.setAll("scale.y", .8);
+	}
+	dust = game.add.group ();
+	for (var i = 0; i < 10; i++)
+	{
+	dust.create(game.world.randomX, game.world.randomY, 'simdust');
+	dust.setAll("smoothed", false);
+	dust.callAll("animations.add","animations","dust",[],10, true);
+	dust.callAll("animations.play","animations","dust");
+	}
+	mudhand = game.add.group ();
+	for (var i = 0; i < 20; i++)
+	{
+	mudhand.create(game.world.randomX, game.world.randomY, 'mudhand');
+	mudhand.create(game.world.randomX, game.world.randomY, 'mudhand2');
+	mudhand.setAll("smoothed", false);
+	mudhand.callAll("animations.add","animations","mudhand",[],10, true);
+	mudhand.callAll("animations.play","animations","mudhand");
+	}
+	catherine = game.add.group ();
+	for (var i = 0; i < 30; i++)
+	{
+	catherine.create(game.world.randomX, game.world.randomY, 'catherine');
+	catherine.setAll("smoothed", false);
+	catherine.callAll("animations.add","animations","catherine",[],5, true);
+	catherine.callAll("animations.play","animations","catherine");
+	}
+	catherine2 = game.add.group ();
+	for (var i = 0; i < 30; i++)
+	{
+	catherine2.create(game.world.randomX, game.world.randomY, 'catherine2');
+	catherine2.setAll("smoothed", false);
+	catherine2.callAll("animations.add","animations","catherine",[8,7,6,5,4,3,2,1,0] ,5, true);
+	catherine2.callAll("animations.play","animations","catherine");
+	}
+	cursors = game.input.keyboard.createCursorKeys();
+	player= game.add.sprite(100,0,"eyeCursor");	
+	game.physics.arcade.enable(player);
+	game.camera.follow(player);
+	player.body.collideWorldBounds = true;
+	player.anchor.set(0.5);
+	player.smoothed=false;
+	player.animations.add('blink', [], 2, true);
+	player.animations.play('blink', [],2,true);
+	arrows = game.add.bitmapText(player.position.x,player.position.y+60, 'font','  ← ↑ ↓ →\n arrow keys',28);
+	arrows.anchor.x=0.5;
+	arrows.smoothed=false;
+	arrows.alpha=1;
+	arrowTween = game.add.tween(arrows).to( { alpha: 0},1000,Phaser.Easing.Linear.None,true,0,-1);
+	storm = game.add.group ();
+	for (var i = 0; i < 10; i++)
+	{
+	storm.create(game.world.randomX, game.world.randomY, 'simcitywind');
+	storm.setAll("smoothed", false);
+	storm.callAll("animations.add","animations","storm",[],10, true);
+	storm.callAll("animations.play","animations","storm");
+	}
+	redCloud = game.add.group();
+    redCloud.enableBody = true;
+	redCloudGen = game.time.events.loop(1500, genCloud, this);
+    redCloudGen.timer.start();
+	redCloud2 = game.add.group();
+    redCloud2.enableBody = true;
+	redCloudGen2 = game.time.events.loop(1500, genCloud2, this);
+    redCloudGen2.timer.start();
+	}
+	function update(){
+	player.body.velocity.x = 0;
+	player.body.velocity.y = 0;
+	if (cursors.down.isDown){ 
+    player.body.velocity.y = 150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	else if (cursors.up.isDown){
+    player.body.velocity.y = -150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}	
+	else if (cursors.right.isDown){
+    player.body.velocity.x = 150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	else if (cursors.left.isDown){  
+    player.body.velocity.x = -150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	}
+	function genCloud(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(50, 80);
+	var red1;
+	red1 = redCloud.getFirstExists(false);
+	if (!red1) {
+	red1 = game.add.sprite(-150, 0, 'reddust');
+	red1.preUpdate();
+	red1.smoothed=false;
+	red1.animations.add("red1", [], 10,true);
+	red1.animations.play("red1");
+	redCloud.add(red1);
+	red1.anchor.setTo(0, 0.5);
+	game.physics.arcade.enableBody(red1);
+	red1.enableBody = true;
+	}
+	red1.anchor.setTo(0, 0.5);
+	red1.reset(-150,game.world.randomY); 
+	red1.body.velocity.x = velocityX;
+	red1.checkWorldBounds = true;
+	red1.outOfBoundsKill = true;
+	}}
+	function genCloud2(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(50, 80);
+	var red2;
+	red2 = redCloud.getFirstExists(false);
+	if (!red2) {
+	red2 = game.add.sprite(-150, 0, 'reddust2');
+	red2.preUpdate();
+	red2.smoothed=false;
+	red2.animations.add("red2", [], 5,true);
+	red2.animations.play("red2");
+	redCloud.add(red2);
+	red2.anchor.setTo(0, 0.5);
+	game.physics.arcade.enableBody(red2);
+	red2.enableBody = true;
+	}
+	red2.anchor.setTo(0, 0.5);
+	red2.reset(-150,game.world.randomY); 
+	red2.body.velocity.x = velocityX;
+	red2.checkWorldBounds = true;
+	red2.outOfBoundsKill = true;
+	}}
+	</script>
+	</body>
+	</html>

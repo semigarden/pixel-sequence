@@ -1,0 +1,627 @@
+<html>
+    <head>
+	<script>
+	paceOptions = {
+	ajax: false, // disabled
+	document: false, // disabled
+	eventLag: false, // disabled
+	elements: {
+	selectors: ['#bang']
+	}
+	};
+	</script>
+	<script src="pace/pace.js"></script>
+    <meta charset="UTF-8" />
+    <script src="js/phaser.min.js"></script>
+	<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="ui/1.12.1/jquery-ui.js"></script>
+    </head>
+	<style>
+body{
+	margin:0 auto;
+	background-color:black;
+}
+/*loading bar*/
+	body.pace-running:before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 1500;
+	background-color: rgba(0, 0, 0, 1);
+}
+body:before {
+	background-color: rgba(0, 0, 0, 0);
+	-webkit-transition: background-color 200ms;
+	-moz-transtition: background-color 200ms;
+	-ms-transition: background-color 200ms;
+	-o-transition: background-color: 200ms;
+	transition: background-color 200ms;
+}
+.pace {
+	-webkit-pointer-events: none;
+	pointer-events: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	z-index: 2000;
+	position: fixed;
+	margin: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 5px;
+	width: 200px;
+	background: #fff;
+	overflow: hidden;
+	border-radius:10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-ms-border-radius:10px;
+	-o-border-radius:10px;
+	}
+.pace .pace-progress {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+	max-width: 200px;
+	position: fixed;
+	z-index: 2000;
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 100%;
+	height: 100%;
+	width: 100%;
+	background: magenta;
+	}
+	.pace.pace-inactive {
+	display: none;
+	}
+#wholepage{
+	width:100%;
+	height:100%
+	width:100vw;
+	height:100vh;
+	overflow:hidden;
+	margin:0 auto;
+}
+#centercontain{
+	top:40px;
+	height:90vh;
+	width:90vw;
+	position:relative;
+	margin: 0 auto;
+	/*min-width:400px;*/
+	max-width:2500px;
+	max-height:2500px;
+}
+#red{
+	overflow:hidden;
+	position:absolute;
+	width:100px;
+	height:100%;
+	margin: 0 auto;
+}
+#blue{
+	position:absolute;
+	height:100%;
+	right:0;
+	width: calc(100% - 100px); /* IE9+ and future browsers */
+	width: -moz-calc(100% - 100px); /* Firefox */
+	width: -webkit-calc(100% - 100px); /* Chrome, Safari */
+	/*min-width:80vw-100px;*/
+	margin: 0 auto;
+	border-radius:10px;
+	overflow:hidden;
+	border:2px solid transparent;
+	transition: border 2s;
+}
+.leftimgcontain{
+  margin:0 auto;
+  text-align:center;
+  position:relative;
+  z-index:20;
+  background-size:contain;
+  background-repeat:no-repeat;
+}
+@font-face{
+	font-family: IBMFont;
+	src: url(font/Px437_IBM_ISO9.ttf);
+	}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+* { Box-sizing: Border-box }
+.containerHelp {
+  float: right;
+  z-index:999;
+}
+.easy1{
+	background-color: blue;
+	width:25px;
+	z-index:500;
+	right:10px;
+	top:10px;
+	position:absolute;
+	text-align:center;
+	border-radius:2px;
+	-webkit-animation: blink 2s infinite;
+    -moz-animation: blink 2s infinite;
+    animation: blink 2s infinite;
+	background-color: blue;
+}
+.easy1:hover{
+	background-color: pink;
+	 z-index:500;
+}
+#p1Next{
+	border:none;
+	background-color:transparent;
+	font-size:16px;
+	font-family: IBMFont;
+	color:magenta;
+	z-index:500;
+	text-align:center;
+	border-radius:6px;
+}
+.easy2{
+	position:absolute;
+	display: none;
+	padding: 10px;
+	background-color: black;
+	border:1px solid magenta;
+	width:200px;
+	font-family: IBMFont;
+	color:white;
+	border-radius:6px;
+	right:10px;
+	z-index:500;
+	top:10px;
+}
+#p2Back{
+	border:none;
+	background-color:magenta;
+	font-size:16px;
+	font-family: IBMFont;
+	color:black;
+	z-index:500;
+}
+</style>
+<body>
+<div class="containerHelp">
+<div class="easy1"><input id="p1Next" type="button" value="?"></div>
+<div class="easy2">The warehouse is burning.<br><br>Use arrow keys to explore the area. Leave through a door when you're ready, or close the browser page.<br><br><input id="p2Back" type="button" value="> Close"></div>
+</div>
+<script>
+$( "#p1Next" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+$( "#p2Back" ).click(function() {
+	$('.easy1').slideToggle(500);
+	$('.easy2').slideToggle(500);
+});
+</script>
+<!--
+<audio id="audio1" 
+src="sounds/arps/fm_minor_2_shorter-bb11-1s.mp3"
+type="audio/mp3"
+loop="true">
+</audio> 
+-->
+<div id="wholepage">
+<div id="centercontain">
+<div id="blue">
+</div>
+<div id="red">
+</div>
+</div>
+</div> 
+	<script>
+	//ENTER DOOR STUFF
+	var dooronegif = new Image();
+	dooronegif.src = 'door1.gif';
+	var doortwogif = new Image();
+	doortwogif.src = 'door2.gif';
+	var doortregif = new Image();
+	doortregif.src = 'door3.gif';
+	var imglist = ["door1","door2","door3"];
+	numImgs= Math.floor(Math.random() * imglist.length) +1;
+	toplist=[];
+	for (i=0;i<numImgs;i++){
+	  var prev=i-1;
+	  if (toplist[prev] == null){
+		toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+		while ($('#red').height()<toplist[i] + 100){
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs) + 1);
+		}
+	  } else{
+		toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+		count = 0;
+		while (($('#red').height()<=toplist[i] + ((i+1) * 100)) && (count <= 100)){
+			toplist[i] = Math.floor(Math.random() * (1000 / numImgs)) + toplist[prev];
+			count = count + 1;
+		}	
+	  };
+	  imgindex = Math.floor(Math.random() * imglist.length);
+	  var startingimage = new Image();
+	  startingimage.src = imglist[imgindex] + "_start.png";
+	  var div = document.createElement("div");
+	  div.className = "leftimgcontain";
+	  div.id = imglist[i];
+	  div.style.top = toplist[i] + 'px';
+	  div.style.visibility="hidden";
+	  $('#red').append(div);
+	  $('#' + imglist[i]).append(startingimage);
+	};
+	function setdoorgif(objid){
+		var img = $(objid).find('img');
+		var src = img.attr('src');
+		var door = src.replace("_start.png", ".gif")
+		if (door == 'door1.gif'){
+			img.attr('src','door1.gif'); 
+		} else if (door == 'door2.gif'){
+			img.attr('src','door2.gif');
+		} else if (door == 'door3.gif'){
+			img.attr('src','door3.gif');
+		}	
+	}
+	function setlinkfaderedirect(){
+		/*
+		var audio = document.getElementById("audio1");
+		$(audio1).animate({volume: 0}, 1500);
+	*/
+		cursors.right.enabled=false;
+		cursors.left.enabled=false;
+		cursors.up.enabled=false;
+		cursors.down.enabled=false;
+		player.alpha=0;
+		poof = game.add.sprite(player.position.x,player.position.y,"poof");
+		poof.smoothed=false;
+		poof.anchor.x=0.5;
+		poof.anchor.y=0.5;
+		poof.animations.add("poof",[],25,false,true);
+		poof.animations.play("poof",[],25,false,true);
+	  	$('body').css('pointer-events','none');
+		$("body").delay(500).animate({"opacity": "0"}, 2500); // fade out body
+	  	var linklist = ["/red.html","/rosy.html"];
+		linkindex = Math.floor(Math.random() * linklist.length);
+		link = linklist[linkindex];
+		setTimeout(function(){
+			window.location.assign(link);
+		},3000);
+	}
+	$('#door1').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	});	
+	$('#door2').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	});	
+	$('#door3').click(function(){
+		setdoorgif(this);
+		setlinkfaderedirect();
+	}); 
+	var doorContain = $('#door');
+//DONE WITH DOOR STUFF
+	</script>
+	<script type="text/javascript">	
+	var game = new Phaser.Game(1000, 1000, Phaser.CANVAS, 'blue', { preload: preload, create: create, update: update });
+	function preload() {
+	game.load.image("junk1","jade/junk1.png");
+	game.load.image("junk4","jade/junk4.png");
+	game.load.image("junk24","jade/junk24.png");
+	game.load.image("junk25","jade/junk25.png");
+	game.load.image("lemon2","jade/lemon2.png");
+	game.load.spritesheet("flamingo3","jade/flamingo3.png",56,71);
+	game.load.spritesheet("flamingo4","jade/flamingo4.png",56,71);
+	game.load.spritesheet("flame2","jade/flame2.png",30,48);
+	game.load.image("caution3","jade/caution3.png");
+	game.load.image("groundtile","jade/groundtile.png");
+	game.load.spritesheet("jade1","jade/jade1.png",73,131);
+	game.load.spritesheet("kham1","jade/kham1.png",150,161);
+	game.load.image("box2","jade/box2.png");
+	game.load.image("car5","jade/car5.png");
+	game.load.image("car6","jade/car6.png");
+	game.load.image("pile","jade/pile.png");
+	game.load.spritesheet("case","jade/case.png",68,41);
+	game.load.spritesheet("bird1","jade/bird1.png",37,22);
+	game.load.spritesheet("bg_factory","jade/bg_factory.png",387,176);
+	game.load.image("boxes1","jade/boxes1.png");
+	game.load.spritesheet("barrel1","jade/barrel1.png",78,53);
+	game.load.image("metalblock","jade/metalBlock.png");
+	game.load.image("junk10","jade/junk10.png");
+	game.load.image("junk2","jade/junk2.png");
+	game.load.image("junk3","jade/junk3.png");
+	game.load.spritesheet("fire1","jade/fire1.png",34,85);
+	game.load.image("flag1","jade/flag1.png");
+	game.load.spritesheet("owl2","jade/owl2.png",30,43);
+	game.load.image("square","jade/square.png");
+	game.load.image("line","jade/line.png");
+	game.load.image("part12","jade/part12.png");
+	game.load.image("part13","jade/part13.png");
+	game.load.image("part14","jade/part14.png");
+	game.load.image("part15","jade/part15.png");
+	game.load.image("fogsand3","jade/fogsand3.png");
+	game.load.image("cone","jade/cone.png");
+	game.load.image("poster12","jade/poster9.png");
+	game.load.image("lighter","jade/lighter.png");
+	game.load.image("graf1","jade/graf1.png");
+	game.load.image("graf3","jade/graf3.png");
+	game.load.image("splash","jade/splash.png");
+	game.load.image("cigs1","jade/cigs1.png");
+	game.load.image("fogpink","jade/fogpink.png");
+	game.load.image("black","jade/black.png");
+	game.load.spritesheet("eyeCursor","cursors/eyeCursor.png", 85,55);
+	game.load.spritesheet("poof","guiElements/geniepuff.png", 84,86);
+	game.load.bitmapFont('font', 'guiElements/font.png', 'guiElements/font.fnt');
+	game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+	game.renderer.renderSession.roundPixels = true;
+	game.world.setBounds(0,0, 2500,2500);
+	game.physics.startSystem(Phaser.Physics.ARCADE);
+	}
+	function create(){
+	$('.leftimgcontain').css({"visibility":"visible"});
+	$("body").append("<div id='bang'></div>");
+	setTimeout(function(){
+	$('#blue').css({"border":"2px solid magenta"});
+	}, 2000);
+	game.stage.backgroundColor="#778899";
+	BG= game.add.tileSprite(0, 0,  game.world.width, 176 ,'bg_factory');
+	BG.smoothed=false;
+	BG.animations.add("bg", [], 10, true);
+	BG.animations.play("bg", [],10,true);
+	ground = game.add.group ();
+	for (var i = 0; i < 150; i++)
+	{
+	ground.create(game.world.randomX, game.world.randomY+200, 'square');
+	ground.create(game.world.randomX, game.world.randomY+200, 'line');
+	ground.create(game.world.randomX, game.world.randomY+200, 'groundtile');
+	ground.setAll("smoothed", false);
+	}
+	poster = game.add.group();
+	for (var i = 0; i < 30; i++)
+    {
+	poster.create(game.world.randomX, game.world.randomY+100, 'graf3');
+	poster.create(game.world.randomX, game.world.randomY+100, 'graf1');
+	poster.create(game.world.randomX, game.world.randomY+100, 'splash');
+	poster.create(game.world.randomX, game.world.randomY+100, 'cigs1');
+	poster.create(game.world.randomX, game.world.randomY+100, 'splash');
+	poster.create(game.world.randomX, game.world.randomY+100, 'cigs1');
+	poster.create(game.world.randomX, game.world.randomY+100, 'splash');
+	poster.create(game.world.randomX, game.world.randomY+100, 'cigs1');
+	poster.setAll('smoothed', false);
+	}
+	fog = game.add.group ();
+	for (var i = 0; i < 30; i++)
+	{
+	fog.create(game.world.randomX, game.world.randomY+50, 'fogsand3');
+	fog.setAll("smoothed", false);
+	}
+	black= game.add.tileSprite(0, 200,  game.world.width, 50 ,'black');
+	black.smoothed=false;
+	boxes2= game.add.tileSprite(0, 160,  game.world.width, 49 ,'boxes1');
+	boxes2.smoothed=false;
+	fire = game.add.group();
+	for (var i = 0; i < 40; i++)
+    {
+	fire.create(game.world.randomX, game.rnd.integerInRange(130,175), 'fire1');
+	fire.callAll("animations.add","animations","fire",[],10, true);
+	fire.callAll("animations.play","animations","fire");
+	fire.setAll('smoothed', false);
+	}
+	bg2= game.add.tileSprite(0, 0,  game.world.width, 239 ,'junk3');
+	bg2.smoothed=false;
+	boxes= game.add.tileSprite(0, 230,  game.world.width, 49 ,'boxes1');
+	boxes.smoothed=false;
+	cone= game.add.tileSprite(0, 260,  game.world.width, 25 ,'cone');
+	cone.smoothed=false;
+	flag = game.add.group();
+	for (var i = 0; i < 20; i++)
+    {
+	flag.create(game.world.randomX, game.world.randomY+300, 'flag1');
+	flag.setAll('smoothed', false);
+	}
+	pinkparts = game.add.group ();
+	for (var i = 0; i < 15; i++)
+	{
+	pinkparts.create(game.world.randomX, game.world.randomY+300, 'lighter');
+	pinkparts.create(game.world.randomX, game.world.randomY+300, 'part12');
+	pinkparts.create(game.world.randomX, game.world.randomY+300, 'part13');
+	pinkparts.create(game.world.randomX, game.world.randomY+300, 'part14');
+	pinkparts.create(game.world.randomX, game.world.randomY+300, 'part15');
+	pinkparts.setAll("smoothed", false);
+	}
+	lemons = game.add.group ();
+	for (var i = 0; i < 15; i++)
+	{
+	lemons.create(game.world.randomX, game.world.randomY+300, 'lemon2');
+	lemons.setAll("smoothed", false);
+	lemons.setAll("scale.x", .8);
+	lemons.setAll("scale.y", .8);
+	}
+	bird1 = game.add.group();
+	for (var i = 0; i < 10; i++)
+    {
+	bird1.create(game.world.randomX, game.world.randomY+200, 'bird1');
+	bird1.callAll("animations.add","animations","bird1",[],2, true);
+	bird1.callAll("animations.play","animations","bird1");
+	bird1.setAll('smoothed', false);
+	}
+	barrelGroup = game.add.group();
+	barrelGroup.setAll("anchor.x", .5);
+	barrelGroup.setAll("anchor.y", .5);
+    barrelGroup.enableBody = true;
+	barrelGroupGen = game.time.events.loop(2000, genBar, this);
+    barrelGroupGen.timer.start();
+	allstuffs = game.add.group();
+	for (var i = 0; i < 10; i++)
+    {
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'cone');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'cone');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'pile');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'caution3');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'junk1');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'junk10');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'junk4');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'junk2');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'flame2');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'junk24');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'junk25');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'metalblock');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'metalblock');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'metalblock');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'box2');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'car5');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'car6');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'case');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'flamingo3');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'flamingo4');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'jade1');
+	allstuffs.create(game.world.randomX, game.world.randomY+200, 'kham1');
+	allstuffs.callAll("animations.add","animations","allstuffs",[],10, true);
+	allstuffs.callAll("animations.play","animations","allstuffs");
+	allstuffs.setAll('smoothed', false);
+	}
+	allstuffs.sort();
+	cursors = game.input.keyboard.createCursorKeys();
+	player= game.add.sprite(100,0,"eyeCursor");	
+	game.physics.arcade.enable(player);
+	game.camera.follow(player);
+	player.body.collideWorldBounds = true;
+	player.anchor.set(0.5);
+	player.smoothed=false;
+	player.animations.add('blink', [], 2, true);
+	player.animations.play('blink', [],2,true);
+	arrows = game.add.bitmapText(player.position.x,player.position.y+60, 'font','  ← ↑ ↓ →\n arrow keys',28);
+	arrows.anchor.x=0.5;
+	arrows.smoothed=false;
+	arrows.alpha=1;
+	arrowTween = game.add.tween(arrows).to( { alpha: 0},1000,Phaser.Easing.Linear.None,true,0,-1);
+	fog2 = game.add.group ();
+	for (var i = 0; i < 10; i++)
+	{
+	fog2.create(game.world.randomX, game.world.randomY+50, 'fogsand3');
+	fog2.setAll("smoothed", false);
+	}
+	fogGroup = game.add.group();
+    fogGroup.enableBody = true;
+	fogGroupG = game.time.events.loop(3000, genFog, this);
+    fogGroupG.timer.start();
+	birdGroup = game.add.group();
+	birdGroup.setAll("anchor.x", .5);
+	birdGroup.setAll("anchor.y", .5);
+    birdGroup.enableBody = true;
+	birdGroupGen = game.time.events.loop(1000, genBird, this);
+    birdGroupGen.timer.start();
+	}
+	function update(){
+	allstuffs.sort('y', Phaser.Group.SORT_ASCENDING);
+	player.body.velocity.x = 0;
+	player.body.velocity.y = 0;
+	if (cursors.down.isDown){ 
+    player.body.velocity.y = 150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	else if (cursors.up.isDown){
+    player.body.velocity.y = -150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}	
+	else if (cursors.right.isDown){
+    player.body.velocity.x = 150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	else if (cursors.left.isDown){  
+    player.body.velocity.x = -150;
+	if (typeof arrows !== "undefined" && arrows && arrows.kill) { if (typeof arrows !== "undefined" && arrows && arrows.kill) { arrows.kill(); } }}
+	}
+	function genBar(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(-150, -220);         
+	var bar;
+	bar = barrelGroup.getFirstExists(false);
+	if (!bar) {               
+	bar = game.add.sprite(0, -10, 'barrel1');
+	bar.preUpdate();
+	bar.smoothed=false;
+	bar.animations.add("bar", [],10,true);
+	bar.animations.play("bar");
+	barrelGroup.add(bar);             
+	bar.anchor.setTo(0.5, 0.5);            
+	game.physics.arcade.enableBody(bar);
+	bar.enableBody = true;
+	}        
+	bar.anchor.setTo(0.5, 0.5);
+	bar.reset(game.world.width-10,game.world.randomY+250); 
+	bar.body.velocity.x = velocityX;
+	bar.checkWorldBounds = true;
+	bar.outOfBoundsKill = true;}}
+	function genBird(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(-250, -320);         
+	var bird2;
+	bird2 = birdGroup.getFirstExists(false);
+	if (!bird2) {               
+	bird2 = game.add.sprite(0, -10, 'owl2');
+	bird2.preUpdate();
+	bird2.smoothed=false;
+	bird2.animations.add("bird2", [],10,true);
+	bird2.animations.play("bird2");
+	birdGroup.add(bird2);             
+	bird2.anchor.setTo(0.5, 0.5);            
+	game.physics.arcade.enableBody(bird2);
+	bird2.enableBody = true;
+	}        
+	bird2.anchor.setTo(0.5, 0.5);
+	bird2.reset(game.world.width-10,game.world.randomY); 
+	bird2.body.velocity.x = velocityX;
+	bird2.checkWorldBounds = true;
+	bird2.outOfBoundsKill = true;
+	}}
+	function genFog(){
+	for (var i = 0; i < 1; i++) {
+	var x = i * 1;
+	var velocityX = game.rnd.integerInRange(80, 100);         
+	var fog;
+	fog = fogGroup.getFirstExists(false);
+	if (!fog) {               
+	fog = game.add.sprite(0, -100, 'fogpink');
+	fog.preUpdate();
+	fog.smoothed=false;
+	fogGroup.add(fog);             
+	fog.anchor.setTo(0.5, 0.5);            
+	game.physics.arcade.enableBody(fog);
+	fog.enableBody = true;
+	}        
+	fog.anchor.setTo(0.5, 0.5);
+	fog.reset(-100,game.world.randomY+250); 
+	fog.body.velocity.x = velocityX;
+	fog.checkWorldBounds = true;
+	fog.outOfBoundsKill = true;
+	}}
+	</script>
+	</body>
+	</html>

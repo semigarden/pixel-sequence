@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pixel Sequence Mirror Viewer</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="top">
+      <p class="note">
+        Use right click to inspect assets
+      </p>
+      <div class="row">
+        <label for="pageSelect">Page</label>
+        <select id="pageSelect"></select>
+      </div>
+    </header>
+    <div class="split">
+      <section class="frame-wrap" aria-label="Mirrored page">
+        <iframe id="game" title="Game"></iframe>
+      </section>
+      <aside class="panel" aria-label="Detected assets">
+        <p class="hint" id="status">Load a mirrored page to view assets.</p>
+        <ul id="assetList"></ul>
+      </aside>
+    </div>
+    <div id="inspectMenu" class="inspect-menu hidden" role="menu" aria-label="Inspect menu">
+      <button type="button" id="inspectAssetBtn">Inspect asset</button>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

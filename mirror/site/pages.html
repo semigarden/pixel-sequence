@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="/pace/pace.js"></script>
+<meta charset="utf-8">
+<script src="ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="ui/1.12.1/jquery-ui.js"></script>
+<style>
+body{
+	overflow:auto;
+	background-color:black;
+	border:0px;
+	margin:0;
+	color:white;
+	}
+@font-face{
+	font-family: IBMFont;
+	src: url(/font/Px437_IBM_ISO9.ttf);
+	}
+p.pink{
+color:magenta;
+font-weight:bold;
+display:inline;
+font-style:italic;
+}
+
+#openingModal{
+	z-index:500;
+	padding-top:20px;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	overflow:auto;
+    font-family: IBMFont;
+    background: transparent;
+	margin:0;
+}
+.openingContent {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    background: transparent;
+	width:100%;
+	min-width:400px;
+	max-width:1600px;
+	text-align:center;
+	padding:5px;
+}
+
+div.gallery {
+    margin: 15px;
+    border: 2px solid magenta;
+	border-radius: 10px;
+    display:inline-block;
+    width: 280px;	
+}
+div.gallery:hover {
+    border: 2px solid blue;
+}
+
+div.gallery img {
+    width: 100%;
+    height: auto;
+	
+}
+div.desc {
+    padding: 15px;
+    text-align: center;
+}
+
+* {
+    box-sizing: border-box;
+	border-radius:10px 10px 0px 0px;
+}
+#title{
+	padding-top:40px;
+	font-family: IBMFont;
+	font-size:32px;
+	margin: 0 auto;
+	position:relative;
+	left:0;
+	right:0;
+	text-align:center;
+}
+#subtitle{
+	padding-top:50px;
+	padding-bottom:50px;
+	font-family: IBMFont;
+	font-size:18px;
+	margin: 0 auto;
+	position:relative;
+	left:0;
+	right:0;
+	text-align:center;
+	font-style:italic;
+}
+#subtitleNew{
+	padding-top:50px;
+	padding-bottom:50px;
+	font-family: IBMFont;
+	font-size:18px;
+	margin: 0 auto;
+	position:relative;
+	left:0;
+	right:0;
+	text-align:center;
+	font-style:italic;
+}
+#subtitleNewColor{
+	padding-top:40px;
+	padding-bottom:50px;
+	font-family: IBMFont;
+	font-size:18px;
+	margin: 0 auto;
+	width:400px;
+	height:10px;
+	position:relative;
+	text-align:center;
+	font-style:italic;
+	color:white;
+}
+#lily{
+	position:absolute;
+	right:10%;
+	pointer-events:none;
+}
+</style>
+</head>
+<body>
+<div id="title"><img src="pages/flag1.png">  <img src="pages/beast12.png"></div>
+<div id="openingModal">
+<div class="openingContent">
+<div id="subtitle">Strange Visions:</div>
+<div class="gallery">
+  <a target="_self" href="chunli.html">
+    <img src="pages/ddd.png">
+  </a>
+  <div class="desc">Chun-Li</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="catherine.html">
+    <img src="pages/catherine.png">
+  </a>
+  <div class="desc">Catherine</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="bluemary.html">
+    <img src="pages/blue.png" >
+  </a>
+  <div class="desc">Blue Mary</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="blue.html">
+    <img src="pages/blue2.png" >
+  </a>
+  <div class="desc">Shiki</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="cammy.html">
+    <img src="pages/cammy.png" >
+  </a>
+  <div class="desc">Cammy</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="dust.html">
+    <img src="pages/blaze.png" >
+  </a>
+  <div class="desc">Blaze</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="dora.html">
+    <img src="pages/dora.png" >
+  </a>
+  <div class="desc">Dora</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="electra.html">
+    <img src="pages/electra.png" >
+  </a>
+  <div class="desc">Electra</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="/fieldofdreams.html">
+    <img src="pages/fieldofdreams.png" >
+  </a>
+  <div class="desc">Chizuru</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="/ghost.html">
+    <img src="pages/ghost.png" >
+  </a>
+  <div class="desc">Lucy (Bride of Dracula)</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="/grave.html">
+    <img src="pages/grave.png" >
+  </a>
+  <div class="desc">Carol</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="jade.html">
+    <img src="pages/jade.png" >
+  </a>
+  <div class="desc">Jade</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="jessica.html">
+    <img src="pages/jessica.png" >
+  </a>
+  <div class="desc">Jessica</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="lilith.html">
+    <img src="pages/lilith.png" >
+  </a>
+  <div class="desc">Lilith & Morrigan</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="frozenshade.html">
+    <img src="pages/shade.png" >
+  </a>
+  <div class="desc">Frozen Shade</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="lily.html">
+    <img src="pages/lily.png" >
+  </a>
+  <div class="desc">Lily</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="lola.html">
+    <img src="pages/lola.png" >
+  </a>
+  <div class="desc">Lola</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="mai.html">
+    <img src="pages/mai.png" >
+  </a>
+  <div class="desc">Mai Shiranui</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="may.html">
+    <img src="pages/may.png" >
+  </a>
+  <div class="desc">May</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="nimue.html">
+    <img src="pages/nimue.png" >
+  </a>
+  <div class="desc">Lady of the Lake</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="search.html">
+    <img src="pages/search.png" >
+  </a>
+  <div class="desc">Poison/Roxy</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="selina.html">
+    <img src="pages/selina.png" >
+  </a>
+  <div class="desc">Selina Kyle</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="shadow.html">
+    <img src="pages/shadow.png" >
+  </a>
+  <div class="desc">Shadow</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="sheena.html">
+    <img src="pages/sheena.png" >
+  </a>
+  <div class="desc">Liz</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="shermie.html">
+    <img src="pages/shermie.png" >
+  </a>
+  <div class="desc">Shermie</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="spin.html">
+    <img src="pages/spin.png" >
+  </a>
+  <div class="desc">Spin</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="stripfighter.html">
+    <img src="pages/stripfighter.png" >
+  </a>
+  <div class="desc">Strip Fighters</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="tyris.html">
+    <img src="pages/tyris.png" >
+  </a>
+  <div class="desc">Tyris</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="xiangfei.html">
+    <img src="pages/xiangfei.png" >
+  </a>
+  <div class="desc">Xiangfei</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="yuri.html">
+    <img src="pages/yuri.png" >
+  </a>
+  <div class="desc">Yuri</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="thetis.html">
+    <img src="pages/thetis.png" >
+  </a>
+  <div class="desc">Thetis</div>
+</div>
+
+<div id="subtitleNew"><div id="subtitleNewColor">
+<div id="lily"><img src = "blackroomelements/lilygif.gif"></div>
+NEW * Strange Visions * 2019:</div></div>
+
+<div class="gallery">
+  <a target="_self" href="athena.html">
+    <img src="pages/athena.png" >
+  </a>
+  <div class="desc">Athena</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="mizuki.html">
+    <img src="pages/mizuki.png" >
+  </a>
+  <div class="desc">Mizuki</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="moon.html">
+    <img src="pages/moon.png" >
+  </a>
+  <div class="desc">Moon</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="sailormars.html">
+    <img src="pages/sailormars.png" >
+  </a>
+  <div class="desc">Sailor Mars</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="chunli_II.html">
+    <img src="pages/chunliII.png" >
+  </a>
+  <div class="desc">Chun-Li (SSF II version)</div>
+</div>
+
+
+<!--ROOMS-->
+
+<div id="subtitle">Rooms:</div>
+<div class="gallery">
+  <a target="_self" href="sorceress.html">
+    <img src="pages/room1.png" >
+  </a>
+  <div class="desc"><p class="pink">1.</p> Sorceress</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="beauty.html">
+    <img src="pages/room2.png" >
+  </a>
+  <div class="desc"><p class="pink">2.</p> Beauty</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="banshee.html">
+    <img src="pages/room3.png" >
+  </a>
+  <div class="desc"><p class="pink">3.</p> Banshee</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="persephone.html">
+    <img src="pages/room4.png" >
+  </a>
+  <div class="desc"><p class="pink">4.</p> Persephone</div>
+</div>
+
+<div class="gallery">
+  <a target="_self" href="sorn.html">
+    <img src="pages/room5.png" >
+  </a>
+  <div class="desc"><p class="pink">5.</p> The Sorn</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="naiad.html">
+    <img src="pages/room6.png" >
+  </a>
+  <div class="desc"><p class="pink">6.</p> Naiad</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="arachne.html">
+    <img src="pages/room7.png" >
+  </a>
+  <div class="desc"><p class="pink">7.</p> Arachne</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="nureonna.html">
+    <img src="pages/room8.png" >
+  </a>
+  <div class="desc"><p class="pink">8.</p> Nureonna</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="babayaga.html">
+    <img src="pages/room9.png" >
+  </a>
+  <div class="desc"><p class="pink">9.</p> Babayaga</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="dryad.html">
+    <img src="pages/room10.png" >
+  </a>
+  <div class="desc"><p class="pink">10.</p> Dryad</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="undine.html">
+    <img src="pages/room11.png" >
+  </a>
+  <div class="desc"><p class="pink">11.</p> Undine</div>
+</div>
+
+<div class="gallery">
+  <a target="_self" href="lilitu.html">
+    <img src="pages/room12.png" >
+  </a>
+  <div class="desc"><p class="pink">12.</p> Lilitu</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="harpy.html">
+    <img src="pages/room13.png" >
+  </a>
+  <div class="desc"><p class="pink">13.</p> Harpy</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="scylla.html">
+    <img src="pages/room14.png" >
+  </a>
+  <div class="desc"><p class="pink">14.</p> Scylla</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="succubus.html">
+    <img src="pages/room15.png" >
+  </a>
+  <div class="desc"><p class="pink">15.</p> Succubus</div>
+</div>
+<div id="subtitle">Other Rooms:</div>
+<div class="gallery">
+  <a target="_self" href="/shimmer.html">
+    <img src="pages/blink.png" >
+  </a>
+  <div class="desc">*~ Blink ~*</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="rosy.html">
+    <img src="pages/jensroom.png" >
+  </a>
+  <div class="desc">Jessica's Room</div>
+</div>
+<div class="gallery">
+  <a target="_self" href="nukeem.html">
+    <img src="pages/noonecares.png" >
+  </a>
+  <div class="desc">NO ONE CARES THAT YR HERE</div>
+</div>
+<div id="subtitle">Vast (Jennifer's Quest):</div>
+<div class="gallery">
+  <a target="_self" href="vast/jennifer.html">
+    <img src="pages/jennifer.png" >
+  </a>
+  <div class="desc">Jennifer Simpson</div>
+</div>
+<div id="subtitle">Girl, You'll Be A Woman Soon (Hostage):</div>
+<div class="gallery">
+  <a target="_self" href="/rooms_for/sonia.html">
+    <img src="pages/sonia.png" >
+  </a>
+  <div class="desc">Kerri/Sonya</div>
+</div>
+<!--
+<div id="openingModal">
+<div class="openingContent">
+Pages
+<ul style="list-style-type:none">
+<li><img src="oasisWMap/cactus3_00.png"><a href="/chunli.html" target="_self">
+Chun Li</a></li>
+<ul style="list-style-type:none">
+<li><img src="oasisWMap/cactus3_00.png"><a href="/chunli.html" target="_self">
+Chun Li</a></li>
+<ul style="list-style-type:none">
+<li><img src="oasisWMap/cactus3_00.png"><a href="/chunli.html" target="_self">
+Chun Li</a></li>
+
+<!--ONE
+<table>
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Maria Anders</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Centro comercial Moctezuma</td>
+    <td>Francisco Chang</td>
+    <td>Mexico</td>
+  </tr>
+  <tr>
+    <td>Ernst Handel</td>
+    <td>Roland Mendel</td>
+    <td>Austria</td>
+  </tr>
+  <tr>
+    <td>Island Trading</td>
+    <td>Helen Bennett</td>
+    <td>UK</td>
+  </tr>
+  <tr>
+    <td>Laughing Bacchus Winecellars</td>
+    <td>Yoshi Tannamuri</td>
+    <td>Canada</td>
+  </tr>
+  <tr>
+    <td>Magazzini Alimentari Riuniti</td>
+    <td>Giovanni Rovelli</td>
+    <td>Italy</td>
+  </tr>
+</table>
+-->
+</body>
+</html>
